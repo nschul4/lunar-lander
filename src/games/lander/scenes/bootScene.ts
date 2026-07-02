@@ -2,7 +2,7 @@ import { g_version } from "../game";
 
 export class BootScene extends Phaser.Scene {
 
-  private helloMessage: string = "lander v" + g_version;
+  private helloMessage: string = "lander v" + g_version + " foo";
 
   constructor() {
     super({
@@ -14,7 +14,7 @@ export class BootScene extends Phaser.Scene {
     // console.log("BootScene.preload");
     // Load assets
     this.load.setPath('./src/games/lander/assets/');
-    // this.load.image('background', 'starfield.jpg');
+    this.load.image('background', 'starfield.jpg');
   }
 
   create(): void {
@@ -36,7 +36,8 @@ export class BootScene extends Phaser.Scene {
 
   update(): void {
     // console.log("BootScene.update");
-    this.time.delayedCall(1000, function () {
+    this.time.delayedCall(100, function () {
+
       this.scene.start("GameScene");
     },
       null,

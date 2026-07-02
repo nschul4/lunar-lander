@@ -1,10 +1,11 @@
 import "phaser";
 
 import { BootScene } from "./scenes/bootScene";
-import { GameScene } from "./scenes/gameScene";
+import { GameSceneTest } from "./scenes/gameSceneTest";
 import { GameSceneOverlay } from "./scenes/gameSceneOverlay";
 import { ControllerScene } from "./scenes/controllerScene";
 import { Logger } from "../../common/classes/logger";
+import { GameSceneGrid } from "./scenes/GameSceneGrid";
 
 Logger.log("top of lander game.ts");
 
@@ -22,7 +23,7 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  scene: [BootScene, ControllerScene, GameSceneOverlay, GameScene],
+  scene: [BootScene, ControllerScene, GameSceneGrid, GameSceneTest],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,
@@ -36,9 +37,9 @@ const config = {
   physics: {
     default: 'matter',
     matter: {
-      // debug: true,
-      // debugShowInternalEdges: true,
-      // debugShowConvexHulls: true
+      debug: true,
+      debugShowInternalEdges: true,
+      debugShowConvexHulls: true
     }
   },
 };
