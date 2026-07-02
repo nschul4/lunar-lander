@@ -94,7 +94,7 @@ export class GameSceneOverlay extends Phaser.Scene {
         strokeThickness: 1,
       },
     );
-    this.text2.setVisible(false);
+    this.text2.setVisible(true);
 
     this.failText = this.add.text(
       width / 2, 100,
