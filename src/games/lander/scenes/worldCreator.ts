@@ -1,6 +1,7 @@
 import { Mountain } from "../mountains/Mountain";
 import { MountAlpha } from "../mountains/MountAlpha";
 import { BetaMountain } from "../mountains/BetaMountain";
+import { MountTam } from "../mountains/MountTam";
 
 export class WorldCreator {
     /**
@@ -11,20 +12,22 @@ export class WorldCreator {
      */
     public static createWorld(scene: Phaser.Scene): number {
         const terrainSequence: Mountain[] = [
-            new MountAlpha()
+            new MountAlpha(),
+            new BetaMountain(),
+            new MountTam()
         ];
 
-        let currentX = 400;
-        const groundY = 400;
+        let currentX = 100;
+        const groundY = 1000;
         let totalPads = 0;
 
         for (const mountain of terrainSequence) {
             // Spawn the individual mountain segment
             mountain.spawn(scene, currentX, groundY);
-            
+
             // Accumulate the number of landing pads inside this segment
             totalPads += mountain.landingPads.length;
-            
+
             // Push the horizontal coordinate marker forward by this mountain's width
             currentX += mountain.width;
         }

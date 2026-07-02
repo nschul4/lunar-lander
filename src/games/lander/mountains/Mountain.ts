@@ -14,10 +14,11 @@ export abstract class Mountain {
     private static readonly PAD_HEIGHT = 5;
 
     public spawn(scene: Phaser.Scene, worldX: number, worldY: number): void {
-        // 1. Create the visual mountain polygon at the target coordinates
-        const mountainPolygon = scene.add.polygon(worldX, worldY, this.vertices, 0x555555);
+        // 1. Create the visual polygon at (0, 0) using local vertices
+        const mountainPolygon = scene.add.polygon(0, 0, this.vertices, 0x555555);
 
-        // 2. Inject Matter physics via shape config so Phaser automatically syncs the center of mass and graphics origin
+        // 2. Pair it with a Matter body instantly. 
+        // Matter will auto-center both the physics vertices and the visual polygon together.
         scene.matter.add.gameObject(mountainPolygon, {
             shape: {
                 type: 'fromVerts',
@@ -27,12 +28,27 @@ export abstract class Mountain {
             isStatic: true
         });
 
-        // 3. Spawn uniformly-sized landing pads relative to the mountain's aligned structural bounds
+        const mountainBody = mountainPolygon.body as any;
+
+        // 3. Leverage worldX and worldY for the translation:
+        // Find where the bottom of the unified physics box is right now
+        const currentBottom = mountainBody.bounds.max.y;
+        
+        // Calculate the exact world adjustments needed
+        const translationX = worldX - mountainBody.bounds.min.x;
+        const translationY = worldY - currentBottom;
+
+        // Translate the entire synchronized GameObject to its final world home
+        mountainPolygon.setPosition(
+            mountainPolygon.x + translationX,
+            mountainPolygon.y + translationY
+        );
+
+        // 4. Spawn landing pads using the newly updated, perfectly locked bounds
         for (const pad of this.landingPads) {
             const localX = pad.position.x;
             const localY = pad.position.y;
 
-            // Define the landing pad local vertices relative to its own local origin (0,0)
             const padVertices = [
                 new Phaser.Math.Vector2(0, 0),
                 new Phaser.Math.Vector2(Mountain.PAD_WIDTH, 0),
@@ -40,30 +56,30 @@ export abstract class Mountain {
                 new Phaser.Math.Vector2(0, Mountain.PAD_HEIGHT)
             ];
 
-            // Matter shifted the mountain's coordinate space to its center of mass.
-            // We use the updated physics bounds min property as the absolute coordinate anchor.
-            const bounds = (mountainPolygon.body as any).bounds;
-            const absolutePadX = bounds.min.x + localX;
-            const absolutePadY = bounds.min.y + localY;
+            const finalMountainBounds = mountainBody.bounds;
+            const mountainTopLeftX = finalMountainBounds.min.x;
+            const mountainTopLeftY = finalMountainBounds.min.y;
 
-            // Create the visual pad shape
-            const padPolygon = scene.add.polygon(absolutePadX, absolutePadY, padVertices, 0xaaaaaa);
-            
-            // Inject Matter physics for the pad, ensuring flawless graphics/physics matching
+            const targetPadCenterX = mountainTopLeftX + localX + (Mountain.PAD_WIDTH / 2);
+            const targetPadCenterY = mountainTopLeftY + localY + (Mountain.PAD_HEIGHT / 2);
+
+            const padPolygon = scene.add.polygon(0, 0, padVertices, 0xaaaaaa);
+
             scene.matter.add.gameObject(padPolygon, {
                 shape: {
                     type: 'fromVerts',
                     verts: padVertices,
                     flagInternal: true
                 },
-                isStatic: true
+                isStatic: true,
+                position: { x: targetPadCenterX, y: targetPadCenterY }
             });
+
             padPolygon.setName(pad.name);
 
-            // Place text labels perfectly centered right above the flat landing pad strip
             scene.add.text(
-                absolutePadX + (Mountain.PAD_WIDTH / 2),
-                absolutePadY - 25,
+                targetPadCenterX,
+                targetPadCenterY - (Mountain.PAD_HEIGHT / 2) - 25,
                 pad.name,
                 { color: 'gray' }
             ).setOrigin(0.5, 0.5);
