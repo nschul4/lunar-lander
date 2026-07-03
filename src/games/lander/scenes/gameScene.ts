@@ -1,6 +1,5 @@
 import { GameSceneOverlay } from "./gameSceneOverlay";
 import { ControllerScene } from "./controllerScene";
-import { createPolygon } from "../../../common/createPolygon";
 import { WorldCreator } from "./worldCreator";
 
 export class GameScene extends Phaser.Scene {
