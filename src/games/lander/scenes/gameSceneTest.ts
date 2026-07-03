@@ -158,7 +158,7 @@ export class GameSceneTest extends Phaser.Scene {
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
 
-    this.matter.world.setBounds(0, -100, 1100, 1100);
+    this.matter.world.setBounds(0, -100, 3000, 1100);
 
     // var worldBoundsRectTop = this.add.rectangle(
     //   0, 0,
@@ -250,8 +250,8 @@ export class GameSceneTest extends Phaser.Scene {
     // test values
 
     // entire world
-    this.cameras.main.centerOn(1200, 450);
-    this.cameras.main.setZoom(0.54);
+    this.cameras.main.centerOn(1500, 450);
+    this.cameras.main.setZoom(0.45);
     // closer left
     // this.cameras.main.centerOn(900, -300);
     // this.cameras.main.setZoom(1);
