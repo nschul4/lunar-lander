@@ -5,8 +5,6 @@ import { WorldCreator } from "./worldCreator";
 export class GameScene extends Phaser.Scene {
 
   public lander: any;
-  public successCount: number = 0;
-  public noOfSuccessesPossible: number = 0;
 
   private controllerScene = null;
 
@@ -17,14 +15,10 @@ export class GameScene extends Phaser.Scene {
   private worldBoundsRectangleColorLeft: number = 0x555555;
   private worldBoundsRectangleColorRight: number = 0x555555;
 
-  // test values
-  // private worldBoundsRectangleColorTop: number = 0x55;
-  // private worldBoundsRectangleColorBottom: number = 0x55;
-  // private worldBoundsRectangleColorLeft: number = 0x88;
-  // private worldBoundsRectangleColorRight: number = 0x88;
-
   // TODO: give these a more specific type
   private background: Phaser.GameObjects.TileSprite;
+  private successCount: number = 0;
+  private noOfSuccessesPossible: number = 0;
 
   constructor() {
     super({
@@ -104,18 +98,8 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.lander.angle = -90;
-    this.lander.setPosition(200, 100);
+    this.lander.setPosition(100, 200);
     this.lander.setVelocityX(1);
-
-    // test values
-    // this.lander.setPosition(25, -900); // left top
-    // this.lander.setPosition(25, -100); // left bottom
-    // this.lander.setPosition(2900, -900); // right top
-    // this.lander.setPosition(2900, -100); // right bottom
-    // this.lander.angle = 0
-    // this.lander.setVelocity(0, 1);
-    // this.lander.setPosition(425, -50); // right above beta
-
     this.lander.setFrictionAir(0);
     this.lander.setBounce(0, 0);
 
@@ -160,7 +144,7 @@ export class GameScene extends Phaser.Scene {
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
 
-    this.matter.world.setBounds(0, -100, 3000, 1100);
+    this.matter.world.setBounds(0, 0, 3000, 1000);
 
     this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
       if (bodyB.gameObject == null || !bodyB.gameObject.name) {
@@ -222,9 +206,6 @@ export class GameScene extends Phaser.Scene {
 
     this.cameras.main.startFollow(this.lander, false, 0.1, 0.1);
     this.cameras.main.setZoom(1.5);
-    // test values
-    // this.cameras.main.centerOn(1500, -500);
-    // this.cameras.main.setZoom(0.22);
   }
 
   update(time: number, delta: number): void {
@@ -254,7 +235,5 @@ export class GameScene extends Phaser.Scene {
     this.thrust.x = this.lander.x;
     this.thrust.y = this.lander.y;
     this.thrust.angle = this.lander.angle;
-    // this.background.x = this.lander.x * 0.5;
-    // this.background.y = this.lander.y * 0.5;
   }
-} 
+}
