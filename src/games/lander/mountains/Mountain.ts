@@ -1,22 +1,34 @@
-import "phaser";
-import { LandingPadConfig } from "./LandingPad";
+// ./src/games/lander/mountains/Mountain.ts
 
-export abstract class Mountain {
-    abstract name: string;
-    abstract vertices: Phaser.Math.Vector2[];
-    abstract landingPads: LandingPadConfig[];
-    abstract width: number;
+import "phaser";
+import { MountainBlueprint } from "./MountainBlueprints";
+
+export class Mountain {
+    public name: string;
+    public width: number;
+    private vertices: Phaser.Math.Vector2[];
+    private landingPads: any[];
 
     private static readonly DEFAULT_PAD_WIDTH = 100;
     private static readonly DEFAULT_PAD_HEIGHT = 5;
 
-    /**
-     * Spawns the mountain and returns the created landing pads for scene tracking.
-     */
+    constructor(blueprint: MountainBlueprint) {
+        this.name = blueprint.name;
+        this.width = blueprint.width;
+        
+        // Map native math vectors from configuration values
+        this.vertices = blueprint.vertices.map(v => new Phaser.Math.Vector2(v.x, v.y));
+        this.landingPads = blueprint.landingPads.map(pad => ({
+            name: pad.name,
+            position: new Phaser.Math.Vector2(pad.x, pad.y),
+            width: pad.width,
+            height: pad.height
+        }));
+    }
+
     public spawn(scene: Phaser.Scene, worldX: number, worldY: number): Phaser.GameObjects.Polygon[] {
         const spawnedPads: Phaser.GameObjects.Polygon[] = [];
 
-        // 1. Instantiating geometry
         const mountainPolygon = scene.add.polygon(0, 0, this.vertices, 0x555555);
         scene.matter.add.gameObject(mountainPolygon, {
             shape: { type: 'fromVerts', verts: this.vertices, flagInternal: true },
@@ -25,7 +37,6 @@ export abstract class Mountain {
 
         const mountainBody = mountainPolygon.body as any;
 
-        // 2. Exact spatial translation adjustment
         const currentBottom = mountainBody.bounds.max.y;
         const translationX = worldX - mountainBody.bounds.min.x;
         const translationY = worldY - currentBottom;
@@ -35,7 +46,6 @@ export abstract class Mountain {
             mountainPolygon.y + translationY
         );
 
-        // 3. Normalized Context for Sub-elements
         const mountainTopLeftX = mountainBody.bounds.min.x;
         const mountainTopLeftY = mountainBody.bounds.min.y;
 
