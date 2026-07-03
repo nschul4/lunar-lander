@@ -1,3 +1,5 @@
+// ./src/games/lander/mountains/MountainBlueprints.ts
+
 export interface PadBlueprint {
     name: string;
     x: number;
@@ -25,7 +27,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 500, y: 300 }
         ],
         landingPads: [
-            { name: "Alpha-Landing-Alpha", x: 200, y: 0, width: 100 }
+            // Restored to your preferred regional naming style, hitting y: 0 for the peak
+            { name: "Alpha-Prime-Base", x: 200, y: 0, width: 100 }
         ]
     },
     {
@@ -71,6 +74,20 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         ],
         landingPads: [
             { name: "Olympus-Chasm-Base", x: 400, y: 0, width: 150 }
+        ]
+    },
+    {
+        name: "Tam",
+        width: 600,
+        // Placeholder path—swap these out with your preferred classic MountTam vector array!
+        vertices: [
+            { x: 0, y: 400 },
+            { x: 250, y: 100 },
+            { x: 350, y: 100 },
+            { x: 600, y: 400 }
+        ],
+        landingPads: [
+            { name: "Tam-Outpost-Delta", x: 250, y: 0, width: 100 }
         ]
     }
 ];
