@@ -23,7 +23,7 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  scene: [BootScene, ControllerScene, GameSceneGrid, GameSceneTest],
+  scene: [BootScene, ControllerScene, GameSceneOverlay, GameSceneGrid, GameSceneTest],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,

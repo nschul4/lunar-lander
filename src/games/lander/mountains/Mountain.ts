@@ -1,5 +1,3 @@
-// ./src/games/lander/mountains/Mountain.ts
-
 import "phaser";
 import { LandingPadConfig } from "./LandingPad";
 
@@ -9,68 +7,55 @@ export abstract class Mountain {
     abstract landingPads: LandingPadConfig[];
     abstract width: number;
 
-    // Global uniform landing pad dimensions
-    private static readonly PAD_WIDTH = 100;
-    private static readonly PAD_HEIGHT = 5;
+    private static readonly DEFAULT_PAD_WIDTH = 100;
+    private static readonly DEFAULT_PAD_HEIGHT = 5;
 
-    public spawn(scene: Phaser.Scene, worldX: number, worldY: number): void {
-        // 1. Create the visual polygon at (0, 0) using local vertices
+    /**
+     * Spawns the mountain and returns the created landing pads for scene tracking.
+     */
+    public spawn(scene: Phaser.Scene, worldX: number, worldY: number): Phaser.GameObjects.Polygon[] {
+        const spawnedPads: Phaser.GameObjects.Polygon[] = [];
+
+        // 1. Instantiating geometry
         const mountainPolygon = scene.add.polygon(0, 0, this.vertices, 0x555555);
-
-        // 2. Pair it with a Matter body instantly. 
-        // Matter will auto-center both the physics vertices and the visual polygon together.
         scene.matter.add.gameObject(mountainPolygon, {
-            shape: {
-                type: 'fromVerts',
-                verts: this.vertices,
-                flagInternal: true
-            },
+            shape: { type: 'fromVerts', verts: this.vertices, flagInternal: true },
             isStatic: true
         });
 
         const mountainBody = mountainPolygon.body as any;
 
-        // 3. Leverage worldX and worldY for the translation:
-        // Find where the bottom of the unified physics box is right now
+        // 2. Exact spatial translation adjustment
         const currentBottom = mountainBody.bounds.max.y;
-        
-        // Calculate the exact world adjustments needed
         const translationX = worldX - mountainBody.bounds.min.x;
         const translationY = worldY - currentBottom;
 
-        // Translate the entire synchronized GameObject to its final world home
         mountainPolygon.setPosition(
             mountainPolygon.x + translationX,
             mountainPolygon.y + translationY
         );
 
-        // 4. Spawn landing pads using the newly updated, perfectly locked bounds
+        // 3. Normalized Context for Sub-elements
+        const mountainTopLeftX = mountainBody.bounds.min.x;
+        const mountainTopLeftY = mountainBody.bounds.min.y;
+
         for (const pad of this.landingPads) {
-            const localX = pad.position.x;
-            const localY = pad.position.y;
+            const padW = pad.width ?? Mountain.DEFAULT_PAD_WIDTH;
+            const padH = pad.height ?? Mountain.DEFAULT_PAD_HEIGHT;
+
+            const targetPadCenterX = mountainTopLeftX + pad.position.x + (padW / 2);
+            const targetPadCenterY = mountainTopLeftY + pad.position.y + (padH / 2);
 
             const padVertices = [
                 new Phaser.Math.Vector2(0, 0),
-                new Phaser.Math.Vector2(Mountain.PAD_WIDTH, 0),
-                new Phaser.Math.Vector2(Mountain.PAD_WIDTH, Mountain.PAD_HEIGHT),
-                new Phaser.Math.Vector2(0, Mountain.PAD_HEIGHT)
+                new Phaser.Math.Vector2(padW, 0),
+                new Phaser.Math.Vector2(padW, padH),
+                new Phaser.Math.Vector2(0, padH)
             ];
 
-            const finalMountainBounds = mountainBody.bounds;
-            const mountainTopLeftX = finalMountainBounds.min.x;
-            const mountainTopLeftY = finalMountainBounds.min.y;
-
-            const targetPadCenterX = mountainTopLeftX + localX + (Mountain.PAD_WIDTH / 2);
-            const targetPadCenterY = mountainTopLeftY + localY + (Mountain.PAD_HEIGHT / 2);
-
             const padPolygon = scene.add.polygon(0, 0, padVertices, 0xaaaaaa);
-
             scene.matter.add.gameObject(padPolygon, {
-                shape: {
-                    type: 'fromVerts',
-                    verts: padVertices,
-                    flagInternal: true
-                },
+                shape: { type: 'fromVerts', verts: padVertices, flagInternal: true },
                 isStatic: true,
                 position: { x: targetPadCenterX, y: targetPadCenterY }
             });
@@ -79,14 +64,14 @@ export abstract class Mountain {
 
             scene.add.text(
                 targetPadCenterX,
-                targetPadCenterY - (Mountain.PAD_HEIGHT / 2) - 25,
+                targetPadCenterY - (padH / 2) - 25,
                 pad.name,
                 { color: 'gray' }
             ).setOrigin(0.5, 0.5);
 
-            if ('noOfSuccessesPossible' in scene) {
-                (scene as any).noOfSuccessesPossible += 1;
-            }
+            spawnedPads.push(padPolygon);
         }
+
+        return spawnedPads;
     }
 }

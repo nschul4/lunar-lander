@@ -140,12 +140,12 @@ export class GameSceneTest extends Phaser.Scene {
   }
 
   private win() {
-    // var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
-    // overlayScene.win();
-    // this.time.delayedCall(7000, function () {
-    //   this.scene.restart();
-    //   overlayScene.restart();
-    // }, null, this);
+    var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
+    overlayScene.win();
+    this.time.delayedCall(7000, function () {
+      this.scene.restart();
+      overlayScene.restart();
+    }, null, this);
   }
 
   create(): void {
