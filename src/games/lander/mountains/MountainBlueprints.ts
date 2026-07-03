@@ -31,20 +31,20 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { name: "Alpha-Prime-Base", x: 200, y: 0, width: 100 }
         ]
     },
-    {
-        name: "Beta",
-        width: 600,
-        vertices: [
-            { x: 0, y: 400 },
-            { x: 150, y: 150 },
-            { x: 300, y: 150 },
-            { x: 450, y: 300 },
-            { x: 600, y: 400 }
-        ],
-        landingPads: [
-            { name: "Beta-Landing-Station", x: 150, y: 0, width: 150 }
-        ]
-    },
+    // {
+    //     name: "Beta",
+    //     width: 600,
+    //     vertices: [
+    //         { x: 0, y: 400 },
+    //         { x: 150, y: 150 },
+    //         { x: 300, y: 150 },
+    //         { x: 450, y: 300 },
+    //         { x: 600, y: 400 }
+    //     ],
+    //     landingPads: [
+    //         { name: "Beta-Landing-Station", x: 150, y: 0, width: 150 }
+    //     ]
+    // },
     {
         name: "Gamma",
         width: 550,
@@ -63,7 +63,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
     },
     {
         name: "Olympus",
-        width: 800,
+        width: 850,
         vertices: [
             { x: 0, y: 500 },
             { x: 200, y: 200 },
@@ -79,15 +79,15 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
     {
         name: "Tam",
         width: 600,
-        // Placeholder path—swap these out with your preferred classic MountTam vector array!
         vertices: [
-            { x: 0, y: 400 },
-            { x: 250, y: 100 },
-            { x: 350, y: 100 },
-            { x: 600, y: 400 }
+            { x: 0, y: 300 },
+            { x: 200, y: 0 },
+            { x: 300, y: 0 },
+            { x: 400, y: 200 },
+            { x: 500, y: 300 }
         ],
         landingPads: [
-            { name: "Tam-Outpost-Delta", x: 250, y: 0, width: 100 }
+            { name: "Tam-Outpost-Delta", x: 200, y: 0, width: 100 }
         ]
     }
 ];
