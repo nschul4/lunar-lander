@@ -158,7 +158,7 @@ export class GameSceneTest extends Phaser.Scene {
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
 
-    this.matter.world.setBounds(0, -100, 3000, 3000);
+    this.matter.world.setBounds(0, -100, 1100, 1100);
 
     // var worldBoundsRectTop = this.add.rectangle(
     //   0, 0,
