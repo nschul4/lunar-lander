@@ -162,32 +162,6 @@ export class GameScene extends Phaser.Scene {
 
     this.matter.world.setBounds(0, -100, 3000, 1100);
 
-    // var worldBoundsRectTop = this.add.rectangle(
-    //   0, 0,
-    //   100, 100,
-    //   this.worldBoundsRectangleColorTop,
-    // );
-    // worldBoundsRectTop.setOrigin(0, 0);
-
-    // var worldBoundsRectBottom = this.add.rectangle(
-    //   0 - boundSize, 0,
-    //   3000 + boundSize * 2, boundSize,
-    //   this.worldBoundsRectangleColorBottom,
-    // );
-    // worldBoundsRectBottom.setOrigin(0, 0);
-    // var worldBoundsRectLeft = this.add.rectangle(
-    //   -boundSize, -1000,
-    //   boundSize, 1000,
-    //   this.worldBoundsRectangleColorLeft,
-    // );
-    // worldBoundsRectLeft.setOrigin(0, 0);
-    // var worldBoundsRectRight = this.add.rectangle(
-    //   3000, -1000,
-    //   boundSize, 1000,
-    //   this.worldBoundsRectangleColorRight,
-    // );
-    // worldBoundsRectRight.setOrigin(0, 0);
-
     this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
       if (bodyB.gameObject == null || !bodyB.gameObject.name) {
         this.fail();
