@@ -105,7 +105,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     this.lander.angle = -90;
-    this.lander.setPosition(500, -550);
+    this.lander.setPosition(200, 100);
     this.lander.setVelocityX(1);
 
     // test values
@@ -161,41 +161,33 @@ export class GameScene extends Phaser.Scene {
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
 
-    this.background = this.add.tileSprite(
-      width / 2,
-      height / 2,
-      width * 4,
-      height * 4,
-      "background"
-    );
-    this.background.visible = false;
+    this.matter.world.setBounds(0, -100, 3000, 1100);
 
-    this.matter.world.setBounds(0, -1000, 3000, 1000);
-    var boundSize: number = 1000;
-    var worldBoundsRectTop = this.add.rectangle(
-      -boundSize, -1000 - boundSize,
-      3000 + boundSize * 2, boundSize,
-      this.worldBoundsRectangleColorTop,
-    );
-    worldBoundsRectTop.setOrigin(0, 0);
-    var worldBoundsRectBottom = this.add.rectangle(
-      0 - boundSize, 0,
-      3000 + boundSize * 2, boundSize,
-      this.worldBoundsRectangleColorBottom,
-    );
-    worldBoundsRectBottom.setOrigin(0, 0);
-    var worldBoundsRectLeft = this.add.rectangle(
-      -boundSize, -1000,
-      boundSize, 1000,
-      this.worldBoundsRectangleColorLeft,
-    );
-    worldBoundsRectLeft.setOrigin(0, 0);
-    var worldBoundsRectRight = this.add.rectangle(
-      3000, -1000,
-      boundSize, 1000,
-      this.worldBoundsRectangleColorRight,
-    );
-    worldBoundsRectRight.setOrigin(0, 0);
+    // var worldBoundsRectTop = this.add.rectangle(
+    //   0, 0,
+    //   100, 100,
+    //   this.worldBoundsRectangleColorTop,
+    // );
+    // worldBoundsRectTop.setOrigin(0, 0);
+
+    // var worldBoundsRectBottom = this.add.rectangle(
+    //   0 - boundSize, 0,
+    //   3000 + boundSize * 2, boundSize,
+    //   this.worldBoundsRectangleColorBottom,
+    // );
+    // worldBoundsRectBottom.setOrigin(0, 0);
+    // var worldBoundsRectLeft = this.add.rectangle(
+    //   -boundSize, -1000,
+    //   boundSize, 1000,
+    //   this.worldBoundsRectangleColorLeft,
+    // );
+    // worldBoundsRectLeft.setOrigin(0, 0);
+    // var worldBoundsRectRight = this.add.rectangle(
+    //   3000, -1000,
+    //   boundSize, 1000,
+    //   this.worldBoundsRectangleColorRight,
+    // );
+    // worldBoundsRectRight.setOrigin(0, 0);
 
     this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
       if (bodyB.gameObject == null || !bodyB.gameObject.name) {
@@ -256,7 +248,7 @@ export class GameScene extends Phaser.Scene {
     this.noOfSuccessesPossible = WorldCreator.createWorld(this);
 
     this.cameras.main.startFollow(this.lander, false, 0.1, 0.1);
-    this.cameras.main.setZoom(2);
+    this.cameras.main.setZoom(1.5);
     // test values
     // this.cameras.main.centerOn(1500, -500);
     // this.cameras.main.setZoom(0.22);
