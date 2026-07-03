@@ -63,7 +63,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
     },
     {
         name: "Olympus",
-        width: 850,
+        width: 800,
         vertices: [
             { x: 0, y: 500 },
             { x: 200, y: 200 },
@@ -74,6 +74,20 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         ],
         landingPads: [
             { name: "Olympus-Chasm-Base", x: 400, y: 0, width: 150 }
+        ]
+    },
+    {
+        name: "Titus",
+        width: 500,
+        vertices: [
+            { x: 0, y: 300 },
+            { x: 200, y: 0 },
+            { x: 300, y: 0 },
+            { x: 400, y: 200 },
+            { x: 500, y: 300 }
+        ],
+        landingPads: [
+            { name: "Titus", x: 200, y: 0, width: 100 }
         ]
     },
     {
