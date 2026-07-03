@@ -54,28 +54,6 @@ export class GameScene extends Phaser.Scene {
     return "{\n" + result + "}";
   }
 
-  private createLandingPad(name: string, x: number, y: number): Phaser.GameObjects.Polygon {
-    var polygon = createPolygon(
-      this,
-      "0 0 50 0 50 2 0 2",
-      x, y,
-      0xaaaaaa,
-      true
-    );
-    polygon.setName(name);
-    this.add.text(x, y - 60, name,
-      {
-        // fontSize: '30px',
-        color: 'gray',
-        // strokeThickness: 1,
-      },
-    );
-
-    this.noOfSuccessesPossible += 1;
-
-    return polygon;
-  }
-
   private setupLander(): void {
     var xLeft: number = 0;
     var xMiddle: number = 20;
