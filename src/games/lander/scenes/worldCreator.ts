@@ -22,11 +22,10 @@ export class WorldCreator {
         let totalPads = 0;
 
         for (const mountain of terrainSequence) {
-            // Spawn the individual mountain segment
-            mountain.spawn(scene, currentX, groundY);
+            const spawnedPads = mountain.spawn(scene, currentX, groundY);
 
             // Accumulate the number of landing pads inside this segment
-            totalPads += mountain.landingPads.length;
+            totalPads += spawnedPads.length;
 
             // Push the horizontal coordinate marker forward by this mountain's width
             currentX += mountain.width;
