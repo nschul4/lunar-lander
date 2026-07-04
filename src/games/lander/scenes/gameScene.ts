@@ -204,11 +204,27 @@ export class GameScene extends Phaser.Scene {
 
     this.noOfSuccessesPossible = WorldCreator.createWorld(this);
 
-    this.cameras.main.startFollow(this.lander, false, 0.1, 0.1);
-    this.cameras.main.setZoom(1.5);
+    this.cameras.main.setZoom(1);
   }
 
   update(time: number, delta: number): void {
+
+    // 1. Calculate the ideal camera center position
+    const targetCamX = this.lander.x - this.cameras.main.width / 2;
+    const targetCamY = this.lander.y - this.cameras.main.height / 2;
+
+    // 2. Find the current distance between the camera and that ideal center
+    const distX = Math.abs(this.cameras.main.scrollX - targetCamX);
+    const distY = Math.abs(this.cameras.main.scrollY - targetCamY);
+
+    // 3. Scale your lerp factor based on the distance
+    // Base speed is 0.05, but it scales up if the distance exceeds 100 pixels
+    const dynamicLerpX = distX > 100 ? 0.15 : 0.05;
+    const dynamicLerpY = distY > 100 ? 0.15 : 0.05;
+
+    // 4. Apply the scroll
+    this.cameras.main.scrollX += (targetCamX - this.cameras.main.scrollX) * dynamicLerpX;
+    this.cameras.main.scrollY += (targetCamY - this.cameras.main.scrollY) * dynamicLerpY;
 
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
