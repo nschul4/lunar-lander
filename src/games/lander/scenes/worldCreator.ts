@@ -1,5 +1,3 @@
-// ./src/games/lander/scenes/worldCreator.ts
-
 import { Mountain } from "../mountains/Mountain";
 import { MOUNTAIN_DATABASE } from "../mountains/MountainBlueprints";
 
@@ -15,9 +13,12 @@ export class WorldCreator {
         // Loop through the data blueprints directly
         for (const blueprint of MOUNTAIN_DATABASE) {
             const mountainInstance = new Mountain(blueprint);
-            const spawnedPads = mountainInstance.spawn(scene, currentX, groundY);
+            const spawnedObjects = mountainInstance.spawn(scene, currentX, groundY);
 
-            totalPads += spawnedPads.length;
+            // Filter out text labels and terrains by ensuring the element has a valid landing-pad name assignment
+            const padCount = spawnedObjects.filter(obj => obj.name && obj.name !== "lander" && obj.name !== "thrust").length;
+            
+            totalPads += padCount;
             currentX += mountainInstance.width;
         }
 
