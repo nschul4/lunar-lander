@@ -66,7 +66,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     var yMiddle2: number = yBottom + mysteryShifter;
     var yBottom2: number = yBottom + mysteryShifter + 10;
 
-    var thrustFlamePints: string = ""
+    var thrustFlamePoints: string = ""
       + xLeft2 + " " + yMiddle2 // left
       + " "
       + xMiddle2 + " " + yBottom2 // center
@@ -99,7 +99,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.thrust = this.add.polygon(
       this.lander.x,
       this.lander.y,
-      thrustFlamePints,
+      thrustFlamePoints,
       0xffffff
     );
     this.thrust.setName("thrust");
