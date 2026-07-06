@@ -187,24 +187,32 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    var dtRatio: number = delta / (1000 / 60);
+    // Step the physics engine at a constant fixed 30 FPS rate (1000ms / 30 = 33.33ms)
+    this.matter.world.step(33.33);
+
     if (this.controllerScene.thrusting == true) {
       this.thrust.visible = true;
       var radians = Phaser.Math.DegToRad(this.lander.angle);
-      var vx: number = (0.0075 * Math.sin(radians)) * dtRatio;
-      var vy: number = (-0.0075 * Math.cos(radians)) * dtRatio;
-      this.lander.setVelocityX(this.lander.body.velocity.x + vx);
-      this.lander.setVelocityY(this.lander.body.velocity.y + vy);
+      
+      // Forces are scaled to balance out the longer step period
+      var forceX: number = 0.000075 * Math.sin(radians);
+      var forceY: number = -0.000075 * Math.cos(radians);
+
+      this.matter.body.applyForce(this.lander.body, this.lander.body.position, {
+        x: forceX,
+        y: forceY
+      });
     } else {
       this.thrust.visible = false;
     }
 
+    // Set constant angular rotations balanced for 33.33ms steps
     this.lander.setAngularVelocity(0);
     if (this.controllerScene.rotatingLeft == true) {
-      this.lander.setAngularVelocity(-0.01 * dtRatio);
+      this.lander.setAngularVelocity(-0.03);
     }
     if (this.controllerScene.rotatingRight == true) {
-      this.lander.setAngularVelocity(0.01 * dtRatio);
+      this.lander.setAngularVelocity(0.03);
     }
 
     this.thrust.x = this.lander.x;

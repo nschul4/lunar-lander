@@ -40,6 +40,8 @@ const config = {
     default: 'matter',
     matter: {
       debug: true,
+      autoUpdate: false,
+      fixedStep: true,
       debugShowInternalEdges: true,
       debugShowConvexHulls: true
     }
