@@ -7,7 +7,7 @@ export class MountainDesignerScene extends Phaser.Scene {
     private titleText: Phaser.GameObjects.Text;
 
     constructor() {
-        super({ key: "MountainDesignerScene" });
+        super({ key: "GameScene" });
     }
 
     create(): void {
