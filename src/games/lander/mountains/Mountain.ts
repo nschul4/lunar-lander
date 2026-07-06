@@ -6,6 +6,7 @@ import { MountainBlueprint } from "./MountainBlueprints";
 export class Mountain {
     public name: string;
     public width: number;
+    public height: number;
     private vertices: Phaser.Math.Vector2[];
     private landingPads: any[];
 
@@ -15,12 +16,13 @@ export class Mountain {
     constructor(blueprint: MountainBlueprint) {
         this.name = blueprint.name;
         this.width = blueprint.width;
+        this.height = blueprint.height;
         
         // Map native math vectors from configuration values
-        this.vertices = blueprint.vertices.map(v => new Phaser.Math.Vector2(v.x, v.y));
+        this.vertices = blueprint.vertices.map(v => new Phaser.Math.Vector2(v.x, this.height - v.y));
         this.landingPads = blueprint.landingPads.map(pad => ({
             name: pad.name,
-            position: new Phaser.Math.Vector2(pad.x, pad.y),
+            position: new Phaser.Math.Vector2(pad.x, this.height - pad.y),
             width: pad.width,
             height: pad.height
         }));
