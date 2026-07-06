@@ -3,6 +3,14 @@ import { ControllerScene } from "./controllerScene";
 import { WorldCreator } from "./worldCreator";
 
 export abstract class BaseGameScene extends Phaser.Scene {
+  private static readonly GRAVITY_Y = 0.007;
+  private static readonly THRUST_FORCE = 0.00002;
+  private static readonly ROTATION_SPEED = 0.01;
+
+  private static readonly MAX_SAFE_HORIZONTAL_SPEED = 0.05;
+  private static readonly MAX_SAFE_VERTICAL_SPEED = 0.4;
+  private static readonly MAX_SAFE_ANGLE = 4;
+
   public lander: any;
   protected controllerScene: any = null;
   protected thrust: any;
@@ -90,7 +98,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
     this.lander.angle = -90;
     this.lander.setPosition(100, 200);
-    this.lander.setVelocityX(1);
+    this.lander.setVelocityX(1.5);
     this.lander.setFrictionAir(0);
     this.lander.setBounce(0, 0);
 
@@ -134,69 +142,72 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.matter.world.setBounds(0, 0, 3000, 1000);
 
     this.matter.world.on('collisionstart', (event: any, bodyA: any, bodyB: any) => {
-      // If either body doesn't map to a GameObject (like world bounds), handle as an out-of-bounds crash safely
       if (!bodyA || !bodyB || !bodyA.gameObject || !bodyB.gameObject) {
         this.fail();
         return;
       }
 
       var lander = null;
-      var landingPad = null;
+      var otherBody = null;
 
       if (bodyA.gameObject.name === "lander") {
         lander = bodyA;
-        landingPad = bodyB;
+        otherBody = bodyB;
       } else if (bodyB.gameObject.name === "lander") {
         lander = bodyB;
-        landingPad = bodyA;
+        otherBody = bodyA;
       }
 
-      // If the lander hit something that isn't designated as a landing pad (e.g. raw mountain geometry)
-      if (lander !== null && (!landingPad.gameObject || !landingPad.gameObject.name)) {
-        this.fail();
-        return;
-      }
-
-      if (lander !== null && landingPad !== null) {
-        var absAttitude = Math.abs(lander.gameObject.angle);
-        if (absAttitude > 5) {
-          this.fail();
-        } else {
+      if (lander !== null && otherBody !== null) {
+        if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
+          var absAttitude = Math.abs(lander.gameObject.angle);
           var vx = lander.gameObject.body.velocity.x;
           var vy = lander.gameObject.body.velocity.y;
-          if (vx > 1 || vy > 1) {
+
+          const isAngleSafe = absAttitude <= BaseGameScene.MAX_SAFE_ANGLE;
+          const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
+          const isVerticalSafe = Math.abs(vy) <= BaseGameScene.MAX_SAFE_VERTICAL_SPEED;
+
+          console.log(
+            `--- TOUCHDOWN DIAGNOSTICS ---\n` +
+            `Angle:      ${absAttitude.toFixed(2)}° (Max: ${BaseGameScene.MAX_SAFE_ANGLE}°) -> ${isAngleSafe ? '✅ PASS' : '❌ FAIL'}\n` +
+            `Horiz Vel:  ${vx.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED}) -> ${isHorizontalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
+            `Vert Vel:   ${vy.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_VERTICAL_SPEED}) -> ${isVerticalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
+            `-----------------------------`
+          );
+
+          if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
             this.fail();
           } else {
             lander.gameObject.angle = 0;
             this.lander.setVelocity(0, 0);
-            if (landingPad.gameObject.landed !== true) {
-              landingPad.gameObject.landed = true;
-              landingPad.gameObject.setFillStyle(0x00aa00);
+            if (otherBody.gameObject.landed !== true) {
+              otherBody.gameObject.landed = true;
+              otherBody.gameObject.setFillStyle(0x00aa00);
               this.successCount += 1;
               if (this.successCount === this.noOfSuccessesPossible) {
                 this.win();
               }
             }
           }
+        } else {
+          console.log("💥 CRASH: Touched raw mountain terrain, not a landing pad.");
+          this.fail();
         }
       }
     }, this);
 
-    this.matter.world.setGravity(0, 0.005);
+    this.matter.world.setGravity(0, BaseGameScene.GRAVITY_Y);
     this.noOfSuccessesPossible = WorldCreator.createWorld(this);
   }
 
   update(time: number, delta: number): void {
-    // Step the physics engine at a constant fixed 30 FPS rate (1000ms / 30 = 33.33ms)
-    this.matter.world.step(33.33);
-
     if (this.controllerScene.thrusting == true) {
       this.thrust.visible = true;
       var radians = Phaser.Math.DegToRad(this.lander.angle);
-      
-      // Forces are scaled to balance out the longer step period
-      var forceX: number = 0.000075 * Math.sin(radians);
-      var forceY: number = -0.000075 * Math.cos(radians);
+
+      var forceX: number = BaseGameScene.THRUST_FORCE * Math.sin(radians);
+      var forceY: number = -BaseGameScene.THRUST_FORCE * Math.cos(radians);
 
       this.matter.body.applyForce(this.lander.body, this.lander.body.position, {
         x: forceX,
@@ -206,13 +217,12 @@ export abstract class BaseGameScene extends Phaser.Scene {
       this.thrust.visible = false;
     }
 
-    // Set constant angular rotations balanced for 33.33ms steps
     this.lander.setAngularVelocity(0);
     if (this.controllerScene.rotatingLeft == true) {
-      this.lander.setAngularVelocity(-0.03);
+      this.lander.setAngularVelocity(-BaseGameScene.ROTATION_SPEED);
     }
     if (this.controllerScene.rotatingRight == true) {
-      this.lander.setAngularVelocity(0.03);
+      this.lander.setAngularVelocity(BaseGameScene.ROTATION_SPEED);
     }
 
     this.thrust.x = this.lander.x;
