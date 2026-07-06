@@ -1,5 +1,3 @@
-// ./src/games/lander/mountains/Mountain.ts
-
 import "phaser";
 import { MountainBlueprint } from "./MountainBlueprints";
 
@@ -28,14 +26,19 @@ export class Mountain {
         }));
     }
 
-    public spawn(scene: Phaser.Scene, worldX: number, worldY: number): Phaser.GameObjects.Polygon[] {
-        const spawnedPads: Phaser.GameObjects.Polygon[] = [];
+    /**
+     * Spawns mountain components and returns every created GameObject 
+     * (polygons, text, etc.) so scenes can easily track and clean them up.
+     */
+    public spawn(scene: Phaser.Scene, worldX: number, worldY: number): Phaser.GameObjects.GameObject[] {
+        const spawnedObjects: Phaser.GameObjects.GameObject[] = [];
 
         const mountainPolygon = scene.add.polygon(0, 0, this.vertices, 0x555555);
         scene.matter.add.gameObject(mountainPolygon, {
             shape: { type: 'fromVerts', verts: this.vertices, flagInternal: true },
             isStatic: true
         });
+        spawnedObjects.push(mountainPolygon);
 
         const mountainBody = mountainPolygon.body as any;
 
@@ -73,17 +76,18 @@ export class Mountain {
             });
 
             padPolygon.setName(pad.name);
+            spawnedObjects.push(padPolygon);
 
-            scene.add.text(
+            const labelText = scene.add.text(
                 targetPadCenterX,
                 targetPadCenterY - (padH / 2) - 25,
                 pad.name,
                 { color: 'gray' }
             ).setOrigin(0.5, 0.5);
-
-            spawnedPads.push(padPolygon);
+            
+            spawnedObjects.push(labelText);
         }
 
-        return spawnedPads;
+        return spawnedObjects;
     }
 }

@@ -133,40 +133,48 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
     this.matter.world.setBounds(0, 0, 3000, 1000);
 
-    this.matter.world.on('collisionstart', function (event, bodyA, bodyB) {
-      if (bodyB.gameObject == null || !bodyB.gameObject.name) {
+    this.matter.world.on('collisionstart', (event: any, bodyA: any, bodyB: any) => {
+      // If either body doesn't map to a GameObject (like world bounds), handle as an out-of-bounds crash safely
+      if (!bodyA || !bodyB || !bodyA.gameObject || !bodyB.gameObject) {
         this.fail();
-      } else {
-        var lander = null;
-        var landingPad = null;
-        if (bodyA.gameObject.name == "lander") {
-          lander = bodyA;
-          landingPad = bodyB;
-        } else if (bodyB.gameObject.name == "lander") {
-          lander = bodyB;
-          landingPad = bodyA;
-        }
-        if (lander != null) {
-          var absAttitude = Math.abs(lander.gameObject.angle);
-          if (absAttitude > 5) {
+        return;
+      }
+
+      var lander = null;
+      var landingPad = null;
+
+      if (bodyA.gameObject.name === "lander") {
+        lander = bodyA;
+        landingPad = bodyB;
+      } else if (bodyB.gameObject.name === "lander") {
+        lander = bodyB;
+        landingPad = bodyA;
+      }
+
+      // If the lander hit something that isn't designated as a landing pad (e.g. raw mountain geometry)
+      if (lander !== null && (!landingPad.gameObject || !landingPad.gameObject.name)) {
+        this.fail();
+        return;
+      }
+
+      if (lander !== null && landingPad !== null) {
+        var absAttitude = Math.abs(lander.gameObject.angle);
+        if (absAttitude > 5) {
+          this.fail();
+        } else {
+          var vx = lander.gameObject.body.velocity.x;
+          var vy = lander.gameObject.body.velocity.y;
+          if (vx > 1 || vy > 1) {
             this.fail();
           } else {
-            var vx = lander.gameObject.body.velocity.x;
-            var vy = lander.gameObject.body.velocity.y;
-            if (vx > 1) {
-              this.fail();
-            } else if (vy > 1) {
-              this.fail();
-            } else {
-              lander.gameObject.angle = 0;
-              this.lander.setVelocity(0, 0);
-              if (landingPad.gameObject.landed !== true) {
-                landingPad.gameObject.landed = true;
-                landingPad.gameObject.setFillStyle(0x00aa00);
-                this.successCount += 1;
-                if (this.successCount == this.noOfSuccessesPossible) {
-                  this.win();
-                }
+            lander.gameObject.angle = 0;
+            this.lander.setVelocity(0, 0);
+            if (landingPad.gameObject.landed !== true) {
+              landingPad.gameObject.landed = true;
+              landingPad.gameObject.setFillStyle(0x00aa00);
+              this.successCount += 1;
+              if (this.successCount === this.noOfSuccessesPossible) {
+                this.win();
               }
             }
           }

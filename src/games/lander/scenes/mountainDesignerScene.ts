@@ -2,8 +2,8 @@ import { MOUNTAIN_DATABASE } from "../mountains/MountainBlueprints";
 import { Mountain } from "../mountains/Mountain";
 
 export class MountainDesignerScene extends Phaser.Scene {
-private currentIdx: number = 0;
-    private currentMountainObjects: (Phaser.GameObjects.GameObject | Phaser.GameObjects.Group | Phaser.GameObjects.Layer)[] = [];
+    private currentIdx: number = 0;
+    private currentMountainObjects: Phaser.GameObjects.GameObject[] = [];
     private titleText: Phaser.GameObjects.Text;
 
     constructor() {
@@ -41,14 +41,19 @@ private currentIdx: number = 0;
         });
     }
 
-private loadMountain(): void {
-        // Clean up previous graphics/text/bodies from the scene
+    private loadMountain(): void {
+        // Clean up previous elements and explicitly remove their Matter physics bodies from the world simulation
         this.currentMountainObjects.forEach(obj => {
-            if (obj && typeof obj.destroy === 'function') {
-                obj.destroy();
+            if (obj) {
+                if (obj.body) {
+                    this.matter.world.remove(obj.body);
+                }
+                if (typeof obj.destroy === 'function') {
+                    obj.destroy();
+                }
             }
         });
-        // Fix: Use the accurate compound type Phaser expects
+        
         this.currentMountainObjects = [];
 
         const blueprint = MOUNTAIN_DATABASE[this.currentIdx];
@@ -58,21 +63,8 @@ private loadMountain(): void {
         const targetX = (this.scale.width / 2) - (blueprint.width / 2);
         const targetY = this.scale.height - 100;
 
-        // Hook into scene creation to track what gets spawned
-        const originalAdd = this.add.existing.bind(this.add);
-        const trackedObjects: (Phaser.GameObjects.GameObject | Phaser.GameObjects.Group | Phaser.GameObjects.Layer)[] = [];
-        
-        this.add.existing = (obj) => {
-            trackedObjects.push(obj);
-            return originalAdd(obj);
-        };
-
-        // Spawn it
-        mountainInstance.spawn(this, targetX, targetY);
-
-        // Restore default factory behavior and record objects for later destruction
-        delete (this.add as any).existing;
-        this.currentMountainObjects = trackedObjects;
+        // Clean collection assignment without modifying factory prototypes
+        this.currentMountainObjects = mountainInstance.spawn(this, targetX, targetY);
 
         // Update display text
         this.titleText.setText(`Designing Mountain [${this.currentIdx + 1}/${MOUNTAIN_DATABASE.length}]: ${blueprint.name}`);
