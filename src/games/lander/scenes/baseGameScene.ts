@@ -179,11 +179,12 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+    var dtRatio: number = delta / (1000 / 60);
     if (this.controllerScene.thrusting == true) {
       this.thrust.visible = true;
       var radians = Phaser.Math.DegToRad(this.lander.angle);
-      var vx: number = 0.0075 * Math.sin(radians);
-      var vy: number = -0.0075 * Math.cos(radians);
+      var vx: number = (0.0075 * Math.sin(radians)) * dtRatio;
+      var vy: number = (-0.0075 * Math.cos(radians)) * dtRatio;
       this.lander.setVelocityX(this.lander.body.velocity.x + vx);
       this.lander.setVelocityY(this.lander.body.velocity.y + vy);
     } else {
@@ -192,10 +193,10 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
     this.lander.setAngularVelocity(0);
     if (this.controllerScene.rotatingLeft == true) {
-      this.lander.setAngularVelocity(-0.01);
+      this.lander.setAngularVelocity(-0.01 * dtRatio);
     }
     if (this.controllerScene.rotatingRight == true) {
-      this.lander.setAngularVelocity(0.01);
+      this.lander.setAngularVelocity(0.01 * dtRatio);
     }
 
     this.thrust.x = this.lander.x;
