@@ -21,6 +21,9 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected worldBoundsRectangleColorRight: number = 0x555555;
 
   protected background: Phaser.GameObjects.TileSprite;
+  protected mountainParallax: Phaser.GameObjects.TileSprite;
+  protected gridGraphics: Phaser.GameObjects.Graphics;
+  
   public successCount: number = 0;
   public noOfSuccessesPossible: number = 0;
 
@@ -113,6 +116,73 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.thrust.setName("thrust");
   }
 
+  /**
+   * Generates a simple continuous jagged texture to serve as a background mountain range
+   */
+  private generateMountainTexture(): void {
+    if (this.textures.exists('parallax_mountains')) return;
+
+    const width = 1440;
+    const height = 400;
+    const g = this.make.graphics({ x: 0, y: 0 });
+
+    // Draw a dark silhouette ridge line
+    g.fillStyle(0x222226, 1);
+    g.beginPath();
+    g.moveTo(0, height);
+    g.lineTo(0, 180);
+    g.lineTo(250, 80);
+    g.lineTo(500, 240);
+    g.lineTo(750, 120);
+    g.lineTo(1100, 290);
+    g.lineTo(1440, 150);
+    g.lineTo(1440, height);
+    g.closePath();
+    g.fillPath();
+
+    g.generateTexture('parallax_mountains', width, height);
+  }
+
+  /**
+   * Draws the measurement grid system restricted cleanly to the playable map boundaries
+   */
+  private drawMeasurementGrid(): void {
+    this.gridGraphics = this.add.graphics();
+    this.gridGraphics.setDepth(-0.5); // Placed between the background layers and foreground terrain
+
+    // Optimized grid bounds matching the actual 3000x1000 world play area
+    const worldWidth = 3000;
+    const worldMinY = 0;
+    const worldMaxY = 1000;
+    const step = 100;
+
+    this.gridGraphics.lineStyle(3, 0x00ff00, 0.4);
+
+    // Vertical Lines & X Labels
+    for (let x = 0; x <= worldWidth; x += step) {
+      this.gridGraphics.lineBetween(x, worldMinY, x, worldMaxY);
+
+      const xText = this.add.text(x + 10, worldMinY + 10, `X:${x}`, {
+        fontSize: '24px',
+        color: '#00ff00',
+        fontStyle: 'bold'
+      }).setAlpha(0.6);
+      xText.setDepth(-0.5);
+    }
+
+    // Horizontal Lines & Y Labels
+    for (let y = worldMinY; y <= worldMaxY; y += step) {
+      this.gridGraphics.lineBetween(0, y, worldWidth, y);
+      
+      const yText = this.add.text(10, y + 10, `Y:${y}`, {
+        fontSize: '24px',
+        color: '#00ff00',
+        fontStyle: 'bold'
+      }).setAlpha(0.6);
+      yText.setDepth(-0.5);
+    }
+  }
+
   protected fail() {
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.fail();
@@ -137,6 +207,19 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
 
+    // Layer 1: Deep space background starfield
+    this.background = this.add.tileSprite(1500, 500, 3000, 1000, 'background');
+    this.background.setDepth(-2);
+
+    // Layer 2: Midground parallax mountain range (Lowered by 50px)
+    this.generateMountainTexture();
+    this.mountainParallax = this.add.tileSprite(1500, 800, 3000, 400, 'parallax_mountains');
+    this.mountainParallax.setDepth(-1);
+
+    // Layer 3: Measurement Grid System
+    this.drawMeasurementGrid();
+
+    // Layer 4 (Default Depth 0): Player Lander & Map structures
     this.setupLander();
 
     this.matter.world.setBounds(0, 0, 3000, 1000);
@@ -228,5 +311,14 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.thrust.x = this.lander.x;
     this.thrust.y = this.lander.y;
     this.thrust.angle = this.lander.angle;
+
+    if (this.background) {
+      this.background.tilePositionX = this.cameras.main.scrollX * 0.15;
+      this.background.tilePositionY = this.cameras.main.scrollY * 0.15;
+    }
+
+    if (this.mountainParallax) {
+      this.mountainParallax.tilePositionX = this.cameras.main.scrollX * 0.45;
+    }
   }
 }
