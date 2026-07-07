@@ -79,20 +79,5 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         landingPads: [
             { name: "Titus", x: 200, y: 300, width: 100 }
         ]
-    },
-    {
-        name: "Tam",
-        width: 600,
-        height: 300,
-        vertices: [
-            { x: 0, y: 0 },
-            { x: 200, y: 300 },
-            { x: 300, y: 300 },
-            { x: 400, y: 100 },
-            { x: 500, y: 0 }
-        ],
-        landingPads: [
-            { name: "Tam-Outpost-Delta", x: 200, y: 300, width: 100 }
-        ]
     }
 ];
