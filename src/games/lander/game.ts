@@ -4,13 +4,10 @@ import { BootScene } from "./scenes/bootScene";
 import { GameScene } from "./scenes/gameScene";
 import { GameSceneOverlay } from "./scenes/gameSceneOverlay";
 import { ControllerScene } from "./scenes/controllerScene";
-import { Logger } from "../../common/classes/logger";
 import { g_version } from "./version";
 
-Logger.log("top of lander game.ts");
-
-var width: number = 1440;
-var height: number = 720;
+const width: number = 1440;
+const height: number = 720;
 
 const config = {
   title: "lander",
@@ -35,13 +32,11 @@ const config = {
   physics: {
     default: 'matter',
     matter: {
-      debug: true,
+      debug: false,
       autoUpdate: true,
-      fixedStep: true,
-      debugShowInternalEdges: true,
-      debugShowConvexHulls: true
+      fixedStep: true
     }
   },
 };
 
-let game = new Phaser.Game(config);
+new Phaser.Game(config);
