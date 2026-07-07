@@ -5,6 +5,8 @@ export class MountainDesignerScene extends Phaser.Scene {
     private currentIdx: number = 0;
     private currentMountainObjects: Phaser.GameObjects.GameObject[] = [];
     private titleText: Phaser.GameObjects.Text;
+    private gridGraphics: Phaser.GameObjects.Graphics;
+    private gridLabels: Phaser.GameObjects.Text[] = [];
 
     constructor() {
         super({ key: "GameScene" });
@@ -13,6 +15,9 @@ export class MountainDesignerScene extends Phaser.Scene {
     create(): void {
         const width = this.scale.width;
         const height = this.scale.height;
+
+        // Render the measurement grid system layer
+        this.drawMeasurementGrid();
 
         // Render instruction text
         this.titleText = this.add.text(width / 2, 40, '', {
@@ -41,6 +46,57 @@ export class MountainDesignerScene extends Phaser.Scene {
         });
     }
 
+    /**
+     * Draws a localized measurement grid system forced on top of the terrain and safely manages text memory lifetime
+     */
+    private drawMeasurementGrid(): void {
+        // Safe lifecycle cleanup: destroy existing grid graphics and text labels if this method or create() runs again
+        if (this.gridGraphics) {
+            this.gridGraphics.destroy();
+        }
+        this.gridLabels.forEach(label => {
+            if (label) label.destroy();
+        });
+        this.gridLabels = [];
+
+        this.gridGraphics = this.add.graphics();
+        
+        // Force the grid lines to a high depth layer so mountains spawn underneath them
+        this.gridGraphics.setDepth(10); 
+
+        const viewWidth = this.scale.width;
+        const viewHeight = this.scale.height;
+        const step = 100;
+
+        this.gridGraphics.lineStyle(3, 0x00ff00, 0.4);
+
+        // Vertical Lines & X Labels
+        for (let x = 0; x <= viewWidth; x += step) {
+            this.gridGraphics.lineBetween(x, 0, x, viewHeight);
+
+            const xLabel = this.add.text(x + 10, 10, `X:${x}`, {
+                fontSize: '24px',
+                color: '#00ff00',
+                fontStyle: 'bold'
+            }).setAlpha(0.6).setDepth(10);
+            
+            this.gridLabels.push(xLabel);
+        }
+
+        // Horizontal Lines & Y Labels
+        for (let y = 0; y <= viewHeight; y += step) {
+            this.gridGraphics.lineBetween(0, y, viewWidth, y);
+            
+            const yLabel = this.add.text(10, y + 10, `Y:${y}`, {
+                fontSize: '24px',
+                color: '#00ff00',
+                fontStyle: 'bold'
+            }).setAlpha(0.6).setDepth(10);
+
+            this.gridLabels.push(yLabel);
+        }
+    }
+
     private loadMountain(): void {
         // Clean up previous elements and explicitly remove their Matter physics bodies from the world simulation
         this.currentMountainObjects.forEach(obj => {
@@ -63,7 +119,7 @@ export class MountainDesignerScene extends Phaser.Scene {
         const targetX = (this.scale.width / 2) - (blueprint.width / 2);
         const targetY = this.scale.height - 100;
 
-        // Clean collection assignment without modifying factory prototypes
+        // Spawns mountain at default depth (0), safely underneath our grid (10)
         this.currentMountainObjects = mountainInstance.spawn(this, targetX, targetY);
 
         // Update display text

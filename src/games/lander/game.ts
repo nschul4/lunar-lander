@@ -6,7 +6,6 @@ import { GameScene } from "./scenes/gameScene";
 import { GameSceneOverlay } from "./scenes/gameSceneOverlay";
 import { ControllerScene } from "./scenes/controllerScene";
 import { Logger } from "../../common/classes/logger";
-import { GameSceneGrid } from "./scenes/GameSceneGrid";
 
 Logger.log("top of lander game.ts");
 
@@ -24,8 +23,8 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  // scene: [BootScene, ControllerScene, GameSceneOverlay, GameSceneGrid, GameScene ],
-  scene: [BootScene, ControllerScene, GameSceneOverlay, GameSceneGrid, GameSceneTest],
+  // scene: [BootScene, ControllerScene, GameSceneOverlay, GameScene ],
+  scene: [BootScene, ControllerScene, GameSceneOverlay, GameSceneTest],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,
