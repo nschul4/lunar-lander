@@ -1,4 +1,4 @@
-import { g_version } from "../game";
+import { g_version } from "../version";
 
 export class BootScene extends Phaser.Scene {
 
@@ -11,14 +11,12 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // console.log("BootScene.preload");
-    // Load assets
-    this.load.setPath('./src/games/lander/assets/');
+    // Fixed: Using root-relative pathing so assets load from any URL route
+    this.load.setPath('/src/games/lander/assets/');
     this.load.image('background', 'starfield.jpg');
   }
 
   create(): void {
-    // console.log("BootScene.create");
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
 
@@ -35,9 +33,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   update(): void {
-    // console.log("BootScene.update");
     this.time.delayedCall(100, function () {
-
       this.scene.start("GameScene");
     },
       null,
