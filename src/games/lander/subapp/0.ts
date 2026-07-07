@@ -1,7 +1,7 @@
 import "phaser";
 
 import { BootScene } from "../scenes/bootScene";
-import { GameScene } from "../scenes/gameScene";
+import { GameSceneInstrumented } from "../scenes/gameSceneInstrumented";
 import { GameSceneOverlay } from "../scenes/gameSceneOverlay";
 import { ControllerScene } from "../scenes/controllerScene";
 import { Logger } from "../../../common/classes/logger";
@@ -21,7 +21,7 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  scene: [BootScene, ControllerScene, GameSceneOverlay, GameScene],
+  scene: [BootScene, ControllerScene, GameSceneOverlay, GameSceneInstrumented ],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,
