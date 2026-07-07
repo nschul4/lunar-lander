@@ -251,13 +251,15 @@ export abstract class BaseGameScene extends Phaser.Scene {
           const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
           const isVerticalSafe = Math.abs(vy) <= BaseGameScene.MAX_SAFE_VERTICAL_SPEED;
 
-          console.log(
-            `--- TOUCHDOWN DIAGNOSTICS ---\n` +
-            `Angle:      ${absAttitude.toFixed(2)}° (Max: ${BaseGameScene.MAX_SAFE_ANGLE}°) -> ${isAngleSafe ? '✅ PASS' : '❌ FAIL'}\n` +
-            `Horiz Vel:  ${vx.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED}) -> ${isHorizontalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
-            `Vert Vel:   ${vy.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_VERTICAL_SPEED}) -> ${isVerticalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
-            `-----------------------------`
-          );
+          if (this.matter.config.debug) {
+            console.log(
+              `--- TOUCHDOWN DIAGNOSTICS ---\n` +
+              `Angle:      ${absAttitude.toFixed(2)}° (Max: ${BaseGameScene.MAX_SAFE_ANGLE}°) -> ${isAngleSafe ? '✅ PASS' : '❌ FAIL'}\n` +
+              `Horiz Vel:  ${vx.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED}) -> ${isHorizontalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
+              `Vert Vel:   ${vy.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_VERTICAL_SPEED}) -> ${isVerticalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
+              `-----------------------------`
+            );
+          }
 
           if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
             this.fail();
