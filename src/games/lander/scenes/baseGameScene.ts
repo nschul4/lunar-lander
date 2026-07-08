@@ -158,6 +158,47 @@ export abstract class BaseGameScene extends Phaser.Scene {
     g.generateTexture('parallax_mountain_range', width, height);
   }
 
+  protected generateMountainRangeTexture2(): void {
+    if (this.textures.exists('parallax_mountain_range2')) return;
+
+    const width = 2500;
+    const height = 1000;
+    const g = this.make.graphics({ x: 0, y: 0 });
+
+    // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
+    const blueprintVertices = [
+      { x: 0, y: 0 },
+      { x: 300, y: 200 },
+      { x: 600, y: 300 },
+      { x: 900, y: 400 },
+      { x: 1200, y: 0 },
+      { x: 1500, y: 100 },
+      { x: 1800, y: 300 },
+      { x: 2100, y: 400 },
+      { x: 2400, y: 0 },
+    ];
+
+    // Invert the Y-axis to match Phaser's native top-left coordinate system
+    const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
+
+    // Draw the dark silhouette ridge line
+    g.fillStyle(0x444444, 1);
+    g.beginPath();
+    
+    // Move to the first point and trace the ridge vertices
+    if (nativePoints.length > 0) {
+      g.moveTo(nativePoints[0].x, nativePoints[0].y);
+      for (let i = 1; i < nativePoints.length; i++) {
+        g.lineTo(nativePoints[i].x, nativePoints[i].y);
+      }
+    }
+    
+    g.closePath();
+    g.fillPath();
+
+    g.generateTexture('parallax_mountain_range2', width, height);
+  }
+
   protected fail() {
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.fail();
@@ -193,9 +234,10 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.mountainRangeParallax.setDepth(-2);
 
     // Layer 3: Midground parallax mountain range
-    // this.generateMountainRangeTexture2();
-    // this.mountainRangeParallax2 = this.add.tileSprite(0, 500, 6000, 1000, 'parallax_mountain_range');
-    // this.mountainRangeParallax2.setDepth(-1);
+    this.generateMountainRangeTexture2();
+    this.mountainRangeParallax2 = this.add.tileSprite(0, 500, 3000, 1000, 'parallax_mountain_range2');
+    this.mountainRangeParallax2.setOrigin(0, 0.5);
+    this.mountainRangeParallax2.setDepth(-1);
 
     // Layer 3: Player Lander & Map structures (Grid removed entirely from baseline)
     this.setupLander();
@@ -283,12 +325,17 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.thrust.angle = this.lander.angle;
 
     if (this.background) {
-      this.background.tilePositionX = this.cameras.main.scrollX * 0.15;
-      this.background.tilePositionY = this.cameras.main.scrollY * 0.15;
+      this.background.tilePositionX = this.cameras.main.scrollX * 0.01;
+      this.background.tilePositionY = this.cameras.main.scrollY * 0.01;
     }
 
     if (this.mountainRangeParallax) {
-      this.mountainRangeParallax.tilePositionX = this.cameras.main.scrollX * 0.45;
+      this.mountainRangeParallax.tilePositionX = this.cameras.main.scrollX * 0.04;
+      this.mountainRangeParallax.tilePositionY = this.cameras.main.scrollY * 0.04;
+    }
+    if (this.mountainRangeParallax2) {
+      this.mountainRangeParallax2.tilePositionX = this.cameras.main.scrollX * 0.06;
+      this.mountainRangeParallax2.tilePositionY = this.cameras.main.scrollY * 0.06;
     }
   }
 }
