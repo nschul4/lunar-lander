@@ -22,6 +22,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
   protected background: Phaser.GameObjects.TileSprite;
   protected mountainRangeParallax: Phaser.GameObjects.TileSprite;
+  protected mountainRangeParallax2: Phaser.GameObjects.TileSprite;
   protected gridGraphics: Phaser.GameObjects.Graphics;
   
   public successCount: number = 0;
@@ -116,27 +117,41 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.thrust.setName("thrust");
   }
 
-  /**
-   * Generates a simple continuous jagged texture to serve as a background mountain range
+/**
+   * Generates a continuous jagged texture to serve as a background mountain range
+   * using a bottom-anchored coordinate system matching the mountain blueprints.
    */
   protected generateMountainRangeTexture(): void {
     if (this.textures.exists('parallax_mountain_range')) return;
 
-    const width = 1440;
-    const height = 400;
+    const width = 1400;
+    const height = 1000;
     const g = this.make.graphics({ x: 0, y: 0 });
 
-    // Draw a dark silhouette ridge line
-    g.fillStyle(0x222226, 1);
+    // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
+    const blueprintVertices = [
+      { x: 0, y: 0 },
+      { x: 500, y: 800 },
+      { x: 600, y: 400 },
+      { x: 900, y: 1000 },
+      { x: 1300, y: 0 },
+    ];
+
+    // Invert the Y-axis to match Phaser's native top-left coordinate system
+    const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
+
+    // Draw the dark silhouette ridge line
+    g.fillStyle(0x222222, 1);
     g.beginPath();
-    g.moveTo(0, height);
-    g.lineTo(0, 180);
-    g.lineTo(250, 80);
-    g.lineTo(500, 240);
-    g.lineTo(750, 120);
-    g.lineTo(1100, 290);
-    g.lineTo(1440, 180);
-    g.lineTo(1440, height);
+    
+    // Move to the first point and trace the ridge vertices
+    if (nativePoints.length > 0) {
+      g.moveTo(nativePoints[0].x, nativePoints[0].y);
+      for (let i = 1; i < nativePoints.length; i++) {
+        g.lineTo(nativePoints[i].x, nativePoints[i].y);
+      }
+    }
+    
     g.closePath();
     g.fillPath();
 
@@ -169,12 +184,18 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
     // Layer 1: Deep space background starfield
     this.background = this.add.tileSprite(1500, 500, 3000, 1000, 'background');
-    this.background.setDepth(-2);
+    this.background.setDepth(-3);
 
     // Layer 2: Midground parallax mountain range
     this.generateMountainRangeTexture();
-    this.mountainRangeParallax = this.add.tileSprite(1500, 800, 3000, 400, 'parallax_mountain_range');
-    this.mountainRangeParallax.setDepth(-1);
+    this.mountainRangeParallax = this.add.tileSprite(0, 500, 3000, 1000, 'parallax_mountain_range');
+    this.mountainRangeParallax.setOrigin(0, 0.5);
+    this.mountainRangeParallax.setDepth(-2);
+
+    // Layer 3: Midground parallax mountain range
+    // this.generateMountainRangeTexture2();
+    // this.mountainRangeParallax2 = this.add.tileSprite(0, 500, 6000, 1000, 'parallax_mountain_range');
+    // this.mountainRangeParallax2.setDepth(-1);
 
     // Layer 3: Player Lander & Map structures (Grid removed entirely from baseline)
     this.setupLander();
@@ -207,14 +228,6 @@ export abstract class BaseGameScene extends Phaser.Scene {
           const isAngleSafe = absAttitude <= BaseGameScene.MAX_SAFE_ANGLE;
           const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
           const isVerticalSafe = Math.abs(vy) <= BaseGameScene.MAX_SAFE_VERTICAL_SPEED;
-
-          console.log(
-            `--- TOUCHDOWN DIAGNOSTICS ---\n` +
-            `Angle:      ${absAttitude.toFixed(2)}° (Max: ${BaseGameScene.MAX_SAFE_ANGLE}°) -> ${isAngleSafe ? '✅ PASS' : '❌ FAIL'}\n` +
-            `Horiz Vel:  ${vx.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED}) -> ${isHorizontalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
-            `Vert Vel:   ${vy.toFixed(4)} (Max Abs: ${BaseGameScene.MAX_SAFE_VERTICAL_SPEED}) -> ${isVerticalSafe ? '✅ PASS' : '❌ FAIL'}\n` +
-            `-----------------------------`
-          );
 
           if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
             this.fail();
