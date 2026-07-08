@@ -62,7 +62,7 @@ export class MountainDesignerScene extends Phaser.Scene {
         this.gridGraphics = this.add.graphics();
         
         // Force the grid lines to a high depth layer so mountains spawn underneath them
-        this.gridGraphics.setDepth(10); 
+        this.gridGraphics.setDepth(10);
 
         const viewWidth = this.scale.width;
         const viewHeight = this.scale.height;
