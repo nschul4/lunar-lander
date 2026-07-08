@@ -8,7 +8,7 @@ export function drawMeasurementGrid(scene: Phaser.Scene): void {
   const gridGraphics = scene.add.graphics();
   
   // Placed exactly between background layers and foreground terrain
-  gridGraphics.setDepth(-0.5); 
+  gridGraphics.setDepth(10);
 
   const worldWidth = 3000;
   const worldMinY = 0;

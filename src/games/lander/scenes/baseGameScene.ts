@@ -125,7 +125,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     if (this.textures.exists('mountain_range')) return;
 
     const width = 1400;
-    const height = 1000;
+    const height = 1600;
     const g = this.make.graphics({ x: 0, y: 0 });
 
     // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
@@ -161,8 +161,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected generateMountainRange2(): void {
     if (this.textures.exists('mountain_range2')) return;
 
-    const width = 2500;
-    const height = 1000;
+    const width = 2400;
+    const height = 1600;
     const g = this.make.graphics({ x: 0, y: 0 });
 
     // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
@@ -172,9 +172,9 @@ export abstract class BaseGameScene extends Phaser.Scene {
       { x: 600, y: 300 },
       { x: 900, y: 400 },
       { x: 1200, y: 0 },
-      { x: 1500, y: 100 },
-      { x: 1800, y: 300 },
-      { x: 2100, y: 400 },
+      { x: 1500, y: 300 },
+      { x: 1800, y: 400 },
+      { x: 2100, y: 500 },
       { x: 2400, y: 0 },
     ];
 
@@ -224,19 +224,20 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
 
     // Layer 1: Background starfield
-    this.background = this.add.tileSprite(1500, 500, 3000, 1000, 'background');
+    this.background = this.add.tileSprite(-1000, -500, 3500, 1500, 'background');
+    this.background.setOrigin(0, 0);
     this.background.setDepth(-3);
 
     // Layer 2: Background mountain range
     this.generateMountainRange();
-    this.mountainRange = this.add.tileSprite(0, 500, 3000, 1000, 'mountain_range');
-    this.mountainRange.setOrigin(0, 0.5);
+    this.mountainRange = this.add.tileSprite(-1000, -500, 3500, 1500, 'mountain_range');
+    this.mountainRange.setOrigin(0, 0);
     this.mountainRange.setDepth(-2);
 
     // Layer 3: Midground mountain range 2
     this.generateMountainRange2();
-    this.mountainRange2 = this.add.tileSprite(0, 500, 3000, 1000, 'mountain_range2');
-    this.mountainRange2.setOrigin(0, 0.5);
+    this.mountainRange2 = this.add.tileSprite(-1000, -500, 3500, 1500, 'mountain_range2');
+    this.mountainRange2.setOrigin(0, 0);
     this.mountainRange2.setDepth(-1);
 
     // Layer 4: Player Lander & Map structures (Grid removed entirely from baseline)
@@ -330,12 +331,12 @@ export abstract class BaseGameScene extends Phaser.Scene {
     }
 
     if (this.mountainRange) {
-      this.mountainRange.tilePositionX = this.cameras.main.scrollX * 0.04;
-      this.mountainRange.tilePositionY = this.cameras.main.scrollY * 0.04;
+      this.mountainRange.tilePositionX = this.cameras.main.scrollX * 0.05;
+      this.mountainRange.tilePositionY = this.cameras.main.scrollY * 0.05;
     }
     if (this.mountainRange2) {
-      this.mountainRange2.tilePositionX = this.cameras.main.scrollX * 0.06;
-      this.mountainRange2.tilePositionY = this.cameras.main.scrollY * 0.06;
+      this.mountainRange2.tilePositionX = this.cameras.main.scrollX * 0.07;
+      this.mountainRange2.tilePositionY = this.cameras.main.scrollY * 0.07;
     }
   }
 }
