@@ -21,8 +21,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected worldBoundsRectangleColorRight: number = 0x555555;
 
   protected background: Phaser.GameObjects.TileSprite;
-  protected mountainRangeParallax: Phaser.GameObjects.TileSprite;
-  protected mountainRangeParallax2: Phaser.GameObjects.TileSprite;
+  protected mountainRange: Phaser.GameObjects.TileSprite;
+  protected mountainRange2: Phaser.GameObjects.TileSprite;
   protected gridGraphics: Phaser.GameObjects.Graphics;
   
   public successCount: number = 0;
@@ -121,8 +121,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
    * Generates a continuous jagged texture to serve as a background mountain range
    * using a bottom-anchored coordinate system matching the mountain blueprints.
    */
-  protected generateMountainRangeTexture(): void {
-    if (this.textures.exists('parallax_mountain_range')) return;
+  protected generateMountainRange(): void {
+    if (this.textures.exists('mountain_range')) return;
 
     const width = 1400;
     const height = 1000;
@@ -155,11 +155,11 @@ export abstract class BaseGameScene extends Phaser.Scene {
     g.closePath();
     g.fillPath();
 
-    g.generateTexture('parallax_mountain_range', width, height);
+    g.generateTexture('mountain_range', width, height);
   }
 
-  protected generateMountainRangeTexture2(): void {
-    if (this.textures.exists('parallax_mountain_range2')) return;
+  protected generateMountainRange2(): void {
+    if (this.textures.exists('mountain_range2')) return;
 
     const width = 2500;
     const height = 1000;
@@ -196,7 +196,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     g.closePath();
     g.fillPath();
 
-    g.generateTexture('parallax_mountain_range2', width, height);
+    g.generateTexture('mountain_range2', width, height);
   }
 
   protected fail() {
@@ -223,23 +223,23 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
 
-    // Layer 1: Deep space background starfield
+    // Layer 1: Background starfield
     this.background = this.add.tileSprite(1500, 500, 3000, 1000, 'background');
     this.background.setDepth(-3);
 
-    // Layer 2: Midground parallax mountain range
-    this.generateMountainRangeTexture();
-    this.mountainRangeParallax = this.add.tileSprite(0, 500, 3000, 1000, 'parallax_mountain_range');
-    this.mountainRangeParallax.setOrigin(0, 0.5);
-    this.mountainRangeParallax.setDepth(-2);
+    // Layer 2: Background mountain range
+    this.generateMountainRange();
+    this.mountainRange = this.add.tileSprite(0, 500, 3000, 1000, 'mountain_range');
+    this.mountainRange.setOrigin(0, 0.5);
+    this.mountainRange.setDepth(-2);
 
-    // Layer 3: Midground parallax mountain range
-    this.generateMountainRangeTexture2();
-    this.mountainRangeParallax2 = this.add.tileSprite(0, 500, 3000, 1000, 'parallax_mountain_range2');
-    this.mountainRangeParallax2.setOrigin(0, 0.5);
-    this.mountainRangeParallax2.setDepth(-1);
+    // Layer 3: Midground mountain range 2
+    this.generateMountainRange2();
+    this.mountainRange2 = this.add.tileSprite(0, 500, 3000, 1000, 'mountain_range2');
+    this.mountainRange2.setOrigin(0, 0.5);
+    this.mountainRange2.setDepth(-1);
 
-    // Layer 3: Player Lander & Map structures (Grid removed entirely from baseline)
+    // Layer 4: Player Lander & Map structures (Grid removed entirely from baseline)
     this.setupLander();
 
     this.matter.world.setBounds(0, 0, 3000, 1000);
@@ -329,13 +329,13 @@ export abstract class BaseGameScene extends Phaser.Scene {
       this.background.tilePositionY = this.cameras.main.scrollY * 0.01;
     }
 
-    if (this.mountainRangeParallax) {
-      this.mountainRangeParallax.tilePositionX = this.cameras.main.scrollX * 0.04;
-      this.mountainRangeParallax.tilePositionY = this.cameras.main.scrollY * 0.04;
+    if (this.mountainRange) {
+      this.mountainRange.tilePositionX = this.cameras.main.scrollX * 0.04;
+      this.mountainRange.tilePositionY = this.cameras.main.scrollY * 0.04;
     }
-    if (this.mountainRangeParallax2) {
-      this.mountainRangeParallax2.tilePositionX = this.cameras.main.scrollX * 0.06;
-      this.mountainRangeParallax2.tilePositionY = this.cameras.main.scrollY * 0.06;
+    if (this.mountainRange2) {
+      this.mountainRange2.tilePositionX = this.cameras.main.scrollX * 0.06;
+      this.mountainRange2.tilePositionY = this.cameras.main.scrollY * 0.06;
     }
   }
 }
