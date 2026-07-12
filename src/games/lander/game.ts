@@ -11,7 +11,7 @@ const height: number = 720;
 
 const config = {
   title: "lander",
-  url: "https://nschul4.github.io/www/phaser/lander",
+  url: "https://nschul4.github.io/www/phaser/lander/",
   version: g_version,
 
   type: Phaser.AUTO,

@@ -14,7 +14,7 @@ var height: number = 720;
 
 const config = {
   title: "lander-staging",
-  url: "https://nschul4.github.io/www/phaser/lander",
+  url: "https://nschul4.github.io/www/phaser/lander/",
   version: `${g_version}-staging`,
 
   type: Phaser.AUTO,
