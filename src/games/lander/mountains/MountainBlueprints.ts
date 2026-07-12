@@ -19,65 +19,81 @@ export interface MountainBlueprint {
 export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
     {
         name: "Alpha",
-        width: 600,
+        width: 250,
         height: 500,
         vertices: [
-            { x: 0, y: 0 },
-            { x: 100, y: 500 },
-            { x: 200, y: 500 },
-            { x: 300, y: 200 },
-            { x: 600, y: 0 }
+            { x: 0,   y: 50 },
+            { x: 50,  y: 500 },
+            { x: 100, y: 400 },
+            { x: 150, y: 350 },
+            { x: 200, y: 50 }
         ],
-        landingPads: [
-            { name: "Alpha-Prime-Base", x: 100, y: 500, width: 100 }
-        ]
+        landingPads: [{ name: "alpha", x: 200, y: 50, width: 50 }]
     },
     {
         name: "Beta",
-        width: 700,
-        height: 700,
+        width: 450,
+        height: 400,
         vertices: [
-            { x: 0, y: 0 },
-            { x: 250, y: 300 },
-            { x: 300, y: 300 },
-            { x: 400, y: 700 },
-            { x: 500, y: 700 },
-            { x: 700, y: 0 }
+            { x: 0,   y: 0 },
+            { x: 50,  y: 350 },
+            { x: 100, y: 400 },
+            { x: 200, y: 220 },
+            { x: 250, y: 200 },
+            { x: 300, y: 100 },
+            { x: 350, y: 50 },
+            { x: 400, y: 50 },
+            { x: 450, y: 0 }
         ],
-        landingPads: [
-            { name: "Beta-Ridge-E", x: 250, y: 300, width: 50 },
-            { name: "Beta-Peak-High", x: 400, y: 700, width: 100 }
-        ]
+        landingPads: [{ name: "beta", x: 350, y: 50, width: 50 }]
     },
     {
-        name: "Olympus",
-        width: 900,
-        height: 500,
-        vertices: [
-            { x: 0, y: 0 },
-            { x: 200, y: 200 },
-            { x: 300, y: 500 },
-            { x: 450, y: 500 },
-            { x: 550, y: 300 },
-            { x: 900, y: 0 }
-        ],
-        landingPads: [
-            { name: "Olympus-Chasm-Base", x: 300, y: 500, width: 150 }
-        ]
-    },
-    {
-        name: "Titus",
+        name: "Epsilon",
         width: 500,
+        height: 400,
+        vertices: [
+            { x: 0,   y: 50 },
+            { x: 50,  y: 275 },
+            { x: 125, y: 400 },
+            { x: 200, y: 200 },
+            { x: 250, y: 150 },
+            { x: 300, y: 250 },
+            { x: 350, y: 250 },
+            { x: 400, y: 100 },
+            { x: 500, y: 50 }
+        ],
+        landingPads: [{ name: "epsilon", x: 300, y: 250, width: 50 }]
+    },
+    {
+        name: "Delta",
+        width: 300,
         height: 300,
         vertices: [
-            { x: 0, y: 0 },
-            { x: 200, y: 300 },
-            { x: 300, y: 300 },
-            { x: 400, y: 100 },
-            { x: 500, y: 0 }
+            { x: 0,   y: 50 },
+            { x: 50,  y: 150 },
+            { x: 100, y: 100 },
+            { x: 150, y: 300 },
+            { x: 200, y: 100 },
+            { x: 250, y: 50 }
+        ],
+        landingPads: [{ name: "delta", x: 250, y: 50, width: 50 }]
+    },
+    {
+        name: "Tranquility",
+        width: 300,
+        height: 500,
+        vertices: [
+            { x: 0,   y: 0 },
+            { x: 50,  y: 350 },
+            { x: 100, y: 250 },
+            { x: 150, y: 500 },
+            { x: 200, y: 350 },
+            { x: 250, y: 350 },
+            { x: 300, y: 0 }
         ],
         landingPads: [
-            { name: "Titus", x: 200, y: 300, width: 100 }
+            { name: "tranquility base", x: 200, y: 350, width: 50 },
+            { name: "gamma", x: 300, y: 0, width: 50 }
         ]
     }
 ];
