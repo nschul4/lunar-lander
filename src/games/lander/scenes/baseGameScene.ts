@@ -87,7 +87,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected generateMountainRange2(): void {
     if (this.textures.exists('mountain_range2')) return;
 
-    const width = 2410;
+    const width = 2530;
     const height = 1600;
     const g = this.make.graphics({ x: 0, y: 0 });
 
@@ -148,17 +148,17 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
     // Layer 1: Background starfield
-    this.background = this.add.tileSprite(-1000, -500, 4000, 1500, 'background');
+    this.background = this.add.tileSprite(0, 0, 3000, 1000, 'background');
     this.background.setOrigin(0, 0);
     this.background.setDepth(-3);
     // Layer 2: Background mountain range
     this.generateMountainRange();
-    this.mountainRange = this.add.tileSprite(-1000, -500, 4000, 1500, 'mountain_range');
+    this.mountainRange = this.add.tileSprite(-100, -500, 3100, 1500, 'mountain_range');
     this.mountainRange.setOrigin(0, 0);
     this.mountainRange.setDepth(-2);
     // Layer 3: Midground mountain range 2
     this.generateMountainRange2();
-    this.mountainRange2 = this.add.tileSprite(-1000, -500, 4000, 1500, 'mountain_range2');
+    this.mountainRange2 = this.add.tileSprite(-100, -500, 3100, 1500, 'mountain_range2');
     this.mountainRange2.setOrigin(0, 0);
     this.mountainRange2.setDepth(-1);
 
