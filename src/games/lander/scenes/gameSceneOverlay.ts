@@ -22,18 +22,17 @@ export class GameSceneOverlay extends Phaser.Scene {
   }
 
   private createStatusReport(time: number): string {
-    var lander = this.gameScene.lander;
-    if (lander == undefined) {
-      lander = {
-        x: 0,
-        y: 881 + 99,
-        body: {
-          velocity: {
-            x: 99.99,
-            y: 99.99,
-          }
-        },
-      };
+    const lander = this.gameScene.lander;
+
+    // Gracefully handle undefined state without mocking the raw Matter.js body
+    let altitude = 881 + 99;
+    let velX = 99.99;
+    let velY = 99.99;
+
+    if (lander !== undefined) {
+      altitude = Math.abs(lander.y + 19);
+      velX = lander.getVelocityX();
+      velY = lander.getVelocityY();
     }
 
     return ""
@@ -41,17 +40,15 @@ export class GameSceneOverlay extends Phaser.Scene {
       + "\n"
       + "landings: " + this.gameScene.successCount + "/" + this.gameScene.noOfSuccessesPossible
       + "\n"
-      + "altitude: " + Number(Math.abs(lander.y + 19)).toFixed(0)
+      + "altitude: " + Number(altitude).toFixed(0)
       + "\n"
       + "speed:"
       + "\n"
       + "    vertical: "
-      + Number(
-        -(lander.body.velocity.y * 100).toFixed(0))
+      + Number(-(velY * 100).toFixed(0))
       + "\n"
       + "  horizontal: "
-      + Number(
-        (lander.body.velocity.x * 100).toFixed(0))
+      + Number((velX * 100).toFixed(0))
       ;
   }
 
