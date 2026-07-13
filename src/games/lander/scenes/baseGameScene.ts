@@ -106,7 +106,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     // Invert the Y-axis to match Phaser's native top-left coordinate system
     const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
     // Draw the dark silhouette ridge line
-    g.fillStyle(0x444444, 1);
+    g.fillStyle(0x333333, 1);
     g.beginPath();
     // Move to the first point and trace the ridge vertices
     if (nativePoints.length > 0) {
@@ -146,17 +146,17 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
     // Layer 1: Background starfield
-    this.background = this.add.tileSprite(-1000, -500, 3500, 1500, 'background');
+    this.background = this.add.tileSprite(-1000, -500, 4000, 1500, 'background');
     this.background.setOrigin(0, 0);
     this.background.setDepth(-3);
     // Layer 2: Background mountain range
     this.generateMountainRange();
-    this.mountainRange = this.add.tileSprite(-1000, -500, 3500, 1500, 'mountain_range');
+    this.mountainRange = this.add.tileSprite(-1000, -500, 4000, 1500, 'mountain_range');
     this.mountainRange.setOrigin(0, 0);
     this.mountainRange.setDepth(-2);
     // Layer 3: Midground mountain range 2
     this.generateMountainRange2();
-    this.mountainRange2 = this.add.tileSprite(-1000, -500, 3500, 1500, 'mountain_range2');
+    this.mountainRange2 = this.add.tileSprite(-1000, -500, 4000, 1500, 'mountain_range2');
     this.mountainRange2.setOrigin(0, 0);
     this.mountainRange2.setDepth(-1);
 
