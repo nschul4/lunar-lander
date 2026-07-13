@@ -18,7 +18,7 @@ export class MountainDesignerScene extends Phaser.Scene {
 
         this.drawMeasurementGrid();
 
-        this.titleText = this.add.text(width / 2, 40, '', { fontSize: '24px', color: '#00ff00', fontStyle: 'bold' }).setOrigin(0.5);
+        this.titleText = this.add.text(width / 10, 40, '', { fontSize: '24px', color: '#00ff00', fontStyle: 'bold' }).setOrigin(0);
         this.add.text(width / 2, height - 40, "Press LEFT / RIGHT arrows to cycle mountains", { fontSize: '18px', color: '#aaaaaa' }).setOrigin(0.5);
 
         this.loadMountain();
@@ -94,6 +94,6 @@ export class MountainDesignerScene extends Phaser.Scene {
 
         this.currentMountainObjects = mountainInstance.spawn(this, targetX, targetY);
 
-        this.titleText.setText(`Designing Mountain [${this.currentIdx + 1}/${MOUNTAIN_DATABASE.length}]: ${blueprint.name}`);
+        this.titleText.setText(`Mountain [${this.currentIdx + 1}/${MOUNTAIN_DATABASE.length}]: ${blueprint.name}`);
     }
 }
