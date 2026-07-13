@@ -227,8 +227,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.lander.update(this.controllerScene);
 
     if (this.background) {
-      this.background.tilePositionX = this.cameras.main.scrollX * 0.01;
-      this.background.tilePositionY = this.cameras.main.scrollY * 0.01;
+      // this.background.tilePositionX = this.cameras.main.scrollX * 0.1;
+      // this.background.tilePositionY = this.cameras.main.scrollY * 0.1;
     }
 
     if (this.mountainRange) {
@@ -236,8 +236,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
       this.mountainRange.tilePositionY = this.cameras.main.scrollY * 0.05;
     }
     if (this.mountainRange2) {
-      this.mountainRange2.tilePositionX = this.cameras.main.scrollX * 0.07;
-      this.mountainRange2.tilePositionY = this.cameras.main.scrollY * 0.07;
+      this.mountainRange2.tilePositionX = this.cameras.main.scrollX * 0.1;
+      this.mountainRange2.tilePositionY = this.cameras.main.scrollY * 0.1;
     }
   }
 }
