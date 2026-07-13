@@ -15,18 +15,18 @@ export class Lander extends Phaser.GameObjects.Polygon {
 
     super(scene, 0, 0, landerPoints, 0x999999);
     scene.add.existing(this);
-    
+
     scene.matter.add.gameObject(this, {
       shape: { type: 'fromVerts', verts: landerPoints, flagInternal: true }
     });
-    
+
     this.angle = -90;
     this.setPosition(100, 200);
 
     if (this.body) {
       scene.matter.body.setVelocity(this.body, { x: 1.5, y: 0 });
     }
-    
+
     const matterGameObject = this as unknown as Phaser.Physics.Matter.Components.Velocity & Phaser.Physics.Matter.Components.Bounce;
     if (typeof matterGameObject.setFrictionAir === 'function') {
       matterGameObject.setFrictionAir(0);
@@ -34,7 +34,7 @@ export class Lander extends Phaser.GameObjects.Polygon {
     if (typeof matterGameObject.setBounce === 'function') {
       matterGameObject.setBounce(0, 0);
     }
-    
+
     this.setName("lander");
 
     const mysteryShifter = -12;
@@ -71,7 +71,7 @@ export class Lander extends Phaser.GameObjects.Polygon {
 
       const forceX = Lander.THRUST_FORCE * Math.sin(radians);
       const forceY = -Lander.THRUST_FORCE * Math.cos(radians);
-      
+
       if (this.body) {
         (this.scene.matter as any).body.applyForce(this.body, this.body.position, {
           x: forceX,
