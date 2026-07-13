@@ -15,7 +15,7 @@ export class Mountain {
         this.name = blueprint.name;
         this.width = blueprint.width;
         this.height = blueprint.height;
-        
+
         // Map native math vectors from configuration values
         this.vertices = blueprint.vertices.map(v => new Phaser.Math.Vector2(v.x, this.height - v.y));
         this.landingPads = blueprint.landingPads.map(pad => ({
@@ -84,7 +84,7 @@ export class Mountain {
                 pad.name,
                 { color: 'gray' }
             ).setOrigin(0.5, 0.5);
-            
+
             spawnedObjects.push(labelText);
         }
 

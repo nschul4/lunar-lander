@@ -22,8 +22,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         width: 250,
         height: 500,
         vertices: [
-            { x: 0,   y: 50 },
-            { x: 50,  y: 500 },
+            { x: 0, y: 50 },
+            { x: 50, y: 500 },
             { x: 100, y: 400 },
             { x: 150, y: 350 },
             { x: 200, y: 50 }
@@ -35,8 +35,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         width: 450,
         height: 400,
         vertices: [
-            { x: 0,   y: 0 },
-            { x: 50,  y: 350 },
+            { x: 0, y: 0 },
+            { x: 50, y: 350 },
             { x: 100, y: 400 },
             { x: 200, y: 220 },
             { x: 250, y: 200 },
@@ -52,8 +52,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         width: 500,
         height: 400,
         vertices: [
-            { x: 0,   y: 50 },
-            { x: 50,  y: 275 },
+            { x: 0, y: 50 },
+            { x: 50, y: 275 },
             { x: 125, y: 400 },
             { x: 200, y: 200 },
             { x: 250, y: 150 },
@@ -69,8 +69,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         width: 300,
         height: 300,
         vertices: [
-            { x: 0,   y: 50 },
-            { x: 50,  y: 150 },
+            { x: 0, y: 50 },
+            { x: 50, y: 150 },
             { x: 100, y: 100 },
             { x: 150, y: 300 },
             { x: 200, y: 100 },
@@ -83,8 +83,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
         width: 300,
         height: 500,
         vertices: [
-            { x: 0,   y: 0 },
-            { x: 50,  y: 350 },
+            { x: 0, y: 0 },
+            { x: 50, y: 350 },
             { x: 100, y: 250 },
             { x: 150, y: 500 },
             { x: 200, y: 350 },

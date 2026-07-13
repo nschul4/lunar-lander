@@ -6,7 +6,7 @@ import "phaser";
  */
 export function drawMeasurementGrid(scene: Phaser.Scene): void {
   const gridGraphics = scene.add.graphics();
-  
+
   // Placed exactly between background layers and foreground terrain
   gridGraphics.setDepth(10);
 
@@ -20,7 +20,7 @@ export function drawMeasurementGrid(scene: Phaser.Scene): void {
     const isMajor = y % 500 === 0;
     const thickness = isMajor ? 2 : 1;
     const alpha = isMajor ? 0.4 : 0.15;
-    
+
     gridGraphics.lineStyle(thickness, 0x00ff00, alpha);
     gridGraphics.lineBetween(0, y, worldWidth, y);
 
@@ -47,7 +47,7 @@ export function drawMeasurementGrid(scene: Phaser.Scene): void {
     if (x > 0 && x < worldWidth) {
       // Stagger minor line text down slightly so it doesn't overlap major headers
       const textPaddingY = isMajor ? 15 : 35;
-      
+
       scene.add.text(x + 8, worldMinY + textPaddingY, `X: ${x}`, {
         fontFamily: 'Courier',
         fontSize: isMajor ? '14px' : '11px',

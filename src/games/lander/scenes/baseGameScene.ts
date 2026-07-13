@@ -20,7 +20,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected mountainRange: Phaser.GameObjects.TileSprite;
   protected mountainRange2: Phaser.GameObjects.TileSprite;
   protected gridGraphics: Phaser.GameObjects.Graphics;
-  
+
   public successCount: number = 0;
   public noOfSuccessesPossible: number = 0;
 
@@ -77,7 +77,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
         g.lineTo(nativePoints[i].x, nativePoints[i].y);
       }
     }
-    
+
     g.closePath();
     g.fillPath();
 
@@ -115,7 +115,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
         g.lineTo(nativePoints[i].x, nativePoints[i].y);
       }
     }
-    
+
     g.closePath();
     g.fillPath();
 
@@ -183,9 +183,9 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
       if (lander !== null && otherBody !== null) {
         if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
-          
-          const landerObj = lander.gameObject as Lander; 
-          
+
+          const landerObj = lander.gameObject as Lander;
+
           // Use our new encapsulation!
           var absAttitude = Math.abs(landerObj.angle);
           var vx = landerObj.getVelocityX();
@@ -199,8 +199,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
             this.fail();
           } else {
             // Replaced manual physics/angle resets with the class method
-            landerObj.stop(); 
-            
+            landerObj.stop();
+
             if (otherBody.gameObject.landed !== true) {
               otherBody.gameObject.landed = true;
               otherBody.gameObject.setFillStyle(0x00aa00);

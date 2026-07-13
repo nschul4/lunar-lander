@@ -17,7 +17,7 @@ export class WorldCreator {
 
             // Filter out text labels and terrains by ensuring the element has a valid landing-pad name assignment
             const padCount = spawnedObjects.filter(obj => obj.name && obj.name !== "lander" && obj.name !== "thrust").length;
-            
+
             totalPads += padCount;
             currentX += mountainInstance.width;
         }
