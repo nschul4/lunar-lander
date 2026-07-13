@@ -53,16 +53,16 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected generateMountainRange(): void {
     if (this.textures.exists('mountain_range')) return;
 
-    const width = 1400;
+    const width = 1300;
     const height = 1600;
     const g = this.make.graphics({ x: 0, y: 0 });
 
     // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
     const blueprintVertices = [
       { x: 0, y: 0 },
-      { x: 500, y: 800 },
+      { x: 500, y: 700 },
       { x: 600, y: 400 },
-      { x: 900, y: 1000 },
+      { x: 900, y: 800 },
       { x: 1300, y: 0 },
     ];
     // Invert the Y-axis to match Phaser's native top-left coordinate system
