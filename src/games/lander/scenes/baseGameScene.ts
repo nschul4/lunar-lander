@@ -1,25 +1,21 @@
 import { GameSceneOverlay } from "./gameSceneOverlay";
 import { ControllerScene } from "./controllerScene";
 import { WorldCreator } from "./worldCreator";
+import { Lander } from "./Lander";
 
 export abstract class BaseGameScene extends Phaser.Scene {
   private static readonly GRAVITY_Y = 0.007;
-  private static readonly THRUST_FORCE = 0.00002;
-  private static readonly ROTATION_SPEED = 0.01;
 
   private static readonly MAX_SAFE_HORIZONTAL_SPEED = 0.05;
   private static readonly MAX_SAFE_VERTICAL_SPEED = 0.4;
   private static readonly MAX_SAFE_ANGLE = 4;
 
-  public lander: any;
+  public lander: Lander;
   protected controllerScene: any = null;
-  protected thrust: any;
-
   protected worldBoundsRectangleColorTop: number = 0x555555;
   protected worldBoundsRectangleColorBottom: number = 0x555555;
   protected worldBoundsRectangleColorLeft: number = 0x555555;
   protected worldBoundsRectangleColorRight: number = 0x555555;
-
   protected background: Phaser.GameObjects.TileSprite;
   protected mountainRange: Phaser.GameObjects.TileSprite;
   protected mountainRange2: Phaser.GameObjects.TileSprite;
@@ -50,74 +46,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     return "{\n" + result + "}";
   }
 
-  protected setupLander(): void {
-    var xLeft: number = 0;
-    var xMiddle: number = 20;
-    var xRight: number = 40;
-
-    var yTop: number = 0;
-    var yMiddle: number = 30;
-    var yBottom: number = 40;
-
-    var landerPoints: string = ""
-      + xLeft + " " + yBottom // left
-      + " "
-      + xMiddle + " " + yMiddle // center
-      + " "
-      + xRight + " " + yBottom // right
-      + " "
-      + xMiddle + " " + yTop // peak
-      ;
-
-    var xRight2: number = xRight;
-    var xMiddle2: number = xMiddle;
-    var xLeft2: number = xLeft;
-
-    var mysteryShifter = -12;
-    var yTop2: number = yMiddle + mysteryShifter;
-    var yMiddle2: number = yBottom + mysteryShifter;
-    var yBottom2: number = yBottom + mysteryShifter + 10;
-
-    var thrustFlamePoints: string = ""
-      + xLeft2 + " " + yMiddle2 // left
-      + " "
-      + xMiddle2 + " " + yBottom2 // center
-      + " "
-      + xRight2 + " " + yMiddle2 // right
-      + " "
-      + xMiddle2 + " " + yTop2 // peak
-      ;
-
-    this.lander = this.add.polygon(0, 0, landerPoints, 0x999999);
-    this.matter.add.gameObject(
-      this.lander,
-      {
-        shape: {
-          type: 'fromVerts',
-          verts: landerPoints,
-          flagInternal: true
-        }
-      }
-    );
-
-    this.lander.angle = -90;
-    this.lander.setPosition(100, 200);
-    this.lander.setVelocityX(1.5);
-    this.lander.setFrictionAir(0);
-    this.lander.setBounce(0, 0);
-
-    this.lander.setName("lander");
-
-    this.thrust = this.add.polygon(
-      this.lander.x,
-      this.lander.y,
-      thrustFlamePoints,
-      0xffffff
-    );
-    this.thrust.setName("thrust");
-  }
-
-/**
+  /**
    * Generates a continuous jagged texture to serve as a background mountain range
    * using a bottom-anchored coordinate system matching the mountain blueprints.
    */
@@ -136,14 +65,11 @@ export abstract class BaseGameScene extends Phaser.Scene {
       { x: 900, y: 1000 },
       { x: 1300, y: 0 },
     ];
-
     // Invert the Y-axis to match Phaser's native top-left coordinate system
     const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
-
     // Draw the dark silhouette ridge line
     g.fillStyle(0x222222, 1);
     g.beginPath();
-    
     // Move to the first point and trace the ridge vertices
     if (nativePoints.length > 0) {
       g.moveTo(nativePoints[0].x, nativePoints[0].y);
@@ -177,14 +103,11 @@ export abstract class BaseGameScene extends Phaser.Scene {
       { x: 2100, y: 500 },
       { x: 2400, y: 0 },
     ];
-
     // Invert the Y-axis to match Phaser's native top-left coordinate system
     const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
-
     // Draw the dark silhouette ridge line
     g.fillStyle(0x444444, 1);
     g.beginPath();
-    
     // Move to the first point and trace the ridge vertices
     if (nativePoints.length > 0) {
       g.moveTo(nativePoints[0].x, nativePoints[0].y);
@@ -222,27 +145,23 @@ export abstract class BaseGameScene extends Phaser.Scene {
   create(): void {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
-
     // Layer 1: Background starfield
     this.background = this.add.tileSprite(-1000, -500, 3500, 1500, 'background');
     this.background.setOrigin(0, 0);
     this.background.setDepth(-3);
-
     // Layer 2: Background mountain range
     this.generateMountainRange();
     this.mountainRange = this.add.tileSprite(-1000, -500, 3500, 1500, 'mountain_range');
     this.mountainRange.setOrigin(0, 0);
     this.mountainRange.setDepth(-2);
-
     // Layer 3: Midground mountain range 2
     this.generateMountainRange2();
     this.mountainRange2 = this.add.tileSprite(-1000, -500, 3500, 1500, 'mountain_range2');
     this.mountainRange2.setOrigin(0, 0);
     this.mountainRange2.setDepth(-1);
 
-    // Layer 4: Player Lander & Map structures (Grid removed entirely from baseline)
-    this.setupLander();
-
+    // Layer 4: Instantiating player Lander Component
+    this.lander = new Lander(this);
     this.matter.world.setBounds(0, 0, 3000, 1000);
 
     this.matter.world.on('collisionstart', (event: any, bodyA: any, bodyB: any) => {
@@ -264,9 +183,13 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
       if (lander !== null && otherBody !== null) {
         if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
-          var absAttitude = Math.abs(lander.gameObject.angle);
-          var vx = lander.gameObject.body.velocity.x;
-          var vy = lander.gameObject.body.velocity.y;
+          
+          const landerObj = lander.gameObject as Lander; 
+          
+          // Use our new encapsulation!
+          var absAttitude = Math.abs(landerObj.angle);
+          var vx = landerObj.getVelocityX();
+          var vy = landerObj.getVelocityY();
 
           const isAngleSafe = absAttitude <= BaseGameScene.MAX_SAFE_ANGLE;
           const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
@@ -275,8 +198,9 @@ export abstract class BaseGameScene extends Phaser.Scene {
           if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
             this.fail();
           } else {
-            lander.gameObject.angle = 0;
-            this.lander.setVelocity(0, 0);
+            // Replaced manual physics/angle resets with the class method
+            landerObj.stop(); 
+            
             if (otherBody.gameObject.landed !== true) {
               otherBody.gameObject.landed = true;
               otherBody.gameObject.setFillStyle(0x00aa00);
@@ -298,32 +222,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    if (this.controllerScene.thrusting == true) {
-      this.thrust.visible = true;
-      var radians = Phaser.Math.DegToRad(this.lander.angle);
-
-      var forceX: number = BaseGameScene.THRUST_FORCE * Math.sin(radians);
-      var forceY: number = -BaseGameScene.THRUST_FORCE * Math.cos(radians);
-
-      this.matter.body.applyForce(this.lander.body, this.lander.body.position, {
-        x: forceX,
-        y: forceY
-      });
-    } else {
-      this.thrust.visible = false;
-    }
-
-    this.lander.setAngularVelocity(0);
-    if (this.controllerScene.rotatingLeft == true) {
-      this.lander.setAngularVelocity(-BaseGameScene.ROTATION_SPEED);
-    }
-    if (this.controllerScene.rotatingRight == true) {
-      this.lander.setAngularVelocity(BaseGameScene.ROTATION_SPEED);
-    }
-
-    this.thrust.x = this.lander.x;
-    this.thrust.y = this.lander.y;
-    this.thrust.angle = this.lander.angle;
+    this.lander.update(this.controllerScene);
 
     if (this.background) {
       this.background.tilePositionX = this.cameras.main.scrollX * 0.01;
