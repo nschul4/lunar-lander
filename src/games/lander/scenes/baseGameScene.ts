@@ -2,6 +2,7 @@ import { GameSceneOverlay } from "./gameSceneOverlay";
 import { ControllerScene } from "./controllerScene";
 import { WorldCreator } from "./worldCreator";
 import { Lander } from "./Lander";
+import { EnvironmentManager } from "./EnvironmentManager";
 
 export abstract class BaseGameScene extends Phaser.Scene {
   private static readonly GRAVITY_Y = 0.007;
@@ -16,10 +17,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected worldBoundsRectangleColorBottom: number = 0x555555;
   protected worldBoundsRectangleColorLeft: number = 0x555555;
   protected worldBoundsRectangleColorRight: number = 0x555555;
-  protected background: Phaser.GameObjects.TileSprite;
-  protected mountainRange: Phaser.GameObjects.TileSprite;
-  protected mountainRange2: Phaser.GameObjects.TileSprite;
   protected gridGraphics: Phaser.GameObjects.Graphics;
+  protected environmentManager: EnvironmentManager;
 
   public successCount: number = 0;
   public noOfSuccessesPossible: number = 0;
@@ -46,84 +45,6 @@ export abstract class BaseGameScene extends Phaser.Scene {
     return "{\n" + result + "}";
   }
 
-  /**
-   * Generates a continuous jagged texture to serve as a background mountain range
-   * using a bottom-anchored coordinate system matching the mountain blueprints.
-   */
-  protected generateMountainRange(): void {
-    if (this.textures.exists('mountain_range')) return;
-
-    const width = 1300;
-    const height = 1600;
-    const g = this.make.graphics({ x: 0, y: 0 });
-
-    // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
-    const blueprintVertices = [
-      { x: 0, y: 0 },
-      { x: 500, y: 700 },
-      { x: 600, y: 400 },
-      { x: 900, y: 800 },
-      { x: 1300, y: 0 },
-    ];
-    // Invert the Y-axis to match Phaser's native top-left coordinate system
-    const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
-    // Draw the dark silhouette ridge line
-    g.fillStyle(0x222222, 1);
-    g.beginPath();
-    // Move to the first point and trace the ridge vertices
-    if (nativePoints.length > 0) {
-      g.moveTo(nativePoints[0].x, nativePoints[0].y);
-      for (let i = 1; i < nativePoints.length; i++) {
-        g.lineTo(nativePoints[i].x, nativePoints[i].y);
-      }
-    }
-
-    g.closePath();
-    g.fillPath();
-
-    g.generateTexture('mountain_range', width, height);
-  }
-
-  protected generateMountainRange2(): void {
-    if (this.textures.exists('mountain_range2')) return;
-
-    const width = 2530;
-    const height = 1600;
-    const g = this.make.graphics({ x: 0, y: 0 });
-
-    // Define vertices using bottom-anchored coordinates (y=0 is the bottom)
-    const blueprintVertices = [
-      { x: 0, y: 0 },
-      { x: 280, y: 200 },
-      { x: 710, y: 300 },
-      { x: 880, y: 400 },
-      { x: 930, y: 290 },
-      { x: 1280, y: 0 },
-      { x: 1480, y: 250 },
-      { x: 1780, y: 320 },
-      { x: 2080, y: 600 },
-      { x: 2230, y: 240 },
-      { x: 2530, y: 0 },
-    ];
-    // Invert the Y-axis to match Phaser's native top-left coordinate system
-    const nativePoints = blueprintVertices.map(v => new Phaser.Math.Vector2(v.x, height - v.y));
-    // Draw the dark silhouette ridge line
-    g.fillStyle(0x333333, 1);
-    g.beginPath();
-    // Move to the first point and trace the ridge vertices
-    if (nativePoints.length > 0) {
-      g.moveTo(nativePoints[0].x, nativePoints[0].y);
-      for (let i = 1; i < nativePoints.length; i++) {
-        g.lineTo(nativePoints[i].x, nativePoints[i].y);
-      }
-    }
-
-    g.closePath();
-    g.fillPath();
-
-    g.generateTexture('mountain_range2', width, height);
-  }
-
   protected fail() {
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.fail();
@@ -147,20 +68,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   create(): void {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
-    // Layer 1: Background starfield
-    this.background = this.add.tileSprite(0, 0, 3000, 1000, 'background');
-    this.background.setOrigin(0, 0);
-    this.background.setDepth(-3);
-    // Layer 2: Background mountain range
-    this.generateMountainRange();
-    this.mountainRange = this.add.tileSprite(-100, -500, 3100, 1500, 'mountain_range');
-    this.mountainRange.setOrigin(0, 0);
-    this.mountainRange.setDepth(-2);
-    // Layer 3: Midground mountain range 2
-    this.generateMountainRange2();
-    this.mountainRange2 = this.add.tileSprite(-100, -500, 3100, 1500, 'mountain_range2');
-    this.mountainRange2.setOrigin(0, 0);
-    this.mountainRange2.setDepth(-1);
+
+    this.environmentManager = new EnvironmentManager(this);
 
     // Layer 4: Instantiating player Lander Component
     this.lander = new Lander(this);
@@ -226,18 +135,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.lander.update(this.controllerScene);
 
-    if (this.background) {
-      // this.background.tilePositionX = this.cameras.main.scrollX * 0.1;
-      // this.background.tilePositionY = this.cameras.main.scrollY * 0.1;
-    }
-
-    if (this.mountainRange) {
-      this.mountainRange.tilePositionX = this.cameras.main.scrollX * 0.05;
-      this.mountainRange.tilePositionY = this.cameras.main.scrollY * 0.05;
-    }
-    if (this.mountainRange2) {
-      this.mountainRange2.tilePositionX = this.cameras.main.scrollX * 0.1;
-      this.mountainRange2.tilePositionY = this.cameras.main.scrollY * 0.1;
+    if (this.environmentManager) {
+      this.environmentManager.update();
     }
   }
 }
