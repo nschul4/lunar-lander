@@ -37,8 +37,8 @@ export class ControllerScene extends Phaser.Scene {
     this.input.addPointer(1);
 
     this.gameScene = (<GameScene>this.scene.get('GameScene'));
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.escKeyObj = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+    this.cursors = this.input.keyboard!.createCursorKeys();
+    this.escKeyObj = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
   }
 
   private isPointingLeft(pointer: Phaser.Input.Pointer): boolean {

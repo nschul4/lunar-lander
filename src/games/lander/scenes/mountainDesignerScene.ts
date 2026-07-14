@@ -23,11 +23,11 @@ export class MountainDesignerScene extends Phaser.Scene {
 
         this.loadMountain();
 
-        this.input.keyboard.on('keydown-LEFT', () => {
+        this.input.keyboard!.on('keydown-LEFT', () => {
             this.currentIdx = (this.currentIdx - 1 + MOUNTAIN_DATABASE.length) % MOUNTAIN_DATABASE.length;
             this.loadMountain();
         });
-        this.input.keyboard.on('keydown-RIGHT', () => {
+        this.input.keyboard!.on('keydown-RIGHT', () => {
             this.currentIdx = (this.currentIdx + 1) % MOUNTAIN_DATABASE.length;
             this.loadMountain();
         });
