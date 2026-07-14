@@ -44,21 +44,21 @@ export abstract class BaseGameScene extends Phaser.Scene {
   protected fail() {
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.fail();
-    this.time.delayedCall(3000, function () {
+    this.time.delayedCall(3000, () => {
       this.successCount = 0;
       this.scene.restart();
       overlayScene.restart();
-    }, null, this);
+    }, [], this);
   }
 
   protected win() {
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.win();
-    this.time.delayedCall(7000, function () {
+    this.time.delayedCall(7000, () => {
       this.successCount = 0;
       this.scene.restart();
       overlayScene.restart();
-    }, null, this);
+    }, [], this);
   }
 
   create(): void {
