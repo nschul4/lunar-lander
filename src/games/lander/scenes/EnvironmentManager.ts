@@ -3,7 +3,7 @@ import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./MountainRa
 
 export class EnvironmentManager {
   private scene: Phaser.Scene;
-  private backgroundStarfield: Phaser.GameObjects.TileSprite;
+  private backgroundStarfield!: Phaser.GameObjects.TileSprite;
   private activeRanges: { sprite: Phaser.GameObjects.TileSprite; factor: number }[] = [];
 
   constructor(scene: Phaser.Scene) {

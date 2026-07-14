@@ -11,10 +11,10 @@ export abstract class BaseGameScene extends Phaser.Scene {
   private static readonly MAX_SAFE_VERTICAL_SPEED = 0.4;
   private static readonly MAX_SAFE_ANGLE = 4;
 
-  public lander: Lander;
+  public lander!: Lander;
   protected controllerScene: any = null;
-  protected gridGraphics: Phaser.GameObjects.Graphics;
-  protected environmentManager: EnvironmentManager;
+  protected gridGraphics!: Phaser.GameObjects.Graphics;
+  protected environmentManager!: EnvironmentManager;
 
   public successCount: number = 0;
   public noOfSuccessesPossible: number = 0;
