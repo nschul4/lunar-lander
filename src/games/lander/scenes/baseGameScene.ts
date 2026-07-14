@@ -13,10 +13,6 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
   public lander: Lander;
   protected controllerScene: any = null;
-  protected worldBoundsRectangleColorTop: number = 0x555555;
-  protected worldBoundsRectangleColorBottom: number = 0x555555;
-  protected worldBoundsRectangleColorLeft: number = 0x555555;
-  protected worldBoundsRectangleColorRight: number = 0x555555;
   protected gridGraphics: Phaser.GameObjects.Graphics;
   protected environmentManager: EnvironmentManager;
 
