@@ -36,41 +36,41 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 630, y: 100 },
             { x: 750, y: 0 }
         ],
-        landingPads: [{ name: "alpha", x: 540, y: 220, width: 50 }]
+        landingPads: [{ name: "alpha", x: 540, y: 225, width: 50 }]
     },
     {
         name: "Beta",
         width: 500,
-        height: 400,
+        height: 450,
         vertices: [
             { x: 0, y: 0 },
-            { x: 100, y: 350 },
-            { x: 150, y: 400 },
-            { x: 250, y: 220 },
-            { x: 300, y: 200 },
+            { x: 100, y: 450 },
+            { x: 150, y: 500 },
+            { x: 250, y: 270 },
+            { x: 300, y: 250 },
             { x: 350, y: 100 },
             { x: 400, y: 50 },
             { x: 450, y: 50 },
             { x: 530, y: 0 }
         ],
-        landingPads: [{ name: "beta", x: 400, y: 50, width: 50 }]
+        landingPads: [{ name: "beta", x: 400, y: 5, width: 50 }]
     },
     {
         name: "Epsilon",
         width: 450,
-        height: 400,
+        height: 370,
         vertices: [
             { x: 0, y: 50 },
             { x: 50, y: 275 },
-            { x: 125, y: 400 },
-            { x: 200, y: 200 },
+            { x: 125, y: 370 },
+            { x: 190, y: 200 },
             { x: 250, y: 150 },
             { x: 300, y: 250 },
             { x: 350, y: 250 },
             { x: 400, y: 100 },
             { x: 500, y: 50 }
         ],
-        landingPads: [{ name: "epsilon", x: 300, y: 250, width: 50 }]
+        landingPads: [{ name: "epsilon", x: 300, y: 255, width: 50 }]
     },
     {
         name: "Delta",
@@ -87,7 +87,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 330, y: 60 },
             { x: 410, y: 0 }
         ],
-        landingPads: [{ name: "delta", x: 250, y: 50, width: 50 }]
+        landingPads: [{ name: "delta", x: 250, y: 55, width: 50 }]
     },
     {
         name: "Tranquility",
@@ -105,8 +105,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 550, y: 0 },
         ],
         landingPads: [
-            { name: "tranquility base", x: 300, y: 350, width: 50 },
-            { name: "gamma", x: 400, y: 150, width: 50 }
+            { name: "tranquility base", x: 300, y: 355, width: 50 },
+            { name: "gamma", x: 400, y: 150, width: 55 }
         ]
     }
 ];
