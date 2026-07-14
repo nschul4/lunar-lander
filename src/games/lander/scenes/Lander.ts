@@ -10,15 +10,18 @@ export class Lander extends Phaser.GameObjects.Polygon {
   private static readonly ROTATION_SPEED = 0.01;
 
   constructor(scene: Phaser.Scene) {
-    const xLeft = 0, xMiddle = 20, xRight = 40;
-    const yTop = 0, yMiddle = 30, yBottom = 40;
-    const landerPoints = `${xLeft} ${yBottom} ${xMiddle} ${yMiddle} ${xRight} ${yBottom} ${xMiddle} ${yTop}`;
+    const landerPoints = [
+      -20, 20, // Left-bottom wing tip
+      0, 10,   // Bottom-middle indent
+      20, 20,  // Right-bottom wing tip
+      0, -20   // Top nose cone tip
+    ];
 
     super(scene, 0, 0, landerPoints, 0x999999);
     scene.add.existing(this);
 
     scene.matter.add.gameObject(this, {
-      shape: { type: 'fromVerts', verts: landerPoints, flagInternal: true }
+      shape: { type: 'fromVerts', verts: landerPoints.join(' '), flagInternal: true }
     });
 
     this.angle = -90;
@@ -38,13 +41,15 @@ export class Lander extends Phaser.GameObjects.Polygon {
 
     this.setName("lander");
 
-    const mysteryShifter = -12;
-    const yTop2 = yMiddle + mysteryShifter;
-    const yMiddle2 = yBottom + mysteryShifter;
-    const yBottom2 = yBottom + mysteryShifter + 10;
-    const thrustFlamePoints = `${xLeft} ${yMiddle2} ${xMiddle} ${yBottom2} ${xRight} ${yMiddle2} ${xMiddle} ${yTop2}`;
+    const yShift = 8;
+    const thrustFlamePoints = [
+      0, 20 + yShift,  // Left edge meeting the left wing
+      20, 30 + yShift, // Bottom tip of the flame blowing downwards
+      40, 20 + yShift, // Right edge meeting the right wing
+      20, 10 + yShift  // Top tip of the flame tucked inside the ship indent
+    ];
 
-    this.thrust = scene.add.polygon(this.x, this.y, thrustFlamePoints, 0xffffff);
+    this.thrust = scene.add.polygon(0, 0, thrustFlamePoints, 0xffffff);
     this.thrust.setName("thrust");
     this.thrust.visible = false;
   }
