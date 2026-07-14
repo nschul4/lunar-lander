@@ -15,7 +15,7 @@ export interface MountainRangeBlueprint {
 export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
   {
     key: 'mountain_range_far',
-    textureWidth: 1300,
+    textureWidth: 1650,
     textureHeight: 1600,
     color: 0x222222,
     tileX: -100,
@@ -28,8 +28,10 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
       { x: 0, y: 0 },
       { x: 500, y: 700 },
       { x: 600, y: 400 },
-      { x: 900, y: 800 },
-      { x: 1300, y: 0 }
+      { x: 1000, y: 800 },
+      { x: 1150, y: 450 },
+      { x: 1400, y: 700 },
+      { x: 1650, y: 0 }
     ]
   },
   {
@@ -45,14 +47,14 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
     parallaxFactor: 0.1,
     vertices: [
       { x: 0, y: 0 },
-      { x: 280, y: 200 },
-      { x: 710, y: 300 },
-      { x: 880, y: 400 },
-      { x: 930, y: 290 },
+      { x: 330, y: 250 },
+      { x: 760, y: 350 },
+      { x: 900, y: 450 },
+      { x: 950, y: 330 },
       { x: 1280, y: 0 },
       { x: 1480, y: 250 },
       { x: 1780, y: 320 },
-      { x: 2080, y: 600 },
+      { x: 2050, y: 550 },
       { x: 2230, y: 240 },
       { x: 2530, y: 0 }
     ]
