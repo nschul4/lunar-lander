@@ -19,6 +19,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   public successCount: number = 0;
   public noOfSuccessesPossible: number = 0;
 
+  public gameOver: boolean = false;
+
   constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
     super(config);
   }
@@ -42,20 +44,24 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   protected fail() {
+    this.gameOver = true;
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.fail();
     this.time.delayedCall(3000, () => {
       this.successCount = 0;
+      this.gameOver = false;
       this.scene.restart();
       overlayScene.restart();
     }, [], this);
   }
 
   protected win() {
+    this.gameOver = true;
     var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     overlayScene.win();
     this.time.delayedCall(7000, () => {
       this.successCount = 0;
+      this.gameOver = false;
       this.scene.restart();
       overlayScene.restart();
     }, [], this);

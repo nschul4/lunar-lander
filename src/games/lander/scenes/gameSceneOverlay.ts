@@ -8,6 +8,7 @@ export class GameSceneOverlay extends Phaser.Scene {
 
   private initialTime: number = 0;
   private lastStatusReportTime: number = 0;
+  private finalTime: number | null = null;
 
   private text1!: Phaser.GameObjects.Text;
   private text2!: Phaser.GameObjects.Text;
@@ -63,6 +64,7 @@ export class GameSceneOverlay extends Phaser.Scene {
   public restart() {
     this.scene.restart();
     this.initialTime = this.time.now;
+    this.finalTime = null;
   }
 
   create(): void {
@@ -133,8 +135,19 @@ export class GameSceneOverlay extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
+
+    let elapsed = time - this.initialTime;
+
+    if (this.gameScene?.gameOver) {
+      // If the game just ended, capture the exact timestamp of victory/failure
+      if (this.finalTime === null) {
+        this.finalTime = elapsed;
+      }
+      elapsed = this.finalTime;
+    }
+
     if (time - this.lastStatusReportTime > 250) {
-      this.text1.setText(this.createStatusReport(time - this.initialTime));
+      this.text1.setText(this.createStatusReport(elapsed));
       this.lastStatusReportTime = time;
     }
     this.text2.setText(""
