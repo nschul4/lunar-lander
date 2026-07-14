@@ -3,8 +3,8 @@ import { ControllerScene } from "./controllerScene";
 
 export class GameSceneOverlay extends Phaser.Scene {
 
-  private gameScene: GameScene = null;
-  private controllerScene: ControllerScene = null;
+  private gameScene: GameScene | null = null;
+  private controllerScene: ControllerScene | null = null;
 
   private initialTime: number = 0;
   private lastStatusReportTime: number = 0;

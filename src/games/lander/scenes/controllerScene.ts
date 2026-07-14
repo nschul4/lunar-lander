@@ -6,7 +6,7 @@ export class ControllerScene extends Phaser.Scene {
   public rotatingLeft: boolean = false;
   public rotatingRight: boolean = false;
 
-  private gameScene: GameScene = null;
+  private gameScene: GameScene | null = null;
 
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private escKeyObj: Phaser.Input.Keyboard.Key;
