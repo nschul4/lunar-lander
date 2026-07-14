@@ -36,11 +36,8 @@ export class BootScene extends Phaser.Scene {
   }
 
   update(): void {
-    this.time.delayedCall(100, function () {
+    this.time.delayedCall(100, () => {
       this.scene.start("GameScene");
-    },
-      null,
-      this,
-    );
+    }, [], this);
   }
 }
