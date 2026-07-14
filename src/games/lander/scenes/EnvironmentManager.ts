@@ -13,7 +13,7 @@ export class EnvironmentManager {
 
   private createLayers(): void {
     // 1. Core deep space backdrop
-    this.backgroundStarfield = this.scene.add.tileSprite(0, 0, 3000, 1000, 'background')
+    this.backgroundStarfield = this.scene.add.tileSprite(-1000, -400, 4000, 1400, 'background')
       .setOrigin(0, 0)
       .setDepth(-3);
 
