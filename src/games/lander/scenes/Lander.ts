@@ -3,7 +3,8 @@ import { ControllerScene } from "./controllerScene";
 
 export class Lander extends Phaser.GameObjects.Polygon {
   public thrust: Phaser.GameObjects.Polygon;
-  public body!: MatterJS.BodyType;
+
+  public declare body: MatterJS.BodyType;
 
   private static readonly THRUST_FORCE = 0.00002;
   private static readonly ROTATION_SPEED = 0.01;
@@ -27,12 +28,12 @@ export class Lander extends Phaser.GameObjects.Polygon {
       scene.matter.body.setVelocity(this.body, { x: 1.5, y: 0 });
     }
 
-    const matterGameObject = this as unknown as Phaser.Physics.Matter.Components.Velocity & Phaser.Physics.Matter.Components.Bounce;
+    const matterGameObject = this as unknown as Phaser.Physics.Matter.Components.Velocity & Phaser.Physics.Matter.Components.Bounce & Phaser.Physics.Matter.Components.Friction;
     if (typeof matterGameObject.setFrictionAir === 'function') {
       matterGameObject.setFrictionAir(0);
     }
     if (typeof matterGameObject.setBounce === 'function') {
-      matterGameObject.setBounce(0, 0);
+      matterGameObject.setBounce(0);
     }
 
     this.setName("lander");
