@@ -8,6 +8,8 @@ export class GameScene extends BaseGameScene {
   create(): void {
     super.create(); // Boots core game mechanics natively
     this.cameras.main.setZoom(1);
+    this.cameras.main.scrollX = this.lander.x - this.cameras.main.width / 2;
+    this.cameras.main.scrollY = this.lander.y - this.cameras.main.height / 2;
   }
 
   update(time: number, delta: number): void {
