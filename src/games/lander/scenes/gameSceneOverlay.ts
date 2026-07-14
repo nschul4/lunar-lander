@@ -22,7 +22,7 @@ export class GameSceneOverlay extends Phaser.Scene {
   }
 
   private createStatusReport(time: number): string {
-    const lander = this.gameScene.lander;
+    const lander = this.gameScene?.lander;
 
     // Gracefully handle undefined state without mocking the raw Matter.js body
     let altitude = 881 + 99;
@@ -38,7 +38,7 @@ export class GameSceneOverlay extends Phaser.Scene {
     return ""
       + "time: " + (time / 1000).toFixed(0)
       + "\n"
-      + "landings: " + this.gameScene.successCount + "/" + this.gameScene.noOfSuccessesPossible
+      + "landings: " + (this.gameScene?.successCount ?? 0) + "/" + (this.gameScene?.noOfSuccessesPossible ?? 0)
       + "\n"
       + "altitude: " + Number(altitude).toFixed(0)
       + "\n"
@@ -138,9 +138,9 @@ export class GameSceneOverlay extends Phaser.Scene {
       this.lastStatusReportTime = time;
     }
     this.text2.setText(""
-      + (this.controllerScene.rotatingLeft == true ? "<" : " ")
-      + (this.controllerScene.thrusting == true ? "^" : " ")
-      + (this.controllerScene.rotatingRight == true ? ">" : " ")
+      + (this.controllerScene?.rotatingLeft == true ? "<" : " ")
+      + (this.controllerScene?.thrusting == true ? "^" : " ")
+      + (this.controllerScene?.rotatingRight == true ? ">" : " ")
     );
   }
 } 
