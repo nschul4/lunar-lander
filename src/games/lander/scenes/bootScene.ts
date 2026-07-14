@@ -16,7 +16,7 @@ export class BootScene extends Phaser.Scene {
     // this.load.image('background', 'starfield.jpg');
     // this.load.image('background', 'starfield2.png');
     // this.load.image('background', 'starfield3.png');
-    this.load.image('background', 'xxx.png');
+    this.load.image('background', 'starfield2.png');
   }
 
   create(): void {
