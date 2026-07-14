@@ -25,7 +25,11 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
     depth: -2,
     parallaxFactor: 0.05,
     vertices: [
-      { x: 0, y: 0 }, { x: 500, y: 700 }, { x: 600, y: 400 }, { x: 900, y: 800 }, { x: 1300, y: 0 }
+      { x: 0, y: 0 },
+      { x: 500, y: 700 },
+      { x: 600, y: 400 },
+      { x: 900, y: 800 },
+      { x: 1300, y: 0 }
     ]
   },
   {
@@ -40,9 +44,17 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
     depth: -1,
     parallaxFactor: 0.1,
     vertices: [
-      { x: 0, y: 0 }, { x: 280, y: 200 }, { x: 710, y: 300 }, { x: 880, y: 400 }, 
-      { x: 930, y: 290 }, { x: 1280, y: 0 }, { x: 1480, y: 250 }, { x: 1780, y: 320 }, 
-      { x: 2080, y: 600 }, { x: 2230, y: 240 }, { x: 2530, y: 0 }
+      { x: 0, y: 0 },
+      { x: 280, y: 200 },
+      { x: 710, y: 300 },
+      { x: 880, y: 400 },
+      { x: 930, y: 290 },
+      { x: 1280, y: 0 },
+      { x: 1480, y: 250 },
+      { x: 1780, y: 320 },
+      { x: 2080, y: 600 },
+      { x: 2230, y: 240 },
+      { x: 2530, y: 0 }
     ]
   }
 ];
