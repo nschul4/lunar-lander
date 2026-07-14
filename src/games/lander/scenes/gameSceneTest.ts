@@ -5,7 +5,6 @@ export class GameSceneTest extends BaseGameScene {
     super({
       key: "GameScene"
     });
-    this.worldBoundsRectangleColorTop = 0x550055;
   }
 
   create(): void {
