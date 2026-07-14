@@ -4,8 +4,8 @@ import { Mountain } from "../mountains/Mountain";
 export class MountainDesignerScene extends Phaser.Scene {
     private currentIdx: number = 0;
     private currentMountainObjects: Phaser.GameObjects.GameObject[] = [];
-    private titleText: Phaser.GameObjects.Text;
-    private gridGraphics: Phaser.GameObjects.Graphics;
+    private titleText!: Phaser.GameObjects.Text;
+    private gridGraphics!: Phaser.GameObjects.Graphics;
     private gridLabels: Phaser.GameObjects.Text[] = [];
 
     constructor() {

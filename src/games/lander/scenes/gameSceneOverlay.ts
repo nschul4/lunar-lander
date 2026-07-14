@@ -9,10 +9,10 @@ export class GameSceneOverlay extends Phaser.Scene {
   private initialTime: number = 0;
   private lastStatusReportTime: number = 0;
 
-  private text1: Phaser.GameObjects.Text;
-  private text2: Phaser.GameObjects.Text;
-  private failText: Phaser.GameObjects.Text;
-  private winText: Phaser.GameObjects.Text;
+  private text1!: Phaser.GameObjects.Text;
+  private text2!: Phaser.GameObjects.Text;
+  private failText!: Phaser.GameObjects.Text;
+  private winText!: Phaser.GameObjects.Text;
 
   constructor() {
     super({

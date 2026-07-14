@@ -8,14 +8,14 @@ export class ControllerScene extends Phaser.Scene {
 
   private gameScene: GameScene | null = null;
 
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-  private escKeyObj: Phaser.Input.Keyboard.Key;
+  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private escKeyObj!: Phaser.Input.Keyboard.Key;
 
-  private oneThirdHeight: number;
-  private twoThirdsHeight: number;
-  private oneThirdWidth: number;
-  private oneHalfWidth: number;
-  private twoThirdsWidth: number;
+  private oneThirdHeight!: number;
+  private twoThirdsHeight!: number;
+  private oneThirdWidth!: number;
+  private oneHalfWidth!: number;
+  private twoThirdsWidth!: number;
 
   constructor() {
     super({
