@@ -83,7 +83,7 @@ export class ControllerScene extends Phaser.Scene {
       ;
 
     if (this.escKeyObj.isDown) {
-      this.gameScene.pause();
+      this.gameScene?.pause();
     }
   }
 }
