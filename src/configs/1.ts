@@ -4,7 +4,7 @@ import { GameSceneBoot } from "../scenes/gameSceneBoot";
 import { GameSceneOverview as GameSceneLevelOverview } from "../scenes/gameSceneLevelOverview";
 import { GameSceneOverlay } from "../scenes/gameSceneOverlay";
 import { GameSceneController } from "../scenes/gameSceneController";
-import { Logger } from "../common/classes/logger";
+import { Logger } from "../logger";
 import { g_version } from "../version";
 
 Logger.log("top of lander test/game.ts");
