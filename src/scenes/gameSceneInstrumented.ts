@@ -7,14 +7,11 @@ export class GameSceneInstrumented extends GameScene {
   }
 
   create(): void {
-    // Re-map the scene manager's registration key identifier at runtime setup
-    this.scene.key = "GameScene";
-
-    super.create();            // 1. Boots everything production does (including camera setup)
-    drawMeasurementGrid(this); // 2. Appends the developer grid overlay tools!
+    super.create();
+    drawMeasurementGrid(this);
   }
 
   update(time: number, delta: number): void {
-    super.update(time, delta); // Automatically runs production's camera tracking!
+    super.update(time, delta);
   }
 }
