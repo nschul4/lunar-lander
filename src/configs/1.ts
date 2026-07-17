@@ -1,9 +1,9 @@
 import "phaser";
 
-import { BootScene } from "../games/lander/scenes/bootScene";
-import { GameSceneOverview as GameSceneLevelOverview } from "../games/lander/scenes/gameSceneLevelOverview";
-import { GameSceneOverlay } from "../games/lander/scenes/gameSceneOverlay";
-import { ControllerScene } from "../games/lander/scenes/controllerScene";
+import { BootScene } from "../scenes/bootScene";
+import { GameSceneOverview as GameSceneLevelOverview } from "../scenes/gameSceneLevelOverview";
+import { GameSceneOverlay } from "../scenes/gameSceneOverlay";
+import { ControllerScene } from "../scenes/controllerScene";
 import { Logger } from "../common/classes/logger";
 import { g_version } from "../version";
 

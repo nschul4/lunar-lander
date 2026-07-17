@@ -1,5 +1,5 @@
 import "phaser";
-import { MountainDesignerScene } from "../games/lander/scenes/mountainDesignerScene";
+import { MountainDesignerScene } from "../scenes/mountainDesignerScene";
 
 var width: number = 1440;
 var height: number = 720;
