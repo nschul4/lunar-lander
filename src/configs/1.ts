@@ -9,13 +9,13 @@ import { g_version } from "../version";
 
 Logger.log("top of lander test/game.ts");
 
-const testVersion = `${g_version}-test`;
-var width: number = 1440;
-var height: number = 720;
+const width: number = 1440;
+const height: number = 720;
 
 const config = {
   title: "lander-test",
-  version: testVersion,
+  url: "https://nschul4.github.io/www/phaser/lander/",
+  version: g_version,
   type: Phaser.AUTO,
   width: width,
   height: height,

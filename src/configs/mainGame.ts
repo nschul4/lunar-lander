@@ -6,6 +6,9 @@ import { GameSceneOverlay } from "../scenes/gameSceneOverlay";
 import { GameSceneController } from "../scenes/gameSceneController";
 import { g_version } from "../version";
 
+
+
+
 const width: number = 1440;
 const height: number = 720;
 
@@ -13,7 +16,6 @@ const config = {
   title: "lander",
   url: "https://nschul4.github.io/www/phaser/lander/",
   version: g_version,
-
   type: Phaser.AUTO,
   width: width,
   height: height,
@@ -39,4 +41,4 @@ const config = {
   },
 };
 
-new Phaser.Game(config);
+let game = new Phaser.Game(config);
