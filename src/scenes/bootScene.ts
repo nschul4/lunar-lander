@@ -1,4 +1,4 @@
-import { g_version } from "../../../version";
+import { g_version } from "../version";
 
 export class BootScene extends Phaser.Scene {
 

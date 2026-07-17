@@ -1,5 +1,5 @@
 import "phaser";
-import { ControllerScene } from "./controllerScene";
+import { ControllerScene } from "./scenes/controllerScene";
 
 export class Lander extends Phaser.GameObjects.Polygon {
   public thrust: Phaser.GameObjects.Polygon;

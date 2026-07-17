@@ -1,5 +1,5 @@
-import { Mountain } from "../../../Mountain";
-import { MOUNTAIN_DATABASE } from "../../../MountainBlueprints";
+import { Mountain } from "./Mountain";
+import { MOUNTAIN_DATABASE } from "./MountainBlueprints";
 
 export class WorldCreator {
     /**
