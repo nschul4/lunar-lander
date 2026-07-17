@@ -12,7 +12,7 @@ export class BootScene extends Phaser.Scene {
 
   preload(): void {
     // Fixed: Using root-relative pathing so assets load from any URL route
-    this.load.setPath('/src/games/lander/assets/');
+    this.load.setPath('/src/assets/');
     // this.load.image('background', 'starfield.jpg');
     // this.load.image('background', 'starfield2.png');
     // this.load.image('background', 'starfield3.png');
