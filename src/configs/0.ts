@@ -9,14 +9,13 @@ import { g_version } from "../version";
 
 Logger.log("top of lander subapp/0.ts");
 
-var width: number = 1440;
-var height: number = 720;
+const width: number = 1440;
+const height: number = 720;
 
 const config = {
   title: "lander-staging",
   url: "https://nschul4.github.io/www/phaser/lander/",
-  version: `${g_version}-staging`,
-
+  version: g_version,
   type: Phaser.AUTO,
   width: width,
   height: height,
