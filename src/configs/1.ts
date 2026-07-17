@@ -30,6 +30,7 @@ const config = {
   },
   backgroundColor: "#000000",
   render: { pixelArt: false, antialias: true },
+
   physics: {
     default: 'matter',
     matter: {
