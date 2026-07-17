@@ -1,6 +1,6 @@
 import { GameScene } from "./gameScene";
 
-export class ControllerScene extends Phaser.Scene {
+export class GameSceneController extends Phaser.Scene {
 
   public thrusting: boolean = false;
   public rotatingLeft: boolean = false;

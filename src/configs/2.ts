@@ -1,5 +1,5 @@
 import "phaser";
-import { MountainDesignerScene } from "../scenes/mountainDesignerScene";
+import { GameSceneMountainDesign } from "../scenes/gameSceneMountainDesign";
 
 var width: number = 1440;
 var height: number = 720;
@@ -10,7 +10,7 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  scene: [MountainDesignerScene],
+  scene: [GameSceneMountainDesign],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,
