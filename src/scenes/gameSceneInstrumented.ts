@@ -1,5 +1,5 @@
 import { GameScene } from "./gameScene";
-import { drawMeasurementGrid } from "../games/lander/utils/gridOverlay";
+import { drawMeasurementGrid } from "../gridOverlay";
 
 export class GameSceneInstrumented extends GameScene {
   constructor() {
