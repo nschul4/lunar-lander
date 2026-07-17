@@ -1,6 +1,6 @@
 import { g_version } from "../version";
 
-export class BootScene extends Phaser.Scene {
+export class GameSceneBoot extends Phaser.Scene {
 
   private helloMessage: string = "lander v" + g_version + " foo";
 

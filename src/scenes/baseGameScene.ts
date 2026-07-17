@@ -1,5 +1,5 @@
 import { GameSceneOverlay } from "./gameSceneOverlay";
-import { ControllerScene } from "./controllerScene";
+import { GameSceneController } from "./gameSceneController";
 import { WorldCreator } from "../worldCreator";
 import { Lander } from "../Lander";
 import { EnvironmentManager } from "../EnvironmentManager";
@@ -69,7 +69,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
   create(): void {
     this.scene.bringToTop("GameSceneOverlay");
-    this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
+    this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
 
     this.environmentManager = new EnvironmentManager(this);
 

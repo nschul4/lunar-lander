@@ -1,10 +1,10 @@
 import { GameScene } from "./gameScene";
-import { ControllerScene } from "./controllerScene";
+import { GameSceneController } from "./gameSceneController";
 
 export class GameSceneOverlay extends Phaser.Scene {
 
   private gameScene: GameScene | null = null;
-  private controllerScene: ControllerScene | null = null;
+  private controllerScene: GameSceneController | null = null;
 
   private initialTime: number = 0;
   private lastStatusReportTime: number = 0;
@@ -69,7 +69,7 @@ export class GameSceneOverlay extends Phaser.Scene {
 
   create(): void {
     this.gameScene = (<GameScene>this.scene.get('GameScene'));
-    this.controllerScene = (<ControllerScene>this.scene.get('ControllerScene'));
+    this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
 
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;

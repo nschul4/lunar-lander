@@ -1,7 +1,7 @@
 import { MOUNTAIN_DATABASE } from "../MountainBlueprints";
 import { Mountain } from "../Mountain";
 
-export class MountainDesignerScene extends Phaser.Scene {
+export class GameSceneMountainDesign extends Phaser.Scene {
     private currentIdx: number = 0;
     private currentMountainObjects: Phaser.GameObjects.GameObject[] = [];
     private titleText!: Phaser.GameObjects.Text;

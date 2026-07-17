@@ -1,5 +1,5 @@
 import "phaser";
-import { ControllerScene } from "./scenes/controllerScene";
+import { GameSceneController } from "./scenes/gameSceneController";
 
 export class Lander extends Phaser.GameObjects.Polygon {
   public thrust: Phaser.GameObjects.Polygon;
@@ -70,7 +70,7 @@ export class Lander extends Phaser.GameObjects.Polygon {
     this.angle = 0;
   }
 
-  public update(controllerScene: ControllerScene): void {
+  public update(controllerScene: GameSceneController): void {
     if (controllerScene.thrusting === true) {
       this.thrust.visible = true;
       const radians = Phaser.Math.DegToRad(this.angle);
