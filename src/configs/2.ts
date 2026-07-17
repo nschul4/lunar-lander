@@ -20,10 +20,13 @@ const config = {
   },
   backgroundColor: "#000000",
   render: { pixelArt: false, antialias: true },
+
   physics: {
     default: 'matter',
     matter: {
       debug: true,
+      autoUpdate: true,
+      fixedStep: true,
       debugShowInternalEdges: true,
       debugShowConvexHulls: true
     }
