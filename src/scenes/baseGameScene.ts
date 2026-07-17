@@ -77,32 +77,37 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.lander = new Lander(this);
     this.matter.world.setBounds(0, 0, 3000, 1000);
 
-    this.matter.world.on('collisionstart', (event: any, bodyA: any, bodyB: any) => {
-      if (!bodyA || !bodyB || !bodyA.gameObject || !bodyB.gameObject) {
-        this.fail();
-        return;
-      }
+    this.matter.world.on('collisionstart', (event: any) => {
+      for (const pair of event.pairs) {
+        const { bodyA, bodyB } = pair;
 
-      var lander = null;
-      var otherBody = null;
+        // 1. Safe skip if either body is missing a Phaser Game Object mapping
+        if (!bodyA?.gameObject || !bodyB?.gameObject) {
+          continue;
+        }
 
-      if (bodyA.gameObject.name === "lander") {
-        lander = bodyA;
-        otherBody = bodyB;
-      } else if (bodyB.gameObject.name === "lander") {
-        lander = bodyB;
-        otherBody = bodyA;
-      }
+        let lander = null;
+        let otherBody = null;
 
-      if (lander !== null && otherBody !== null) {
+        if (bodyA.gameObject.name === "lander") {
+          lander = bodyA;
+          otherBody = bodyB;
+        } else if (bodyB.gameObject.name === "lander") {
+          lander = bodyB;
+          otherBody = bodyA;
+        }
+
+        // 2. Safe skip if this specific collision pair does not involve the player lander
+        if (lander === null || otherBody === null) {
+          continue;
+        }
+
+        // 3. Process the lander collision mechanics
         if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
-
           const landerObj = lander.gameObject as Lander;
-
-          // Use our new encapsulation!
-          var absAttitude = Math.abs(landerObj.angle);
-          var vx = landerObj.getVelocityX();
-          var vy = landerObj.getVelocityY();
+          const absAttitude = Math.abs(landerObj.angle);
+          const vx = landerObj.getVelocityX();
+          const vy = landerObj.getVelocityY();
 
           const isAngleSafe = absAttitude <= BaseGameScene.MAX_SAFE_ANGLE;
           const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
@@ -111,7 +116,6 @@ export abstract class BaseGameScene extends Phaser.Scene {
           if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
             this.fail();
           } else {
-            // Replaced manual physics/angle resets with the class method
             landerObj.stop();
 
             if (otherBody.gameObject.landed !== true) {
