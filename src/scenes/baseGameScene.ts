@@ -78,7 +78,15 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.matter.world.setBounds(0, 0, 3000, 1000);
 
     this.matter.world.on('collisionstart', (event: any) => {
+      if (this.gameOver) {
+        return;
+      }
+
       for (const pair of event.pairs) {
+        if (this.gameOver) {
+          break;
+        }
+
         const { bodyA, bodyB } = pair;
 
         // 1. Safe skip if either body is missing a Phaser Game Object mapping
