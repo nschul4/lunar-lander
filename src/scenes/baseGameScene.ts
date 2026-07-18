@@ -1,8 +1,8 @@
 import { GameSceneOverlay } from "./gameSceneOverlay";
 import { GameSceneController } from "./gameSceneController";
 import { WorldCreator } from "../worldCreator";
-import { Lander } from "../Lander";
-import { EnvironmentManager } from "../EnvironmentManager";
+import { Lander } from "../lander";
+import { EnvironmentManager } from "../environmentManager";
 
 export abstract class BaseGameScene extends Phaser.Scene {
   private static readonly GRAVITY_Y = 0.007;

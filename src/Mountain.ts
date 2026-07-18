@@ -1,5 +1,5 @@
 import "phaser";
-import { MountainBlueprint } from "./MountainBlueprints";
+import { MountainBlueprint } from "./mountainBlueprints";
 
 export class Mountain {
     public name: string;

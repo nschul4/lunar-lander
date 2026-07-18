@@ -1,5 +1,4 @@
-// EnvironmentManager.ts
-import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./MountainRangeBlueprints";
+import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./mountainRangeBlueprints";
 
 export class EnvironmentManager {
   private scene: Phaser.Scene;

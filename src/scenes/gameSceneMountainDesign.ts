@@ -1,5 +1,5 @@
-import { MOUNTAIN_DATABASE } from "../MountainBlueprints";
-import { Mountain } from "../Mountain";
+import { MOUNTAIN_DATABASE } from "../mountainBlueprints";
+import { Mountain } from "../mountain";
 
 export class GameSceneMountainDesign extends Phaser.Scene {
     private currentIdx: number = 0;
