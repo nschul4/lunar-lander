@@ -5,10 +5,15 @@ export class LanderGrid {
   private graphics: Phaser.GameObjects.Graphics;
   private labels: Phaser.GameObjects.Text[] = [];
   private scene: Phaser.Scene;
+  private dx: number;
+  private dy: number;
 
-  constructor(scene: Phaser.Scene) {
+  // 1. Accept the physics center offsets in the constructor
+  constructor(scene: Phaser.Scene, dx: number = 0, dy: number = 0) {
     this.scene = scene;
     this.graphics = scene.add.graphics();
+    this.dx = dx;
+    this.dy = dy;
   }
 
   /**
@@ -25,15 +30,17 @@ export class LanderGrid {
     const cos = Math.cos(rad);
     const sin = Math.sin(rad);
 
-    // Helper to transform local coordinates into the active rotated world space
+    // 2. Calibrate local coordinates by subtracting the physics offset before rotating
     const transform = (localX: number, localY: number) => {
+      const calibratedX = localX - this.dx;
+      const calibratedY = localY - this.dy;
       return {
-        worldX: x + (localX * cos - localY * sin),
-        worldY: y + (localX * sin + localY * cos)
+        worldX: x + (calibratedX * cos - calibratedY * sin),
+        worldY: y + (calibratedX * sin + calibratedY * cos)
       };
     };
 
-    // 1. Draw Axis Reference Grid Lines (-40px to +40px around origin)
+    // 3. Draw Axis Reference Grid Lines (-40px to +40px around origin)
     const gridSize = 40;
     const step = 10;
 
@@ -49,7 +56,7 @@ export class LanderGrid {
       this.graphics.lineBetween(top.worldX, top.worldY, bottom.worldX, bottom.worldY);
     }
 
-    // 2. Draw Highly visible primary X/Y Axis vectors
+    // 4. Draw Highly visible primary X/Y Axis vectors
     this.graphics.lineStyle(2, 0xff00ff, 0.8);
     const origin = transform(0, 0);
     const xAxisEnd = transform(30, 0);
@@ -57,7 +64,7 @@ export class LanderGrid {
     this.graphics.lineBetween(origin.worldX, origin.worldY, xAxisEnd.worldX, xAxisEnd.worldY);
     this.graphics.lineBetween(origin.worldX, origin.worldY, yAxisEnd.worldX, yAxisEnd.worldY);
 
-    // 3. Render specific text markers precisely matching polygon vertices
+    // 5. Render specific text markers precisely matching polygon vertices
     for (let k = 0; k < LANDER_VERTICES.length; k += 2) {
       const vx = LANDER_VERTICES[k];
       const vy = LANDER_VERTICES[k + 1];

@@ -43,13 +43,24 @@ export class Lander extends Phaser.GameObjects.Polygon {
 
     this.setName("lander");
 
-    // Initialize standalone modular components safely
-    this.thrust = scene.add.polygon(0, 0, THRUST_VERTICES, 0xffffff);
+    // --- YOUR NEW SELF-LOCATING MATH ---
+    // Safe lookup using the underlying local position vector calculated by the engine
+    const localPosition = (this.body as any).positionLocal || { x: 0, y: 0 };
+    const dx = localPosition.x;
+    const dy = localPosition.y;
+
+    const calibratedThrustVerts = THRUST_VERTICES.map((val, index) => {
+      // Even indices are X coordinates, odd indices are Y coordinates
+      return index % 2 === 0 ? val - dx : val - dy;
+    });
+
+    this.thrust = scene.add.polygon(0, 0, calibratedThrustVerts, 0xffffff);
     this.thrust.setName("thrust");
     this.thrust.visible = false;
 
-    this.devGrid = new LanderGrid(scene);
+    this.devGrid = new LanderGrid(scene, dx, dy);
     this.devGrid.setVisible(SHOW_LANDER_GRID);
+    // ------------------------------------
 
     // Apply strict rendering layout pipeline stack layers explicitly
     this.applyLayerDepths();
