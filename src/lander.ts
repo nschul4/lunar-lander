@@ -1,8 +1,16 @@
 import "phaser";
 import { GameSceneController } from "./scenes/gameSceneController";
+import { LanderGrid } from "./landerGrid";
+import {
+  LANDER_VERTICES,
+  THRUST_VERTICES,
+  SHOW_LANDER_GRID,
+  LANDER_RENDER_ORDER
+} from "./configs/landerConfig";
 
 export class Lander extends Phaser.GameObjects.Polygon {
   public thrust: Phaser.GameObjects.Polygon;
+  private devGrid: LanderGrid;
 
   public declare body: MatterJS.BodyType;
 
@@ -10,18 +18,12 @@ export class Lander extends Phaser.GameObjects.Polygon {
   private static readonly ROTATION_SPEED = 0.01;
 
   constructor(scene: Phaser.Scene) {
-    const landerPoints = [
-      -20, 20, // Left-bottom wing tip
-      0, 10,   // Bottom-middle indent
-      20, 20,  // Right-bottom wing tip
-      0, -20   // Top nose cone tip
-    ];
-
-    super(scene, 0, 0, landerPoints, 0x999999);
+    // Instantiate exactly as before using configurations to preserve visual geometry metrics
+    super(scene, 0, 0, LANDER_VERTICES, 0x999999);
     scene.add.existing(this);
 
     scene.matter.add.gameObject(this, {
-      shape: { type: 'fromVerts', verts: landerPoints.join(' '), flagInternal: true }
+      shape: { type: 'fromVerts', verts: LANDER_VERTICES.join(' '), flagInternal: true }
     });
 
     this.angle = -90;
@@ -41,17 +43,33 @@ export class Lander extends Phaser.GameObjects.Polygon {
 
     this.setName("lander");
 
-    const yShift = 8;
-    const thrustFlamePoints = [
-      0, 20 + yShift,  // Left edge meeting the left wing
-      20, 30 + yShift, // Bottom tip of the flame blowing downwards
-      40, 20 + yShift, // Right edge meeting the right wing
-      20, 10 + yShift  // Top tip of the flame tucked inside the ship indent
-    ];
-
-    this.thrust = scene.add.polygon(0, 0, thrustFlamePoints, 0xffffff);
+    // Initialize standalone modular components safely
+    this.thrust = scene.add.polygon(0, 0, THRUST_VERTICES, 0xffffff);
     this.thrust.setName("thrust");
     this.thrust.visible = false;
+
+    this.devGrid = new LanderGrid(scene);
+    this.devGrid.setVisible(SHOW_LANDER_GRID);
+
+    // Apply strict rendering layout pipeline stack layers explicitly
+    this.applyLayerDepths();
+  }
+
+  /**
+   * Evaluates the configured order array dynamically and assigns explicit layout depths.
+   */
+  private applyLayerDepths(): void {
+    const baseDepth = 20; // Ensure it renders cleanly above backgrounds/world grids
+    LANDER_RENDER_ORDER.forEach((layerType, index) => {
+      const assignedDepth = baseDepth + index;
+      if (layerType === 'grid') {
+        this.devGrid.setDepth(assignedDepth);
+      } else if (layerType === 'lander') {
+        this.setDepth(assignedDepth);
+      } else if (layerType === 'thrust') {
+        this.thrust.setDepth(assignedDepth);
+      }
+    });
   }
 
   public getVelocityX(): number {
@@ -101,5 +119,17 @@ export class Lander extends Phaser.GameObjects.Polygon {
     this.thrust.x = this.x;
     this.thrust.y = this.y;
     this.thrust.angle = this.angle;
+
+    // Direct toggle synchronization checks visibility states continuously
+    this.devGrid.setVisible(SHOW_LANDER_GRID);
+    if (SHOW_LANDER_GRID) {
+      this.devGrid.render(this.x, this.y, this.angle);
+    }
+  }
+
+  public destroy(fromScene?: boolean): void {
+    this.devGrid.destroy();
+    this.thrust.destroy();
+    super.destroy(fromScene);
   }
 }
