@@ -5,78 +5,144 @@ import {
   LANDER_VERTICES,
   THRUST_VERTICES,
   SHOW_LANDER_GRID,
-  LANDER_RENDER_ORDER
+  LANDER_RENDER_ORDER,
+  LANDER_TEXTURE_KEY,
+  THRUST_TEXTURE_KEY
 } from "./configs/landerConfig";
 
-export class Lander extends Phaser.GameObjects.Polygon {
-  public thrust: Phaser.GameObjects.Polygon;
+export class Lander {
+  public sprite: Phaser.Physics.Matter.Sprite;
+  public thrust: Phaser.GameObjects.Sprite;
   private devGrid: LanderGrid;
-
-  public declare body: MatterJS.BodyType;
 
   private static readonly THRUST_FORCE = 0.00002;
   private static readonly ROTATION_SPEED = 0.01;
 
   constructor(scene: Phaser.Scene) {
-    // Instantiate exactly as before using configurations to preserve visual geometry metrics
-    super(scene, 0, 0, LANDER_VERTICES, 0x999999);
-    scene.add.existing(this);
+    Lander.generateLanderTexture(scene);
+    Lander.generateThrustTexture(scene);
 
-    scene.matter.add.gameObject(this, {
+    this.sprite = scene.matter.add.sprite(100, 200, LANDER_TEXTURE_KEY, undefined, {
       shape: { type: 'fromVerts', verts: LANDER_VERTICES.join(' '), flagInternal: true }
     });
 
-    this.angle = -90;
-    this.setPosition(100, 200);
+    (this.sprite as any).lander = this;
 
-    if (this.body) {
-      scene.matter.body.setVelocity(this.body, { x: 1.5, y: 0 });
+    this.sprite.setAngle(-90);
+
+    if (this.sprite.body) {
+      scene.matter.body.setVelocity(this.sprite.body as MatterJS.BodyType, { x: 1.5, y: 0 });
     }
 
-    const matterGameObject = this as unknown as Phaser.Physics.Matter.Components.Velocity & Phaser.Physics.Matter.Components.Bounce & Phaser.Physics.Matter.Components.Friction;
-    if (typeof matterGameObject.setFrictionAir === 'function') {
-      matterGameObject.setFrictionAir(0);
-    }
-    if (typeof matterGameObject.setBounce === 'function') {
-      matterGameObject.setBounce(0);
-    }
+    this.sprite.setFrictionAir(0);
+    this.sprite.setBounce(0);
+    this.sprite.setName("lander");
 
-    this.setName("lander");
-
-    // --- YOUR NEW SELF-LOCATING MATH ---
-    // Safe lookup using the underlying local position vector calculated by the engine
-    const localPosition = (this.body as any).positionLocal || { x: 0, y: 0 };
+    // 3. Obtain center offset dynamically computed by Matter.js
+    const localPosition = (this.sprite.body as any).positionLocal || { x: 0, y: 0 };
     const dx = localPosition.x;
     const dy = localPosition.y;
 
-    const calibratedThrustVerts = THRUST_VERTICES.map((val, index) => {
-      // Even indices are X coordinates, odd indices are Y coordinates
-      return index % 2 === 0 ? val - dx : val - dy;
-    });
+    // Shift the texture canvas origin to offset Matter's center-of-mass shift
+    this.sprite.setOrigin(
+      (30 - dx) / 60,
+      (30 - dy) / 60
+    );
 
-    this.thrust = scene.add.polygon(0, 0, calibratedThrustVerts, 0xffffff);
+    // 4. Instantiate the thrust effect as an Image Sprite attached to lander origin
+    this.thrust = scene.add.sprite(this.x, this.y, THRUST_TEXTURE_KEY);
     this.thrust.setName("thrust");
     this.thrust.visible = false;
 
+    // Shift thruster origin using the same center-of-mass offsets
+    this.thrust.setOrigin(
+      (30 - dx) / 60,
+      (30 - dy) / 60
+    );
+
+    // 5. Initialize developer overlay grid
     this.devGrid = new LanderGrid(scene, dx, dy);
     this.devGrid.setVisible(SHOW_LANDER_GRID);
-    // ------------------------------------
 
-    // Apply strict rendering layout pipeline stack layers explicitly
     this.applyLayerDepths();
   }
 
+  // Position convenience getters/setters for seamless compatibility with scene code
+  public get x(): number {
+    return this.sprite.x;
+  }
+
+  public get y(): number {
+    return this.sprite.y;
+  }
+
+  public get angle(): number {
+    return this.sprite.angle;
+  }
+
+  public set angle(value: number) {
+    this.sprite.setAngle(value);
+  }
+
   /**
-   * Evaluates the configured order array dynamically and assigns explicit layout depths.
+   * Generates a high-resolution canvas texture for the lander ship frame.
    */
+  private static generateLanderTexture(scene: Phaser.Scene): void {
+    if (scene.textures.exists(LANDER_TEXTURE_KEY)) return;
+
+    const g = scene.make.graphics({ x: 0, y: 0 });
+
+    g.fillStyle(0x999999, 1);
+
+    const offsetX = 30;
+    const offsetY = 30;
+
+    g.beginPath();
+    g.moveTo(LANDER_VERTICES[0] + offsetX, LANDER_VERTICES[1] + offsetY);
+    for (let i = 2; i < LANDER_VERTICES.length; i += 2) {
+      g.lineTo(LANDER_VERTICES[i] + offsetX, LANDER_VERTICES[i + 1] + offsetY);
+    }
+    g.closePath();
+    g.fillPath();
+    g.strokePath();
+
+    g.generateTexture(LANDER_TEXTURE_KEY, 60, 60);
+    g.destroy();
+  }
+
+  /**
+   * Generates a high-resolution canvas texture for the thruster flame output.
+   */
+  private static generateThrustTexture(scene: Phaser.Scene): void {
+    if (scene.textures.exists(THRUST_TEXTURE_KEY)) return;
+
+    const g = scene.make.graphics({ x: 0, y: 0 });
+
+    g.fillStyle(0xffffff, 1);
+
+    const offsetX = 30;
+    const offsetY = 31;
+
+    g.beginPath();
+    g.moveTo(THRUST_VERTICES[0] + offsetX, THRUST_VERTICES[1] + offsetY);
+    for (let i = 2; i < THRUST_VERTICES.length; i += 2) {
+      g.lineTo(THRUST_VERTICES[i] + offsetX, THRUST_VERTICES[i + 1] + offsetY);
+    }
+    g.closePath();
+    g.fillPath();
+
+    g.generateTexture(THRUST_TEXTURE_KEY, 60, 60);
+    g.destroy();
+  }
+
   private applyLayerDepths(): void {
-    const baseDepth = 20; // Ensure it renders cleanly above backgrounds/world grids
+    const baseDepth = 20;
     LANDER_RENDER_ORDER.forEach((layerType, index) => {
       const assignedDepth = baseDepth + index;
       if (layerType === 'grid') {
         this.devGrid.setDepth(assignedDepth);
       } else if (layerType === 'lander') {
-        this.setDepth(assignedDepth);
+        this.sprite.setDepth(assignedDepth);
       } else if (layerType === 'thrust') {
         this.thrust.setDepth(assignedDepth);
       }
@@ -84,17 +150,17 @@ export class Lander extends Phaser.GameObjects.Polygon {
   }
 
   public getVelocityX(): number {
-    return this.body ? this.body.velocity.x : 0;
+    return this.sprite.body ? this.sprite.body.velocity.x : 0;
   }
 
   public getVelocityY(): number {
-    return this.body ? this.body.velocity.y : 0;
+    return this.sprite.body ? this.sprite.body.velocity.y : 0;
   }
 
   public stop(): void {
-    if (this.body && this.scene && this.scene.matter) {
-      this.scene.matter.body.setVelocity(this.body, { x: 0, y: 0 });
-      this.scene.matter.body.setAngularVelocity(this.body, 0);
+    if (this.sprite.body && this.sprite.scene && this.sprite.scene.matter) {
+      this.sprite.scene.matter.body.setVelocity(this.sprite.body as MatterJS.BodyType, { x: 0, y: 0 });
+      this.sprite.scene.matter.body.setAngularVelocity(this.sprite.body as MatterJS.BodyType, 0);
     }
     this.angle = 0;
   }
@@ -107,29 +173,30 @@ export class Lander extends Phaser.GameObjects.Polygon {
       const forceX = Lander.THRUST_FORCE * Math.sin(radians);
       const forceY = -Lander.THRUST_FORCE * Math.cos(radians);
 
-      if (this.body) {
-        (this.scene.matter as any).body.applyForce(this.body, this.body.position, {
-          x: forceX,
-          y: forceY
-        });
+      if (this.sprite.body) {
+        (this.sprite.scene.matter as any).body.applyForce(
+          this.sprite.body as MatterJS.BodyType,
+          this.sprite.body.position,
+          { x: forceX, y: forceY }
+        );
       }
     } else {
       this.thrust.visible = false;
     }
 
-    if (this.body && this.scene && this.scene.matter) {
+    if (this.sprite.body && this.sprite.scene && this.sprite.scene.matter) {
       let angularVelocity = 0;
       if (controllerScene.rotatingLeft === true) {
         angularVelocity = -Lander.ROTATION_SPEED;
       } else if (controllerScene.rotatingRight === true) {
         angularVelocity = Lander.ROTATION_SPEED;
       }
-      this.scene.matter.body.setAngularVelocity(this.body, angularVelocity);
+      this.sprite.scene.matter.body.setAngularVelocity(this.sprite.body as MatterJS.BodyType, angularVelocity);
     }
 
-    this.thrust.x = this.x;
-    this.thrust.y = this.y;
-    this.thrust.angle = this.angle;
+    // Keep thrust sprite transform in sync with lander
+    this.thrust.setPosition(this.x, this.y);
+    this.thrust.setAngle(this.angle);
 
     // Direct toggle synchronization checks visibility states continuously
     this.devGrid.setVisible(SHOW_LANDER_GRID);
@@ -138,9 +205,9 @@ export class Lander extends Phaser.GameObjects.Polygon {
     }
   }
 
-  public destroy(fromScene?: boolean): void {
+  public destroy(): void {
     this.devGrid.destroy();
     this.thrust.destroy();
-    super.destroy(fromScene);
+    this.sprite.destroy();
   }
 }

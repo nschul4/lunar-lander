@@ -112,7 +112,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
         // 3. Process the lander collision mechanics
         if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
-          const landerObj = lander.gameObject as Lander;
+          const landerObj = (lander.gameObject as any).lander
           const absAttitude = Math.abs(landerObj.angle);
           const vx = landerObj.getVelocityX();
           const vy = landerObj.getVelocityY();
