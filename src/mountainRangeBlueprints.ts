@@ -26,17 +26,17 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
     parallaxFactor: 0.05,
     vertices: [
       { x: 0, y: 0 },
-      { x: 500, y: 700 },
-      { x: 600, y: 400 },
-      { x: 950, y: 800 },
-      { x: 1200, y: 450 },
-      { x: 1400, y: 700 },
-      { x: 1800, y: 0 }
+      { x: 550, y: 700 },
+      { x: 700, y: 400 },
+      { x: 1000, y: 800 },
+      { x: 1250, y: 450 },
+      { x: 1450, y: 700 },
+      { x: 1850, y: 0 }
     ]
   },
   {
     key: 'mountain_range_mid',
-    textureWidth: 2530,
+    textureWidth: 2700,
     textureHeight: 1600,
     color: 0x333333,
     tileX: -100,
@@ -51,7 +51,7 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
       { x: 760, y: 350 },
       { x: 900, y: 450 },
       { x: 950, y: 330 },
-      { x: 1280, y: 0 },
+      { x: 1100, y: 0 },
       { x: 1480, y: 250 },
       { x: 1780, y: 320 },
       { x: 2050, y: 550 },
