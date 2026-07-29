@@ -8,7 +8,6 @@ export class Mountain {
     private vertices: Phaser.Math.Vector2[];
     private landingPads: any[];
 
-    private static readonly DEFAULT_PAD_WIDTH = 100;
     private static readonly DEFAULT_PAD_HEIGHT = 5;
 
     constructor(blueprint: MountainBlueprint) {
@@ -16,13 +15,15 @@ export class Mountain {
         this.width = blueprint.width;
         this.height = blueprint.height;
 
-        // Map native math vectors from configuration values
+        // Map native math vectors from bottom-up vertices
         this.vertices = blueprint.vertices.map(v => new Phaser.Math.Vector2(v.x, this.height - v.y));
         this.landingPads = blueprint.landingPads.map(pad => ({
             name: pad.name,
-            position: new Phaser.Math.Vector2(pad.x, this.height - pad.y),
-            width: pad.width,
-            height: pad.height
+            startX: pad.startX,
+            endX: pad.endX,
+            width: pad.endX - pad.startX,
+            y: pad.y,
+            height: pad.height ?? Mountain.DEFAULT_PAD_HEIGHT
         }));
     }
 
@@ -33,6 +34,7 @@ export class Mountain {
     public spawn(scene: Phaser.Scene, worldX: number, worldY: number): Phaser.GameObjects.GameObject[] {
         const spawnedObjects: Phaser.GameObjects.GameObject[] = [];
 
+        // 1. Create Mountain Polygon
         const mountainPolygon = scene.add.polygon(0, 0, this.vertices, 0x555555);
         scene.matter.add.gameObject(mountainPolygon, {
             shape: { type: 'fromVerts', verts: this.vertices, flagInternal: true },
@@ -42,6 +44,7 @@ export class Mountain {
 
         const mountainBody = mountainPolygon.body as any;
 
+        // Ground align positioning math
         const currentBottom = mountainBody.bounds.max.y;
         const translationX = worldX - mountainBody.bounds.min.x;
         const translationY = worldY - currentBottom;
@@ -51,15 +54,16 @@ export class Mountain {
             mountainPolygon.y + translationY
         );
 
-        const mountainTopLeftX = mountainBody.bounds.min.x;
-        const mountainTopLeftY = mountainBody.bounds.min.y;
-
+        // 2. Spawn Landing Pads using bottom-up coordinate transformation
         for (const pad of this.landingPads) {
-            const padW = pad.width ?? Mountain.DEFAULT_PAD_WIDTH;
-            const padH = pad.height ?? Mountain.DEFAULT_PAD_HEIGHT;
+            const padW = pad.width;
+            const padH = pad.height;
 
-            const targetPadCenterX = mountainTopLeftX + pad.position.x + (padW / 2);
-            const targetPadCenterY = mountainTopLeftY + pad.position.y + (padH / 2);
+            // Unified Math:
+            // World X = Mountain baseline X + local pad startX + half pad width
+            // World Y = Ground Y - local height Y + half pad height (sits flush on top)
+            const targetPadCenterX = worldX + pad.startX + (padW / 2);
+            const targetPadCenterY = worldY - pad.y + (padH / 2);
 
             const padVertices = [
                 new Phaser.Math.Vector2(0, 0),
