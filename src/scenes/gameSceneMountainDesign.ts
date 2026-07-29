@@ -2,6 +2,7 @@ import { MOUNTAIN_DATABASE } from "../mountainBlueprints";
 import { Mountain } from "../mountain";
 
 export class GameSceneMountainDesign extends Phaser.Scene {
+    private static readonly STORAGE_KEY = 'selectedMountainName';
     private currentIdx: number = 0;
     private currentMountainObjects: Phaser.GameObjects.GameObject[] = [];
     private titleText!: Phaser.GameObjects.Text;
@@ -16,6 +17,9 @@ export class GameSceneMountainDesign extends Phaser.Scene {
         const width = this.scale.width;
         const height = this.scale.height;
 
+        // Restore saved selection or default to index 0
+        this.currentIdx = this.getSavedMountainIndex();
+
         this.drawMeasurementGrid();
 
         this.titleText = this.add.text(width / 10, 40, '', { fontSize: '24px', color: '#00ff00', fontStyle: 'bold' }).setOrigin(0);
@@ -25,12 +29,40 @@ export class GameSceneMountainDesign extends Phaser.Scene {
 
         this.input.keyboard!.on('keydown-LEFT', () => {
             this.currentIdx = (this.currentIdx - 1 + MOUNTAIN_DATABASE.length) % MOUNTAIN_DATABASE.length;
+            this.saveMountainSelection();
             this.loadMountain();
         });
+
         this.input.keyboard!.on('keydown-RIGHT', () => {
             this.currentIdx = (this.currentIdx + 1) % MOUNTAIN_DATABASE.length;
+            this.saveMountainSelection();
             this.loadMountain();
         });
+    }
+
+    /**
+     * Retrieves the stored mountain name from localStorage and finds its index.
+     * Fallbacks gracefully to index 0 if not found or invalid.
+     */
+    private getSavedMountainIndex(): number {
+        const savedName = localStorage.getItem(GameSceneMountainDesign.STORAGE_KEY);
+        if (savedName) {
+            const foundIdx = MOUNTAIN_DATABASE.findIndex(m => m.name === savedName);
+            if (foundIdx !== -1) {
+                return foundIdx;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Persists the currently viewed mountain's name to localStorage.
+     */
+    private saveMountainSelection(): void {
+        const currentMountain = MOUNTAIN_DATABASE[this.currentIdx];
+        if (currentMountain) {
+            localStorage.setItem(GameSceneMountainDesign.STORAGE_KEY, currentMountain.name);
+        }
     }
 
     /**
