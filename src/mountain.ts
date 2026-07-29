@@ -34,7 +34,7 @@ export class Mountain {
     public spawn(scene: Phaser.Scene, worldX: number, worldY: number): Phaser.GameObjects.GameObject[] {
         const spawnedObjects: Phaser.GameObjects.GameObject[] = [];
 
-        // 1. Create Mountain Polygon
+        // 1. Create Mountain Polygon at origin initial point
         const mountainPolygon = scene.add.polygon(0, 0, this.vertices, 0x555555);
         scene.matter.add.gameObject(mountainPolygon, {
             shape: { type: 'fromVerts', verts: this.vertices, flagInternal: true },
@@ -44,9 +44,10 @@ export class Mountain {
 
         const mountainBody = mountainPolygon.body as any;
 
-        // Ground align positioning math
+        // 2. Translate body so min X aligns to worldX and max Y aligns to worldY (ground)
         const currentBottom = mountainBody.bounds.max.y;
-        const translationX = worldX - mountainBody.bounds.min.x;
+        const currentLeft = mountainBody.bounds.min.x;
+        const translationX = worldX - currentLeft;
         const translationY = worldY - currentBottom;
 
         mountainPolygon.setPosition(
@@ -54,12 +55,11 @@ export class Mountain {
             mountainPolygon.y + translationY
         );
 
-        // 2. Spawn Landing Pads using bottom-up coordinate transformation
+        // 3. Spawn Landing Pads using bottom-up coordinate transformation
         for (const pad of this.landingPads) {
             const padW = pad.width;
             const padH = pad.height;
 
-            // Unified Math:
             // World X = Mountain baseline X + local pad startX + half pad width
             // World Y = Ground Y - local height Y + half pad height (sits flush on top)
             const targetPadCenterX = worldX + pad.startX + (padW / 2);
