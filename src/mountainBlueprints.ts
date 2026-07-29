@@ -36,7 +36,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 630, y: 100 },
             { x: 750, y: 0 }
         ],
-        landingPads: [{ name: "alpha", startX: 540, endX: 590, y: 150 }]
+        landingPads: [{ name: "alpha", startX: 540, endX: 590, y: 155 }]
     },
     {
         name: "Beta",
@@ -53,7 +53,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 450, y: 50 },
             { x: 530, y: 0 }
         ],
-        landingPads: [{ name: "beta", startX: 400, endX: 450, y: 50 }]
+        landingPads: [{ name: "beta", startX: 400, endX: 450, y: 55 }]
     },
     {
         name: "Epsilon",
@@ -70,7 +70,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 400, y: 100 },
             { x: 500, y: 50 }
         ],
-        landingPads: [{ name: "epsilon", startX: 300, endX: 350, y: 250 }]
+        landingPads: [{ name: "epsilon", startX: 300, endX: 350, y: 205 }]
     },
     {
         name: "Delta",
@@ -87,7 +87,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 330, y: 60 },
             { x: 410, y: 0 }
         ],
-        landingPads: [{ name: "delta", startX: 250, endX: 300, y: 50 }]
+        landingPads: [{ name: "delta", startX: 250, endX: 300, y: 55 }]
     },
     {
         name: "Tranquility",
@@ -105,8 +105,8 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 550, y: 0 },
         ],
         landingPads: [
-            { name: "tranquility base", startX: 300, endX: 350, y: 350 },
-            { name: "gamma", startX: 400, endX: 455, y: 150 }
+            { name: "tranquility base", startX: 300, endX: 350, y: 355 },
+            { name: "gamma", startX: 400, endX: 455, y: 155 }
         ]
     }
 ];
