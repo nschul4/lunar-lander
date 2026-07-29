@@ -6,7 +6,7 @@ export class WorldCreator {
      * Spawns the sequential layout of the world map and counts the total landing pads.
      */
     public static createWorld(scene: Phaser.Scene): number {
-        let currentX = 100;
+        let currentX = 0;
         const groundY = 1000;
         let totalPads = 0;
 
