@@ -139,11 +139,12 @@ export class GameSceneOverlay extends Phaser.Scene {
     let elapsed = time - this.initialTime;
 
     if (this.gameScene?.gameOver) {
-      // If the game just ended, capture the exact timestamp of victory/failure
+      // If the game just ended (win or loss), freeze time and freeze status overlay display
       if (this.finalTime === null) {
         this.finalTime = elapsed;
+        this.text1.setText(this.createStatusReport(this.finalTime));
       }
-      elapsed = this.finalTime;
+      return;
     }
 
     if (time - this.lastStatusReportTime > 250) {
@@ -156,4 +157,4 @@ export class GameSceneOverlay extends Phaser.Scene {
       + (this.controllerScene?.rotatingRight == true ? ">" : " ")
     );
   }
-} 
+}
