@@ -46,17 +46,17 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
     depth: -1,
     parallaxFactor: 0.1,
     vertices: [
-      { x: 0, y: 150 },
-      { x: 330, y: 250 },
-      { x: 760, y: 350 },
-      { x: 900, y: 450 },
-      { x: 950, y: 330 },
-      { x: 1100, y: 100 },
+      { x: 0, y: 50 },
+      { x: 450, y: 250 },
+      { x: 680, y: 400 },
+      { x: 770, y: 550 },
+      { x: 920, y: 350 },
+      { x: 1300, y: 150 },
       { x: 1480, y: 250 },
       { x: 1780, y: 320 },
       { x: 2050, y: 550 },
       { x: 2230, y: 240 },
-      { x: 2700, y: 150 }
+      { x: 2700, y: 50 }
     ]
   }
 ];
