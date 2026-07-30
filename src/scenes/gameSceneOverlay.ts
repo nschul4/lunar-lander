@@ -16,6 +16,7 @@ export class GameSceneOverlay extends Phaser.Scene {
   private text2!: Phaser.GameObjects.Text;
   private failText!: Phaser.GameObjects.Text;
   private winText!: Phaser.GameObjects.Text;
+  private pauseText!: Phaser.GameObjects.Text;
 
   constructor() {
     super({
@@ -28,6 +29,7 @@ export class GameSceneOverlay extends Phaser.Scene {
     if (!this.scene.isPaused()) {
       // Use performance.now() for real wall-clock time
       this.pauseStartTime = performance.now();
+      this.showPauseText();
       this.sys.pause();
     }
     return this;
@@ -38,9 +40,22 @@ export class GameSceneOverlay extends Phaser.Scene {
       // Measure how much real time elapsed while paused
       this.totalPausedTime += (performance.now() - this.pauseStartTime);
       this.pauseStartTime = 0;
+      this.hidePauseText();
       this.sys.resume();
     }
     return this;
+  }
+
+  public showPauseText() {
+    if (this.pauseText) {
+      this.pauseText.setVisible(true);
+    }
+  }
+
+  public hidePauseText() {
+    if (this.pauseText) {
+      this.pauseText.setVisible(false);
+    }
   }
 
   private createStatusReport(time: number): string {
@@ -167,6 +182,25 @@ export class GameSceneOverlay extends Phaser.Scene {
     );
     this.winText.setOrigin();
     this.winText.setVisible(false);
+
+    this.pauseText = this.add.text(
+      width / 2, 100,
+      "paused",
+      {
+        fontSize: 32 + 'px',
+        color: 'white',
+        backgroundColor: 'orange',
+        strokeThickness: 1,
+        padding: {
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 15,
+        },
+      }
+    );
+    this.pauseText.setOrigin();
+    this.pauseText.setVisible(false);
   }
 
   update(time: number, delta: number): void {
