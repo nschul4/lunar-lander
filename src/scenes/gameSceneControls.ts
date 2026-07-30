@@ -33,9 +33,9 @@ export class GameSceneControls extends Phaser.Scene {
     }).setOrigin(0.5);
 
     const keyboardInstructions = [
-      "LEFT ARROW   - Rotate Left",
-      "RIGHT ARROW  - Rotate Right",
-      "UP ARROW     - Main Thruster"
+      "LEFT ARROW - Rotate Left",
+      "RIGHT ARROW - Rotate Right",
+      "UP ARROW - Main Thruster"
     ];
 
     keyboardInstructions.forEach((text, index) => {
@@ -54,9 +54,9 @@ export class GameSceneControls extends Phaser.Scene {
     }).setOrigin(0.5);
 
     const touchInstructions = [
-      "Left 1/3 Screen   - Rotate Left",
+      "Left 1/3 Screen - Rotate Left",
       "Center 1/3 Screen - Main Thruster",
-      "Right 1/3 Screen  - Rotate Right"
+      "Right 1/3 Screen - Rotate Right"
     ];
 
     touchInstructions.forEach((text, index) => {
