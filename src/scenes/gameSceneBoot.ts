@@ -1,5 +1,4 @@
 import { g_version } from "../version";
-import starfieldImg from "../../public/assets/starfield2.png";
 
 export class GameSceneBoot extends Phaser.Scene {
 
@@ -14,7 +13,7 @@ export class GameSceneBoot extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image('background', starfieldImg);
+    this.load.image('background', '/assets/starfield2.png');
   }
 
   create(): void {
