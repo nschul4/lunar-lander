@@ -7,10 +7,12 @@ import { GameSceneController } from "../scenes/gameSceneController";
 import { Logger } from "../logger";
 import { g_version } from "../version";
 
-Logger.log("top of lander test/game.ts");
+Logger.log("top of lander subapp/1.ts");
 
 const width: number = 1440;
 const height: number = 720;
+
+const bootScene = new GameSceneBoot({ nextScene: "GameScene" });
 
 const config = {
   title: "lander-test",
@@ -20,7 +22,7 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  scene: [GameSceneBoot, GameSceneController, GameSceneOverlay, GameSceneLevelOverview],
+  scene: [bootScene, GameSceneController, GameSceneOverlay, GameSceneLevelOverview],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,

@@ -12,6 +12,9 @@ Logger.log("top of lander subapp/0.ts");
 const width: number = 1440;
 const height: number = 720;
 
+// GameSceneInstrumented registers as "GameScene", so Boot needs to launch "GameScene"
+const bootScene = new GameSceneBoot({ nextScene: "GameScene" });
+
 const config = {
   title: "lander-staging",
   url: "https://nschul4.github.io/www/phaser/lander/",
@@ -20,7 +23,7 @@ const config = {
   width: width,
   height: height,
   parent: 'phaser-app',
-  scene: [GameSceneBoot, GameSceneController, GameSceneOverlay, GameSceneInstrumented],
+  scene: [bootScene, GameSceneController, GameSceneOverlay, GameSceneInstrumented],
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,
