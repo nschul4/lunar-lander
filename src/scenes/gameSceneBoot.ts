@@ -3,11 +3,13 @@ import { g_version } from "../version";
 export class GameSceneBoot extends Phaser.Scene {
 
   private helloMessage: string = "lander v" + g_version;
+  private nextSceneKey: string;
 
-  constructor() {
+  constructor(config?: { key?: string; nextScene?: string }) {
     super({
-      key: "BootScene"
+      key: config?.key ?? "BootScene"
     });
+    this.nextSceneKey = config?.nextScene ?? "ControlsScene";
   }
 
   preload(): void {
@@ -33,7 +35,7 @@ export class GameSceneBoot extends Phaser.Scene {
 
   update(): void {
     this.time.delayedCall(100, () => {
-      this.scene.start("GameScene");
+      this.scene.start(this.nextSceneKey);
     }, [], this);
   }
 }
