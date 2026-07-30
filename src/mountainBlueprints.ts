@@ -91,7 +91,7 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
     },
     {
         name: "Tranquility",
-        width: 400,
+        width: 560,
         height: 500,
         vertices: [
             { x: 0, y: 0 },
@@ -102,11 +102,28 @@ export const MOUNTAIN_DATABASE: MountainBlueprint[] = [
             { x: 350, y: 350 },
             { x: 400, y: 150 },
             { x: 450, y: 150 },
-            { x: 550, y: 0 },
+            { x: 570, y: 0 },
         ],
         landingPads: [
             { name: "tranquility base", startX: 300, endX: 350, y: 355 },
             { name: "gamma", startX: 400, endX: 450, y: 155 }
         ]
+    },
+    {
+        name: "Wallace",
+        width: 800,
+        height: 500,
+        vertices: [
+            { x: 0, y: 0 },
+            { x: 170, y: 300 },
+            { x: 230, y: 250 },
+            { x: 290, y: 450 },
+            { x: 340, y: 400 },
+            { x: 410, y: 610 },
+            { x: 550, y: 200 },
+            { x: 610, y: 260 },
+            { x: 800, y: 0 },
+        ],
+        landingPads: [ ]
     }
 ];
