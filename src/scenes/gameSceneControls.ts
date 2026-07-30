@@ -35,8 +35,7 @@ export class GameSceneControls extends Phaser.Scene {
     const keyboardInstructions = [
       "LEFT ARROW   - Rotate Left",
       "RIGHT ARROW  - Rotate Right",
-      "UP ARROW     - Main Thruster",
-      "ESC          - Pause Game"
+      "UP ARROW     - Main Thruster"
     ];
 
     keyboardInstructions.forEach((text, index) => {

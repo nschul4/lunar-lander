@@ -9,6 +9,8 @@ export class GameSceneOverlay extends Phaser.Scene {
   private initialTime: number = 0;
   private lastStatusReportTime: number = 0;
   private finalTime: number | null = null;
+  private pauseStartTime: number = 0;
+  private totalPausedTime: number = 0;
 
   private text1!: Phaser.GameObjects.Text;
   private text2!: Phaser.GameObjects.Text;
@@ -20,6 +22,25 @@ export class GameSceneOverlay extends Phaser.Scene {
       key: "GameSceneOverlay",
       active: false,
     });
+  }
+
+  public pause(): this {
+    if (!this.scene.isPaused()) {
+      // Use performance.now() for real wall-clock time
+      this.pauseStartTime = performance.now();
+      this.sys.pause();
+    }
+    return this;
+  }
+
+  public resume(): this {
+    if (this.scene.isPaused() && this.pauseStartTime > 0) {
+      // Measure how much real time elapsed while paused
+      this.totalPausedTime += (performance.now() - this.pauseStartTime);
+      this.pauseStartTime = 0;
+      this.sys.resume();
+    }
+    return this;
   }
 
   private createStatusReport(time: number): string {
@@ -77,6 +98,8 @@ export class GameSceneOverlay extends Phaser.Scene {
     this.scene.restart();
     this.initialTime = this.time.now;
     this.finalTime = null;
+    this.pauseStartTime = 0;
+    this.totalPausedTime = 0;
   }
 
   create(): void {
@@ -148,7 +171,7 @@ export class GameSceneOverlay extends Phaser.Scene {
 
   update(time: number, delta: number): void {
 
-    let elapsed = time - this.initialTime;
+    let elapsed = (time - this.initialTime) - this.totalPausedTime;
 
     if (this.gameScene?.gameOver) {
       // If the game just ended (win or loss), freeze time and freeze status overlay display
