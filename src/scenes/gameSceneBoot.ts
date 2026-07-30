@@ -13,7 +13,7 @@ export class GameSceneBoot extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.setPath('/src/assets/');
+    this.load.setPath('src/assets/');
     this.load.image('background', 'starfield2.png');
   }
 
