@@ -17,7 +17,7 @@ const bootScene = new GameSceneBoot({ nextScene: "GameScene" });
 
 const config = {
   title: "lander-staging",
-  url: "https://nschul4.github.io/www/phaser/lander/",
+  url: "https://github.com/nschul4/lunar-lander",
   version: g_version,
   type: Phaser.AUTO,
   width: width,
