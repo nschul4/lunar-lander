@@ -1,4 +1,5 @@
 import { GameScene } from "./gameScene";
+import { GameSceneOverlay } from "./gameSceneOverlay";
 
 export class GameSceneController extends Phaser.Scene {
 
@@ -7,6 +8,7 @@ export class GameSceneController extends Phaser.Scene {
   public rotatingRight: boolean = false;
 
   private gameScene: GameScene | null = null;
+  private overlayScene: GameSceneOverlay | null = null;
 
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private escKeyObj!: Phaser.Input.Keyboard.Key;
@@ -37,6 +39,7 @@ export class GameSceneController extends Phaser.Scene {
     this.input.addPointer(1);
 
     this.gameScene = (<GameScene>this.scene.get('GameScene'));
+    this.overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
     this.cursors = this.input.keyboard!.createCursorKeys();
     this.escKeyObj = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
   }
@@ -82,8 +85,16 @@ export class GameSceneController extends Phaser.Scene {
       (this.input.pointer2.isDown && this.isPointingRight(this.input.pointer2))
       ;
 
-    if (this.escKeyObj.isDown) {
-      this.gameScene?.pause();
+    if (Phaser.Input.Keyboard.JustDown(this.escKeyObj)) {
+      if (this.gameScene) {
+        if (this.scene.isPaused("GameScene")) {
+          this.scene.resume("GameScene");
+          this.overlayScene?.resume();
+        } else {
+          this.scene.pause("GameScene");
+          this.overlayScene?.pause();
+        }
+      }
     }
   }
 }
