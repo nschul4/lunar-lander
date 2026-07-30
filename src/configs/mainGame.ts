@@ -27,6 +27,12 @@ const config = {
   height: height,
   parent: 'phaser-app',
   scene: [bootScene, GameSceneControls, GameSceneController, GameSceneOverlay, GameScene],
+
+  fps: {
+    target: 30,
+    forceSetTimeOut: true
+  },
+
   scale: {
     parent: 'phaser-app',
     mode: Phaser.Scale.FIT,
