@@ -41,7 +41,7 @@ const config = {
     default: 'matter',
     matter: {
       debug: false,
-      autoUpdate: false,
+      autoUpdate: true,
       fixedStep: true
     }
   },

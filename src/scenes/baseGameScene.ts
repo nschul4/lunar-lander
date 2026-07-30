@@ -147,7 +147,6 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    this.matter.step(16.666);
 
     this.lander.update(this.controllerScene);
 
