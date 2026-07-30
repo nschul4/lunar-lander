@@ -39,21 +39,30 @@ export class GameSceneOverlay extends Phaser.Scene {
       velY = lander.getVelocityY();
     }
 
-    return ""
+    const verticalSpeed = Number(-(velY * 100).toFixed(0));
+    const horizontalSpeed = Number((velX * 100).toFixed(0));
+
+    let report = ""
       + "time: " + (time / 1000).toFixed(0)
       + "\n"
       + "landings: " + (this.gameScene?.successCount ?? 0) + "/" + (this.gameScene?.noOfSuccessesPossible ?? 0)
       + "\n"
-      + "altitude: " + Number(altitude).toFixed(0)
-      + "\n"
-      + "speed:"
-      + "\n"
-      + "    vertical: "
-      + Number(-(velY * 100).toFixed(0))
-      + "\n"
-      + "  horizontal: "
-      + Number((velX * 100).toFixed(0))
-      ;
+      + "altitude: " + Number(altitude).toFixed(0);
+
+    // Only append the speed section if either vertical or horizontal speed is non-zero
+    if (verticalSpeed !== 0 || horizontalSpeed !== 0) {
+      report += ""
+        + "\n"
+        + "speed:"
+        + "\n"
+        + "    vertical: "
+        + verticalSpeed
+        + "\n"
+        + "  horizontal: "
+        + horizontalSpeed;
+    }
+
+    return report;
   }
 
   public fail() {

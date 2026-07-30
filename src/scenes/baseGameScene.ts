@@ -5,7 +5,7 @@ import { Lander } from "../lander";
 import { EnvironmentManager } from "../environmentManager";
 
 export abstract class BaseGameScene extends Phaser.Scene {
-  private static readonly GRAVITY_Y = 0.0065;
+  private static readonly GRAVITY_Y = 0.006;
 
   private static readonly MAX_SAFE_HORIZONTAL_SPEED = 0.05;
   private static readonly MAX_SAFE_VERTICAL_SPEED = 0.4;
