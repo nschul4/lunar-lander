@@ -68,6 +68,10 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (!this.scene.isActive("GameSceneOverlay")) {
+      this.scene.launch("GameSceneOverlay");
+    }
+
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
 

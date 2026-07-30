@@ -18,7 +18,7 @@ export class GameSceneOverlay extends Phaser.Scene {
   constructor() {
     super({
       key: "GameSceneOverlay",
-      active: true,
+      active: false,
     });
   }
 
