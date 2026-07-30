@@ -14,7 +14,7 @@ const height: number = 720;
 
 const config = {
   title: "lander-designer",
-  url: "https://nschul4.github.io/www/phaser/lander/",
+  url: "https://github.com/nschul4/lunar-lander",
   version: g_version,
   type: Phaser.AUTO,
   width: width,
