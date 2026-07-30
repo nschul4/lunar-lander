@@ -23,21 +23,32 @@ export class GameSceneMountainDesign extends Phaser.Scene {
         this.drawMeasurementGrid();
 
         this.titleText = this.add.text(width / 10, 40, '', { fontSize: '24px', color: '#00ff00', fontStyle: 'bold' }).setOrigin(0);
-        this.add.text(width / 2, height - 40, "Press LEFT / RIGHT arrows to cycle mountains", { fontSize: '18px', color: '#aaaaaa' }).setOrigin(0.5);
+        this.add.text(width / 2, height - 40, "Press LEFT/RIGHT arrows or Click/Ctrl-Click to cycle mountains", { fontSize: '18px', color: '#aaaaaa' }).setOrigin(0.5);
 
         this.loadMountain();
 
+        // Keyboard Navigation
         this.input.keyboard!.on('keydown-LEFT', () => {
-            this.currentIdx = (this.currentIdx - 1 + MOUNTAIN_DATABASE.length) % MOUNTAIN_DATABASE.length;
-            this.saveMountainSelection();
-            this.loadMountain();
+            this.stepMountain(-1);
         });
 
         this.input.keyboard!.on('keydown-RIGHT', () => {
-            this.currentIdx = (this.currentIdx + 1) % MOUNTAIN_DATABASE.length;
-            this.saveMountainSelection();
-            this.loadMountain();
+            this.stepMountain(1);
         });
+
+        // Pointer / Click Navigation
+        this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+            const event = pointer.event as MouseEvent;
+            // Ctrl-click or Cmd-click (macOS) moves backward (-1), regular click moves forward (+1)
+            const delta = (event.ctrlKey || event.metaKey) ? -1 : 1;
+            this.stepMountain(delta);
+        });
+    }
+
+    private stepMountain(delta: number): void {
+        this.currentIdx = (this.currentIdx + delta + MOUNTAIN_DATABASE.length) % MOUNTAIN_DATABASE.length;
+        this.saveMountainSelection();
+        this.loadMountain();
     }
 
     /**
