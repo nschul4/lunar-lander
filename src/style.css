@@ -1,0 +1,18 @@
+/* src/style.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100dvh; /* Prevents mobile Chrome URL bar from squishing/clipping the page */
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  touch-action: none; /* Prevents pull-to-refresh & page dragging when holding controls */
+}
+
+#phaser-app {
+  width: 100%;
+  height: 100%;
+}

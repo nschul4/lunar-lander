@@ -1,3 +1,4 @@
+import "../style.css";
 import "phaser";
 import { GameSceneMountainDesign } from "../scenes/gameSceneMountainDesign";
 import { Logger } from "../logger";
@@ -35,7 +36,7 @@ const config = {
     default: 'matter',
     matter: {
       debug: true,
-      autoUpdate: true,
+      autoUpdate: false,
       fixedStep: true,
       debugShowInternalEdges: true,
       debugShowConvexHulls: true

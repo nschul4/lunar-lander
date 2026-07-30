@@ -1,3 +1,4 @@
+import "../style.css";
 import "phaser";
 
 import { GameSceneBoot } from "../scenes/gameSceneBoot";
@@ -40,7 +41,7 @@ const config = {
     default: 'matter',
     matter: {
       debug: false,
-      autoUpdate: true,
+      autoUpdate: false,
       fixedStep: true
     }
   },
