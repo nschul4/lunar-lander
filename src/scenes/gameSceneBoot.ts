@@ -34,7 +34,7 @@ export class GameSceneBoot extends Phaser.Scene {
   }
 
   update(): void {
-    this.time.delayedCall(100, () => {
+    this.time.delayedCall(500, () => {
       this.scene.start(this.nextSceneKey);
     }, [], this);
   }

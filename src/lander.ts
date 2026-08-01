@@ -15,7 +15,7 @@ export class Lander {
   public thrust: Phaser.GameObjects.Sprite;
   private devGrid: LanderGrid;
 
-  private static readonly THRUST_FORCE = 0.000025;
+  private static readonly THRUST_FORCE = 0.000027;
   private static readonly ROTATION_SPEED = 0.008;
 
   constructor(scene: Phaser.Scene) {
