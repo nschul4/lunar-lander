@@ -58,6 +58,21 @@ export class GameSceneOverlay extends Phaser.Scene {
     }
   }
 
+  private formatElapsedTime(totalSeconds: number): string {
+    const secondsNum = Math.floor(totalSeconds);
+    const hours = Math.floor(secondsNum / 3600);
+    const minutes = Math.floor((secondsNum % 3600) / 60);
+    const seconds = secondsNum % 60;
+
+    const pad = (num: number): string => num.toString().padStart(2, '0');
+
+    if (hours > 0) {
+      return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    return `${pad(minutes)}:${pad(seconds)}`;
+  }
+
   private createStatusReport(time: number): string {
     const lander = this.gameScene?.lander;
 
@@ -79,7 +94,7 @@ export class GameSceneOverlay extends Phaser.Scene {
     const horizontalSpeed = Number((velX * 100).toFixed(0));
 
     let report = ""
-      + "time: " + (time / 1000).toFixed(0)
+      + "time: " + this.formatElapsedTime(time / 1000)
       + "\n"
       + "landings: " + (this.gameScene?.successCount ?? 0) + "/" + (this.gameScene?.noOfSuccessesPossible ?? 0)
       + "\n"
