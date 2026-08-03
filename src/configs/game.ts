@@ -1,10 +1,10 @@
 import "phaser";
 
-import { BootScene } from "./scenes/bootScene";
-import { GameScene } from "./scenes/gameScene";
-import { GameSceneOverlay } from "./scenes/gameSceneOverlay";
-import { ControllerScene } from "./scenes/controllerScene";
-import { g_version } from "./version";
+import { BootScene } from "../games/lander/scenes/bootScene";
+import { GameScene } from "../games/lander/scenes/gameScene";
+import { GameSceneOverlay } from "../games/lander/scenes/gameSceneOverlay";
+import { ControllerScene } from "../games/lander/scenes/controllerScene";
+import { g_version } from "../version";
 
 const width: number = 1440;
 const height: number = 720;

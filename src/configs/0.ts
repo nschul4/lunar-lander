@@ -1,10 +1,10 @@
 import "phaser";
 
-import { BootScene } from "../scenes/bootScene";
-import { GameSceneInstrumented } from "../scenes/gameSceneInstrumented";
-import { GameSceneOverlay } from "../scenes/gameSceneOverlay";
-import { ControllerScene } from "../scenes/controllerScene";
-import { Logger } from "../../../common/classes/logger";
+import { BootScene } from "../games/lander/scenes/bootScene";
+import { GameSceneInstrumented } from "../games/lander/scenes/gameSceneInstrumented";
+import { GameSceneOverlay } from "../games/lander/scenes/gameSceneOverlay";
+import { ControllerScene } from "../games/lander/scenes/controllerScene";
+import { Logger } from "../common/classes/logger";
 import { g_version } from "../version";
 
 Logger.log("top of lander subapp/0.ts");
