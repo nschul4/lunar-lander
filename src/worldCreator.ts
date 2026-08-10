@@ -1,6 +1,6 @@
 import { Mountain } from "./mountain";
-import { MOUNTAIN_DATABASE } from "./mountainBlueprints";
-import type { MountainBlueprint } from "./mountainBlueprints";
+import { LEVEL_1_MOUNTAINS } from "./level1MountainBlueprints";
+import type { MountainBlueprint } from "./mountainTypes";
 
 export class WorldCreator {
   /**
@@ -8,7 +8,7 @@ export class WorldCreator {
    */
   public static createWorld(
     scene: Phaser.Scene,
-    mountains: MountainBlueprint[] = MOUNTAIN_DATABASE,
+    mountains: MountainBlueprint[] = LEVEL_1_MOUNTAINS,
     groundY: number = 1000
   ): number {
     let currentX = 0;

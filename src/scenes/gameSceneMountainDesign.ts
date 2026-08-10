@@ -1,4 +1,4 @@
-import { MountainBlueprint } from "../mountainBlueprints";
+import { MountainBlueprint } from "../mountainTypes";
 import { WorldCreator } from "../worldCreator";
 import { getLevelFromUrl } from "../levelUtil";
 import { LevelBlueprint } from "../levelBlueprints";

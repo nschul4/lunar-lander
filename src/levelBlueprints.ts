@@ -1,5 +1,6 @@
-import { MOUNTAIN_DATABASE, MountainBlueprint } from "./mountainBlueprints";
 import { LEVEL_0_MOUNTAINS } from "./level0MountainBlueprints";
+import { LEVEL_1_MOUNTAINS } from "./level1MountainBlueprints";
+import { MountainBlueprint } from "./mountainTypes";
 import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./mountainRangeBlueprints";
 import { LanderSpawnConfig } from "./lander";
 
@@ -14,10 +15,6 @@ export interface LevelBlueprint {
   backgroundRanges: MountainRangeBlueprint[];
 }
 
-/**
- * Level 0: Introductory training course.
- * Shorter map width (1500px), slightly lighter gravity, and a gentle introductory sequence.
- */
 export const LEVEL_0: LevelBlueprint = {
   id: "level_0",
   name: "Tranquility Basin",
@@ -35,9 +32,6 @@ export const LEVEL_0: LevelBlueprint = {
   backgroundRanges: BACKGROUND_RANGES_DATABASE
 };
 
-/**
- * Level 1: Full-length course across complete mountain database.
- */
 export const LEVEL_1: LevelBlueprint = {
   id: "level_1",
   name: "Lunar Mare",
@@ -51,7 +45,7 @@ export const LEVEL_1: LevelBlueprint = {
     velocityX: 1.5,
     velocityY: 0
   },
-  mountains: MOUNTAIN_DATABASE,
+  mountains: LEVEL_1_MOUNTAINS,
   backgroundRanges: BACKGROUND_RANGES_DATABASE
 };
 

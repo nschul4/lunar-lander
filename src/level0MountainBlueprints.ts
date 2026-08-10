@@ -1,4 +1,4 @@
-import { MountainBlueprint } from "./mountainBlueprints";
+import { MountainBlueprint } from "./mountainTypes";
 
 export const LEVEL_0_MOUNTAINS: MountainBlueprint[] = [
   {
