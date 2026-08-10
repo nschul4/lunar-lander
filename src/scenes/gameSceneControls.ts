@@ -89,6 +89,6 @@ export class GameSceneControls extends Phaser.Scene {
   }
 
   private startGame(): void {
-    this.scene.start(this.nextSceneKey);
+    this.scene.start(this.nextSceneKey, { levelIndex: 0 });
   }
 }

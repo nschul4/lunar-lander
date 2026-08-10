@@ -3,7 +3,7 @@ import { GameSceneOverlay } from "./gameSceneOverlay";
 import { WorldCreator } from "../worldCreator";
 import { Lander } from "../lander";
 import { EnvironmentManager } from "../environmentManager";
-import { LevelBlueprint, LEVEL_1 } from "../levelBlueprints";
+import { LevelBlueprint, LEVELS } from "../levelBlueprints";
 
 export abstract class BaseGameScene extends Phaser.Scene {
   private static readonly MAX_SAFE_HORIZONTAL_SPEED = 0.05;
@@ -14,7 +14,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
   public worldHeight: number = 1000;
   public gravityY: number = 0.006;
 
-  protected level: LevelBlueprint = LEVEL_1;
+  public currentLevelIndex: number = 0;
+  protected level: LevelBlueprint = LEVELS[0];
 
   public lander!: Lander;
   protected controllerScene: any = null;
@@ -28,6 +29,20 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
   constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
     super(config);
+  }
+
+  init(data?: { levelIndex?: number; level?: LevelBlueprint }): void {
+    if (data?.levelIndex !== undefined && LEVELS[data.levelIndex]) {
+      this.currentLevelIndex = data.levelIndex;
+      this.level = LEVELS[data.levelIndex];
+    } else if (data?.level) {
+      this.level = data.level;
+      const foundIdx = LEVELS.findIndex(l => l.id === data.level?.id);
+      this.currentLevelIndex = foundIdx !== -1 ? foundIdx : 0;
+    } else {
+      this.currentLevelIndex = 0;
+      this.level = LEVELS[0];
+    }
   }
 
   public pause(): void {
@@ -52,7 +67,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.time.delayedCall(3000, () => {
       this.successCount = 0;
       this.gameOver = false;
-      this.scene.restart();
+      this.scene.restart({ levelIndex: this.currentLevelIndex });
       if (overlayScene) {
         overlayScene.restart();
       }
@@ -72,7 +87,8 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.time.delayedCall(7000, () => {
       this.successCount = 0;
       this.gameOver = false;
-      this.scene.restart();
+      const nextIndex = (this.currentLevelIndex + 1) % LEVELS.length;
+      this.scene.restart({ levelIndex: nextIndex });
       if (overlayScene) {
         overlayScene.restart();
       }

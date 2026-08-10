@@ -1,10 +1,8 @@
 import { BaseGameScene } from "./baseGameScene";
-import { LEVEL_1 } from "../levelBlueprints";
 
 export class GameScene extends BaseGameScene {
   constructor() {
     super({ key: "GameScene" });
-    this.level = LEVEL_1;
   }
 
   create(): void {

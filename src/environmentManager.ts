@@ -29,10 +29,10 @@ export class EnvironmentManager {
     for (const blueprint of ranges) {
       this.generateRangeTexture(blueprint);
 
-      // Set origin to (0, 1) bottom-left so placement at tileY=1000 anchors flush to ground
+      // Anchor Y to worldHeight so placement anchors flush to ground regardless of world height
       const sprite = this.scene.add.tileSprite(
         blueprint.tileX,
-        blueprint.tileY,
+        worldHeight,
         blueprint.tileWidth,
         blueprint.tileHeight,
         blueprint.key
