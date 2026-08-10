@@ -24,9 +24,9 @@ export const LEVEL_0: LevelBlueprint = {
   spawnPosition: {
     x: 100,
     y: 250,
-    angle: -90,
-    velocityX: 1.0,
-    velocityY: 0
+    angle: -5,
+    velocityX: 0.58,
+    velocityY: -0.1
   },
   mountains: LEVEL_0_MOUNTAINS,
   backgroundRanges: BACKGROUND_RANGES_DATABASE
