@@ -4,15 +4,17 @@ import "phaser";
  * Draws the measurement grid system restricted cleanly to the playable map boundaries.
  * Adds green coloration and labels for ALL 100px increments (both major and minor).
  */
-export function drawMeasurementGrid(scene: Phaser.Scene): void {
+export function drawMeasurementGrid(
+  scene: Phaser.Scene,
+  worldWidth: number,
+  worldMaxY: number
+): void {
   const gridGraphics = scene.add.graphics();
 
   // Placed exactly between background layers and foreground terrain
   gridGraphics.setDepth(10);
 
-  const worldWidth = 3000;
   const worldMinY = 0;
-  const worldMaxY = 1000;
 
   // 1. Draw ALL Horizontal Grid Lines (Every 100px)
   for (let y = worldMinY; y <= worldMaxY; y += 100) {

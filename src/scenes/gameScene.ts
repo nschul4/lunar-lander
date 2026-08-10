@@ -1,21 +1,27 @@
 import { BaseGameScene } from "./baseGameScene";
+import { LEVEL_1 } from "../levelBlueprints";
 
 export class GameScene extends BaseGameScene {
   constructor() {
     super({ key: "GameScene" });
+    this.level = LEVEL_1;
   }
 
   create(): void {
     super.create(); // Boots core game mechanics natively
     this.cameras.main.setZoom(1.3);
-    this.cameras.main.scrollX = this.lander.x - this.cameras.main.width / 2;
-    this.cameras.main.scrollY = this.lander.y - this.cameras.main.height / 2;
+    if (this.lander) {
+      this.cameras.main.scrollX = this.lander.x - this.cameras.main.width / 2;
+      this.cameras.main.scrollY = this.lander.y - this.cameras.main.height / 2;
+    }
   }
 
   update(time: number, delta: number): void {
     super.update(time, delta);
 
-    // Keep camera following lander!
+    // Halt camera tracking if game is over or lander is unmounted
+    if (this.gameOver || !this.lander) return;
+
     const targetCamX = this.lander.x - this.cameras.main.width / 2;
     const targetCamY = this.lander.y - this.cameras.main.height / 2;
 

@@ -5,19 +5,28 @@ export class EnvironmentManager {
   private backgroundStarfield!: Phaser.GameObjects.TileSprite;
   private activeRanges: { sprite: Phaser.GameObjects.TileSprite; factor: number }[] = [];
 
-  constructor(scene: Phaser.Scene) {
+  constructor(
+    scene: Phaser.Scene,
+    ranges: MountainRangeBlueprint[] = BACKGROUND_RANGES_DATABASE,
+    worldWidth: number = 3000,
+    worldHeight: number = 1000
+  ) {
     this.scene = scene;
-    this.createLayers();
+    this.createLayers(ranges, worldWidth, worldHeight);
   }
 
-  private createLayers(): void {
+  private createLayers(
+    ranges: MountainRangeBlueprint[],
+    worldWidth: number,
+    worldHeight: number
+  ): void {
     // 1. Core deep space backdrop anchored to fill from (0,0)
-    this.backgroundStarfield = this.scene.add.tileSprite(0, 0, 3000, 1000, 'background')
+    this.backgroundStarfield = this.scene.add.tileSprite(0, 0, worldWidth, worldHeight, 'background')
       .setOrigin(0, 0)
       .setDepth(-3);
 
     // 2. Loop through background mountain range data blueprints dynamically
-    for (const blueprint of BACKGROUND_RANGES_DATABASE) {
+    for (const blueprint of ranges) {
       this.generateRangeTexture(blueprint);
 
       // Set origin to (0, 1) bottom-left so placement at tileY=1000 anchors flush to ground

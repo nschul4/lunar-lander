@@ -8,10 +8,9 @@ export class GameSceneOverview extends BaseGameScene {
 
   create(): void {
     super.create();
-    drawMeasurementGrid(this); // Calls the helper utility externally!
-
+    drawMeasurementGrid(this, this.worldWidth, this.worldHeight);
     // Explicitly overrides standard tracking to give a fixed global bird's-eye layout
-    this.cameras.main.centerOn(1500, 500);
+    this.cameras.main.centerOn(this.worldWidth / 2, this.worldHeight / 2);
     this.cameras.main.setZoom(0.45);
   }
 

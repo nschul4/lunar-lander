@@ -8,7 +8,7 @@ export class GameSceneInstrumented extends GameScene {
 
   create(): void {
     super.create();
-    drawMeasurementGrid(this);
+    drawMeasurementGrid(this, this.worldWidth, this.worldHeight);
   }
 
   update(time: number, delta: number): void {

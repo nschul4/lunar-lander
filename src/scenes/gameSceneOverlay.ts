@@ -76,8 +76,7 @@ export class GameSceneOverlay extends Phaser.Scene {
   private createStatusReport(time: number): string {
     const lander = this.gameScene?.lander;
 
-    // Default ground level reference matching world bounds height
-    const GROUND_LEVEL = 1000;
+    const groundLevel = this.gameScene?.worldHeight ?? 1000;
 
     let altitude = 881 + 99;
     let velX = 99.99;
@@ -85,7 +84,7 @@ export class GameSceneOverlay extends Phaser.Scene {
 
     if (lander !== undefined) {
       // Invert Y calculation so altitude decreases as the lander drops toward ground (y = 1000)
-      altitude = Math.max(0, GROUND_LEVEL - lander.y);
+      altitude = Math.max(0, groundLevel - lander.y);
       velX = lander.getVelocityX();
       velY = lander.getVelocityY();
     }

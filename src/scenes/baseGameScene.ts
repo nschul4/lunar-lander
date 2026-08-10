@@ -1,15 +1,20 @@
-import { GameSceneOverlay } from "./gameSceneOverlay";
 import { GameSceneController } from "./gameSceneController";
+import { GameSceneOverlay } from "./gameSceneOverlay";
 import { WorldCreator } from "../worldCreator";
 import { Lander } from "../lander";
 import { EnvironmentManager } from "../environmentManager";
+import { LevelBlueprint, LEVEL_1 } from "../levelBlueprints";
 
 export abstract class BaseGameScene extends Phaser.Scene {
-  private static readonly GRAVITY_Y = 0.006;
-
   private static readonly MAX_SAFE_HORIZONTAL_SPEED = 0.05;
   private static readonly MAX_SAFE_VERTICAL_SPEED = 0.4;
   private static readonly MAX_SAFE_ANGLE = 4;
+
+  public worldWidth: number = 3000;
+  public worldHeight: number = 1000;
+  public gravityY: number = 0.006;
+
+  protected level: LevelBlueprint = LEVEL_1;
 
   public lander!: Lander;
   protected controllerScene: any = null;
@@ -25,49 +30,59 @@ export abstract class BaseGameScene extends Phaser.Scene {
     super(config);
   }
 
-  public pause() {
+  public pause(): void {
     this.scene.pause();
+    this.scene.pause("GameSceneOverlay");
   }
 
-  protected objectToString(target: any): string {
-    var result: string = "";
-    Object.getOwnPropertyNames(target).forEach(
-      (name) => {
-        result += " ";
-        result += name;
-        result += ": ";
-        result += target[name];
-        result += ",\n";
-      }
-    );
-    return "{\n" + result + "}";
+  protected objectToString(obj: any): string {
+    return `[${obj.type || 'Object'} @ (${obj.x?.toFixed(1) || 0}, ${obj.y?.toFixed(1) || 0})]`;
   }
 
-  protected fail() {
+  protected fail(): void {
+    if (this.gameOver) return;
     this.gameOver = true;
-    var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
-    overlayScene.fail();
+
+    console.log("💥 CRASH DETECTED!");
+    const overlayScene = <GameSceneOverlay>this.scene.get('GameSceneOverlay');
+    if (overlayScene) {
+      overlayScene.fail();
+    }
+
     this.time.delayedCall(3000, () => {
       this.successCount = 0;
       this.gameOver = false;
       this.scene.restart();
-      overlayScene.restart();
-    }, [], this);
+      if (overlayScene) {
+        overlayScene.restart();
+      }
+    });
   }
 
-  protected win() {
+  protected win(): void {
+    if (this.gameOver) return;
     this.gameOver = true;
-    var overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
-    overlayScene.win();
+
+    console.log("🎉 MISSION SUCCESS: ALL PADS CLEARED!");
+    const overlayScene = <GameSceneOverlay>this.scene.get('GameSceneOverlay');
+    if (overlayScene) {
+      overlayScene.win();
+    }
+
     this.time.delayedCall(7000, () => {
       this.successCount = 0;
       this.gameOver = false;
       this.scene.restart();
-      overlayScene.restart();
-    }, [], this);
+      if (overlayScene) {
+        overlayScene.restart();
+      }
+    });
   }
 
   create(): void {
+    this.gameOver = false;
+    this.successCount = 0;
+
     if (!this.scene.isActive("GameSceneOverlay")) {
       this.scene.launch("GameSceneOverlay");
     }
@@ -75,11 +90,31 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
 
-    this.environmentManager = new EnvironmentManager(this);
+    this.worldWidth = this.level.worldWidth;
+    this.worldHeight = this.level.worldHeight;
+    this.gravityY = this.level.gravityY ?? 0.006;
 
-    // Layer 4: Instantiating player Lander Component
-    this.lander = new Lander(this);
-    this.matter.world.setBounds(0, 0, 3000, 1000);
+    // 1. Environment (Backgrounds & Starfield)
+    this.environmentManager = new EnvironmentManager(
+      this,
+      this.level.backgroundRanges,
+      this.worldWidth,
+      this.worldHeight
+    );
+
+    // 2. Lander initial position & physics state
+    this.lander = new Lander(this, this.level.spawnPosition);
+
+    // 3. Terrain & Landing Pads
+    this.noOfSuccessesPossible = WorldCreator.createWorld(
+      this,
+      this.level.mountains,
+      this.worldHeight
+    );
+
+    // 4. World Physics Bounds & Gravity
+    this.matter.world.setBounds(0, 0, this.worldWidth, this.worldHeight);
+    this.matter.world.setGravity(0, this.gravityY);
 
     this.matter.world.on('collisionstart', (event: any) => {
       if (this.gameOver) {
@@ -116,7 +151,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
 
         // 3. Process the lander collision mechanics
         if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
-          const landerObj = (lander.gameObject as any).lander
+          const landerObj = (lander.gameObject as any).lander;
           const absAttitude = Math.abs(landerObj.angle);
           const vx = landerObj.getVelocityX();
           const vy = landerObj.getVelocityY();
@@ -145,14 +180,12 @@ export abstract class BaseGameScene extends Phaser.Scene {
         }
       }
     }, this);
-
-    this.matter.world.setGravity(0, BaseGameScene.GRAVITY_Y);
-    this.noOfSuccessesPossible = WorldCreator.createWorld(this);
   }
 
   update(time: number, delta: number): void {
-
-    this.lander.update(this.controllerScene);
+    if (!this.gameOver && this.lander) {
+      this.lander.update(this.controllerScene);
+    }
 
     if (this.environmentManager) {
       this.environmentManager.update();

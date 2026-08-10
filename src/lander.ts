@@ -10,6 +10,14 @@ import {
   THRUST_TEXTURE_KEY
 } from "./configs/landerConfig";
 
+export interface LanderSpawnConfig {
+  x?: number;
+  y?: number;
+  angle?: number;
+  velocityX?: number;
+  velocityY?: number;
+}
+
 export class Lander {
   public sprite: Phaser.Physics.Matter.Sprite;
   public thrust: Phaser.GameObjects.Sprite;
@@ -18,20 +26,26 @@ export class Lander {
   private static readonly THRUST_FORCE = 0.000027;
   private static readonly ROTATION_SPEED = 0.008;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, config: LanderSpawnConfig = {}) {
+    const spawnX = config.x ?? 100;
+    const spawnY = config.y ?? 200;
+    const spawnAngle = config.angle ?? -90;
+    const velX = config.velocityX ?? 1.5;
+    const velY = config.velocityY ?? 0;
+
     Lander.generateLanderTexture(scene);
     Lander.generateThrustTexture(scene);
 
-    this.sprite = scene.matter.add.sprite(100, 200, LANDER_TEXTURE_KEY, undefined, {
+    this.sprite = scene.matter.add.sprite(spawnX, spawnY, LANDER_TEXTURE_KEY, undefined, {
       shape: { type: 'fromVerts', verts: LANDER_VERTICES.join(' '), flagInternal: true }
     });
 
     (this.sprite as any).lander = this;
 
-    this.sprite.setAngle(-90);
+    this.sprite.setAngle(spawnAngle);
 
     if (this.sprite.body) {
-      scene.matter.body.setVelocity(this.sprite.body as MatterJS.BodyType, { x: 1.5, y: 0 });
+      scene.matter.body.setVelocity(this.sprite.body as MatterJS.BodyType, { x: velX, y: velY });
     }
 
     this.sprite.setFrictionAir(0);

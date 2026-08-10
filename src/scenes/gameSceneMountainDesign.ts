@@ -1,142 +1,124 @@
-import { MOUNTAIN_DATABASE } from "../mountainBlueprints";
-import { Mountain } from "../mountain";
+import { MOUNTAIN_DATABASE, MountainBlueprint } from "../mountainBlueprints";
+import { WorldCreator } from "../worldCreator";
 
 export class GameSceneMountainDesign extends Phaser.Scene {
-    private static readonly STORAGE_KEY = 'selectedMountainName';
-    private currentIdx: number = 0;
-    private currentMountainObjects: Phaser.GameObjects.GameObject[] = [];
-    private titleText!: Phaser.GameObjects.Text;
-    private gridGraphics!: Phaser.GameObjects.Graphics;
-    private gridLabels: Phaser.GameObjects.Text[] = [];
+  private static readonly STORAGE_KEY = 'selectedMountainName';
+  private selectedIndex: number = 0;
+  private mountainDatabase: MountainBlueprint[] = MOUNTAIN_DATABASE;
+  private titleText!: Phaser.GameObjects.Text;
 
-    constructor() {
-        super({ key: "MountainDesignerScene" });
+  constructor() {
+    super({ key: "MountainDesignerScene" });
+  }
+
+  init(data?: { selectedIndex?: number }): void {
+    if (data && data.selectedIndex !== undefined) {
+      this.selectedIndex = data.selectedIndex;
+    } else {
+      this.selectedIndex = this.getSavedMountainIndex();
+    }
+  }
+
+  create(): void {
+    const activeBlueprint = this.mountainDatabase[this.selectedIndex];
+    const worldWidth = activeBlueprint.width;
+    const worldHeight = 1000;
+
+    const viewWidth = this.scale.width;
+    const viewHeight = this.scale.height;
+
+    // 1. Center camera horizontally on the mountain and align ground Y=1000 near the bottom of viewport
+    this.cameras.main.centerOn(
+      worldWidth / 2,
+      worldHeight - (viewHeight / 2) + 100
+    );
+
+    // 2. Draw blueprint-oriented measurement grid (Y=0 at ground, increasing upward)
+    this.drawBlueprintGrid(Math.max(worldWidth, viewWidth), worldHeight);
+
+    // 3. Render single mountain via WorldCreator starting at X = 0, Y = 1000
+    WorldCreator.createWorld(this, [activeBlueprint], worldHeight);
+
+    // 4. On-screen labels pinned to viewport
+    this.titleText = this.add.text(
+      20,
+      20,
+      `Mountain [${this.selectedIndex + 1}/${this.mountainDatabase.length}]: ${activeBlueprint.name}`,
+      { fontSize: '20px', color: '#00ff00', fontStyle: 'bold' }
+    ).setScrollFactor(0).setDepth(20);
+
+    this.add.text(
+      20,
+      50,
+      "Use LEFT / RIGHT arrow keys or Click to cycle blueprints",
+      { fontSize: '14px', color: '#aaaaaa' }
+    ).setScrollFactor(0).setDepth(20);
+
+    // 5. Save active selection to localStorage
+    this.saveMountainSelection(activeBlueprint.name);
+
+    // 6. Navigation Listeners
+    if (this.input && this.input.keyboard) {
+      this.input.keyboard.on("keydown-LEFT", () => this.cycleMountain(-1));
+      this.input.keyboard.on("keydown-RIGHT", () => this.cycleMountain(1));
     }
 
-    create(): void {
-        const width = this.scale.width;
-        const height = this.scale.height;
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      const event = pointer.event as MouseEvent;
+      const delta = (event.ctrlKey || event.metaKey) ? -1 : 1;
+      this.cycleMountain(delta);
+    });
+  }
 
-        // Restore saved selection or default to index 0
-        this.currentIdx = this.getSavedMountainIndex();
+  /**
+   * Draws a measurement grid where ground level (world Y=1000) displays as Y:0 
+   * and positive Y values increase upward matching MountainBlueprint coordinates.
+   */
+  private drawBlueprintGrid(gridWidth: number, groundY: number): void {
+    const gridGraphics = this.add.graphics();
+    gridGraphics.setDepth(10);
+    gridGraphics.lineStyle(1, 0x00ff00, 0.3);
 
-        this.drawMeasurementGrid();
+    const step = 100;
 
-        this.titleText = this.add.text(width / 10, 40, '', { fontSize: '24px', color: '#00ff00', fontStyle: 'bold' }).setOrigin(0);
-        this.add.text(width / 2, height - 40, "Press LEFT/RIGHT arrows or Click/Ctrl-Click to cycle mountains", { fontSize: '18px', color: '#aaaaaa' }).setOrigin(0.5);
+    // Vertical Lines & X Labels
+    for (let x = 0; x <= gridWidth; x += step) {
+      gridGraphics.lineBetween(x, 0, x, groundY);
 
-        this.loadMountain();
+      // Shift X:0 up higher (groundY - 32) so X sits above Y:0 at the baseline
+      const labelYOffset = x === 0 ? 32 : 20;
 
-        // Keyboard Navigation
-        this.input.keyboard!.on('keydown-LEFT', () => {
-            this.stepMountain(-1);
-        });
-
-        this.input.keyboard!.on('keydown-RIGHT', () => {
-            this.stepMountain(1);
-        });
-
-        // Pointer / Click Navigation
-        this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-            const event = pointer.event as MouseEvent;
-            // Ctrl-click or Cmd-click (macOS) moves backward (-1), regular click moves forward (+1)
-            const delta = (event.ctrlKey || event.metaKey) ? -1 : 1;
-            this.stepMountain(delta);
-        });
+      this.add.text(x + 5, groundY - labelYOffset, `X:${x}`, { fontSize: '12px', color: '#00ff00' })
+        .setAlpha(0.6)
+        .setDepth(10);
     }
 
-    private stepMountain(delta: number): void {
-        this.currentIdx = (this.currentIdx + delta + MOUNTAIN_DATABASE.length) % MOUNTAIN_DATABASE.length;
-        this.saveMountainSelection();
-        this.loadMountain();
+    // Horizontal Lines & Inverted Y Labels (worldY = 1000 becomes Y:0)
+    for (let worldY = groundY; worldY >= 0; worldY -= step) {
+      gridGraphics.lineBetween(0, worldY, gridWidth, worldY);
+      const blueprintY = groundY - worldY;
+      this.add.text(5, worldY - 15, `Y:${blueprintY}`, { fontSize: '12px', color: '#00ff00' })
+        .setAlpha(0.6)
+        .setDepth(10);
     }
+  }
 
-    /**
-     * Retrieves the stored mountain name from localStorage and finds its index.
-     * Fallbacks gracefully to index 0 if not found or invalid.
-     */
-    private getSavedMountainIndex(): number {
-        const savedName = localStorage.getItem(GameSceneMountainDesign.STORAGE_KEY);
-        if (savedName) {
-            const foundIdx = MOUNTAIN_DATABASE.findIndex(m => m.name === savedName);
-            if (foundIdx !== -1) {
-                return foundIdx;
-            }
-        }
-        return 0;
+  private cycleMountain(direction: number): void {
+    const total = this.mountainDatabase.length;
+    const nextIndex = (this.selectedIndex + direction + total) % total;
+    this.scene.restart({ selectedIndex: nextIndex });
+  }
+
+  private getSavedMountainIndex(): number {
+    const savedName = localStorage.getItem(GameSceneMountainDesign.STORAGE_KEY);
+    if (savedName) {
+      const foundIdx = this.mountainDatabase.findIndex(m => m.name === savedName);
+      if (foundIdx !== -1) return foundIdx;
     }
+    return 0;
+  }
 
-    /**
-     * Persists the currently viewed mountain's name to localStorage.
-     */
-    private saveMountainSelection(): void {
-        const currentMountain = MOUNTAIN_DATABASE[this.currentIdx];
-        if (currentMountain) {
-            localStorage.setItem(GameSceneMountainDesign.STORAGE_KEY, currentMountain.name);
-        }
-    }
-
-    /**
-     * Draws a measurement grid system shifted up by 100px 
-     * to match the mountain's ground level (Y:0).
-     */
-    private drawMeasurementGrid(): void {
-
-        if (this.gridGraphics) {
-            this.gridGraphics.destroy();
-        }
-
-        this.gridLabels.forEach(label => { if (label) label.destroy(); });
-        this.gridLabels = [];
-
-        this.gridGraphics = this.add.graphics();
-        this.gridGraphics.setDepth(10);
-
-        const viewWidth = this.scale.width;
-        const viewHeight = this.scale.height;
-        const step = 100;
-        const groundOffset = 100; // Matches targetY in loadMountain()
-
-        this.gridGraphics.lineStyle(2, 0x00ff00, 0.3);
-
-        // Vertical Lines & X Labels
-        for (let x = 0; x <= viewWidth; x += step) {
-            this.gridGraphics.lineBetween(x, 0, x, viewHeight);
-            const xLabel = this.add.text(x + 5, 5, `X:${x}`, { fontSize: '14px', color: '#00ff00' }).setAlpha(0.6).setDepth(10);
-            this.gridLabels.push(xLabel);
-        }
-
-        // Horizontal Lines & Y Labels
-        // Drawing lines so Y=0 is at (viewHeight - groundOffset)
-        for (let y = 0; y <= viewHeight; y += step) {
-            const screenY = (viewHeight - groundOffset) - y;
-
-            // Draw only within visible bounds
-            if (screenY <= viewHeight) {
-                this.gridGraphics.lineBetween(0, screenY, viewWidth, screenY);
-                const yLabel = this.add.text(5, screenY - 15, `Y:${y}`, { fontSize: '14px', color: '#00ff00' }).setAlpha(0.6).setDepth(10);
-                this.gridLabels.push(yLabel);
-            }
-        }
-    }
-
-    private loadMountain(): void {
-        this.currentMountainObjects.forEach(obj => {
-            if (obj) {
-                if ((obj as any).body) { this.matter.world.remove((obj as any).body); }
-                if (typeof obj.destroy === 'function') { obj.destroy(); }
-            }
-        });
-        this.currentMountainObjects = [];
-
-        const blueprint = MOUNTAIN_DATABASE[this.currentIdx];
-        const mountainInstance = new Mountain(blueprint);
-
-        const targetX = (this.scale.width / 2) - (blueprint.width / 2);
-        const targetY = this.scale.height - 100; // Ground level reference
-
-        this.currentMountainObjects = mountainInstance.spawn(this, targetX, targetY);
-
-        this.titleText.setText(`Mountain [${this.currentIdx + 1}/${MOUNTAIN_DATABASE.length}]: ${blueprint.name}`);
-    }
+  private saveMountainSelection(name: string): void {
+    localStorage.setItem(GameSceneMountainDesign.STORAGE_KEY, name);
+  }
 }
