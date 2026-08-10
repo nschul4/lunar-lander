@@ -1,5 +1,5 @@
-// src/levelBlueprints.ts
 import { MOUNTAIN_DATABASE, MountainBlueprint } from "./mountainBlueprints";
+import { LEVEL_0_MOUNTAINS } from "./level0MountainBlueprints";
 import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./mountainRangeBlueprints";
 import { LanderSpawnConfig } from "./lander";
 
@@ -16,7 +16,7 @@ export interface LevelBlueprint {
 
 /**
  * Level 0: Introductory training course.
- * Shorter map width (1500px), slightly lighter gravity, and a gentle 2-mountain sequence.
+ * Shorter map width (1500px), slightly lighter gravity, and a gentle introductory sequence.
  */
 export const LEVEL_0: LevelBlueprint = {
   id: "level_0",
@@ -31,7 +31,7 @@ export const LEVEL_0: LevelBlueprint = {
     velocityX: 1.0,
     velocityY: 0
   },
-  mountains: MOUNTAIN_DATABASE.slice(0, 2),
+  mountains: LEVEL_0_MOUNTAINS,
   backgroundRanges: BACKGROUND_RANGES_DATABASE
 };
 
