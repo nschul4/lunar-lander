@@ -1,49 +1,66 @@
-import { MOUNTAIN_DATABASE, MountainBlueprint } from "../mountainBlueprints";
+import { MountainBlueprint } from "../mountainBlueprints";
 import { WorldCreator } from "../worldCreator";
+import { getLevelFromUrl } from "../levelUtil";
+import { LevelBlueprint } from "../levelBlueprints";
 
 export class GameSceneMountainDesign extends Phaser.Scene {
   private static readonly STORAGE_KEY = 'selectedMountainName';
   private selectedIndex: number = 0;
-  private mountainDatabase: MountainBlueprint[] = MOUNTAIN_DATABASE;
+  private mountainDatabase: MountainBlueprint[] = [];
   private titleText!: Phaser.GameObjects.Text;
+  private level!: LevelBlueprint;
+  private levelIndex!: number;
 
   constructor() {
     super({ key: "MountainDesignerScene" });
   }
 
   init(data?: { selectedIndex?: number }): void {
+    const { level, index } = getLevelFromUrl();
+    this.level = level;
+    this.levelIndex = index;
+    this.mountainDatabase = this.level.mountains;
+
     if (data && data.selectedIndex !== undefined) {
       this.selectedIndex = data.selectedIndex;
     } else {
       this.selectedIndex = this.getSavedMountainIndex();
     }
+
+    if (this.selectedIndex >= this.mountainDatabase.length) {
+      this.selectedIndex = 0;
+    }
   }
 
   create(): void {
     const activeBlueprint = this.mountainDatabase[this.selectedIndex];
-    const worldWidth = activeBlueprint.width;
-    const worldHeight = 1000;
+    if (!activeBlueprint) return;
 
+    const worldWidth = activeBlueprint.width;
+    const worldHeight = this.level.worldHeight;
     const viewWidth = this.scale.width;
     const viewHeight = this.scale.height;
 
-    // 1. Center camera horizontally on the mountain and align ground Y=1000 near the bottom of viewport
+    // 1. Center camera horizontally on the single mountain
     this.cameras.main.centerOn(
       worldWidth / 2,
       worldHeight - (viewHeight / 2) + 100
     );
 
-    // 2. Draw blueprint-oriented measurement grid (Y=0 at ground, increasing upward)
-    this.drawBlueprintGrid(Math.max(worldWidth, viewWidth), worldHeight);
-
-    // 3. Render single mountain via WorldCreator starting at X = 0, Y = 1000
+    // 2. Render ONLY the single active mountain
     WorldCreator.createWorld(this, [activeBlueprint], worldHeight);
 
-    // 4. On-screen labels pinned to viewport
+    // 3. Draw measurement grid for the single mountain width
+    this.drawMeasurementGrid(Math.max(worldWidth, viewWidth), worldHeight);
+
+    // 4. Save active selection
+    this.saveMountainSelection(activeBlueprint.name);
+
+    // 5. HUD text pinned to viewport
     this.titleText = this.add.text(
       20,
       20,
-      `Mountain [${this.selectedIndex + 1}/${this.mountainDatabase.length}]: ${activeBlueprint.name}`,
+      `Level ${this.levelIndex + 1} (${this.level.id}) - Mountain [${this.selectedIndex + 1}/${this.mountainDatabase.length}]: ${activeBlueprint.name}`,
       { fontSize: '20px', color: '#00ff00', fontStyle: 'bold' }
     ).setScrollFactor(0).setDepth(20);
 
@@ -54,10 +71,7 @@ export class GameSceneMountainDesign extends Phaser.Scene {
       { fontSize: '14px', color: '#aaaaaa' }
     ).setScrollFactor(0).setDepth(20);
 
-    // 5. Save active selection to localStorage
-    this.saveMountainSelection(activeBlueprint.name);
-
-    // 6. Navigation Listeners
+    // 6. Cycling Listeners
     if (this.input && this.input.keyboard) {
       this.input.keyboard.on("keydown-LEFT", () => this.cycleMountain(-1));
       this.input.keyboard.on("keydown-RIGHT", () => this.cycleMountain(1));
@@ -74,7 +88,7 @@ export class GameSceneMountainDesign extends Phaser.Scene {
    * Draws a measurement grid where ground level (world Y=1000) displays as Y:0 
    * and positive Y values increase upward matching MountainBlueprint coordinates.
    */
-  private drawBlueprintGrid(gridWidth: number, groundY: number): void {
+  private drawMeasurementGrid(gridWidth: number, groundY: number): void {
     const gridGraphics = this.add.graphics();
     gridGraphics.setDepth(10);
     gridGraphics.lineStyle(1, 0x00ff00, 0.3);
@@ -104,6 +118,7 @@ export class GameSceneMountainDesign extends Phaser.Scene {
   }
 
   private cycleMountain(direction: number): void {
+    if (this.mountainDatabase.length === 0) return;
     const total = this.mountainDatabase.length;
     const nextIndex = (this.selectedIndex + direction + total) % total;
     this.scene.restart({ selectedIndex: nextIndex });
