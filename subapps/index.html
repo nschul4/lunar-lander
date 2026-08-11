@@ -19,24 +19,24 @@
         h1 {
             color: #00ff00;
             margin-bottom: 2rem;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .nav-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
             width: 310px;
         }
 
         fieldset.link-group {
             border: 1px solid #008800;
             border-radius: 6px;
-            padding: 15px;
+            padding: 10px;
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 4px;
             box-sizing: border-box;
         }
 
@@ -51,13 +51,13 @@
 
         a {
             display: block;
-            padding: 12px 20px;
+            padding: 4px 2px;
             background-color: #222;
             color: #00ff00;
             text-decoration: none;
-            border: 2px solid #00ff00;
-            border-radius: 4px;
-            font-size: 1.05rem;
+            border: 1px solid #00ff00;
+            border-radius: 6px;
+            font-size: 1.00rem;
             font-weight: bold;
             transition: all 0.2s ease-in-out;
             text-align: center;
@@ -75,7 +75,11 @@
 <body>
     <h1>Lander Sub-Apps Portal</h1>
     <div class="nav-container">
-        <a href="0.html">Test</a>
+        <fieldset class="link-group">
+            <legend>Test Scene</legend>
+            <a href="0.html?level=0">Test Scene 0</a>
+            <a href="0.html?level=1">Test Scene 1</a>
+        </fieldset>
 
         <fieldset class="link-group">
             <legend>Level Overview</legend>
