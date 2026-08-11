@@ -1,1 +1,1 @@
-export const g_version: string = "1.1.0-tricep";
+export const g_version: string = "1.1.0c";
