@@ -60,7 +60,7 @@ export class GameSceneMountainDesign extends Phaser.Scene {
     this.titleText = this.add.text(
       20,
       20,
-      `Level ${this.levelIndex + 1} (${this.level.id}) - Mountain [${this.selectedIndex + 1}/${this.mountainDatabase.length}]: ${activeBlueprint.name}`,
+      `${this.level.id} - Mountain ${this.selectedIndex + 1}/${this.mountainDatabase.length} - ${activeBlueprint.name}`,
       { fontSize: '20px', color: '#00ff00', fontStyle: 'bold' }
     ).setScrollFactor(0).setDepth(20);
 
