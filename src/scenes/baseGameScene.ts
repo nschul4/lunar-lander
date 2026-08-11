@@ -13,6 +13,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   public worldWidth: number = 3000;
   public worldHeight: number = 1000;
   public gravityY: number = 0.006;
+  public startX: number = 0;
 
   public currentLevelIndex: number = 0;
   protected level: LevelBlueprint = LEVELS[0];
@@ -106,6 +107,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.scene.bringToTop("GameSceneOverlay");
     this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
 
+    this.startX = this.level.startX ?? 0;
     this.worldWidth = this.level.worldWidth;
     this.worldHeight = this.level.worldHeight;
     this.gravityY = this.level.gravityY ?? 0.006;
@@ -114,6 +116,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.environmentManager = new EnvironmentManager(
       this,
       this.level.backgroundRanges,
+      this.startX,
       this.worldWidth,
       this.worldHeight
     );
@@ -121,16 +124,35 @@ export abstract class BaseGameScene extends Phaser.Scene {
     // 2. Lander initial position & physics state
     this.lander = new Lander(this, this.level.spawnPosition);
 
-    // 3. Terrain & Landing Pads
+    // 3. Terrain & Landing Pads (starts at negative offset to populate bleed area)
     this.noOfSuccessesPossible = WorldCreator.createWorld(
       this,
       this.level.mountains,
-      this.worldHeight
+      this.worldHeight,
+      this.startX
     );
 
-    // 4. World Physics Bounds & Gravity
+    // 4. World Physics Bounds & Gravity (left wall stays anchored at x = 0)
     this.matter.world.setBounds(0, 0, this.worldWidth, this.worldHeight);
     this.matter.world.setGravity(0, this.gravityY);
+
+    // 5. Draw subtle dashed boundary lines at playable world borders (x = 0 and x = worldWidth)
+    /*
+    const boundaryGraphics = this.add.graphics();
+    boundaryGraphics.setDepth(11);
+    const boundaryColor = 0x5c6b73;
+    const boundaryAlpha = 0.4;
+    const dashLength = 8;
+    const gapLength = 6;
+    boundaryGraphics.lineStyle(2, boundaryColor, boundaryAlpha);
+    const boundaryXPositions = [0, this.worldWidth];
+    for (const xPos of boundaryXPositions) {
+      for (let y = 0; y < this.worldHeight; y += dashLength + gapLength) {
+        const dashEnd = Math.min(y + dashLength, this.worldHeight);
+        boundaryGraphics.lineBetween(xPos, y, xPos, dashEnd);
+      }
+    }
+    */
 
     this.matter.world.on('collisionstart', (event: any) => {
       if (this.gameOver) {

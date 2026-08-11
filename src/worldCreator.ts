@@ -9,9 +9,10 @@ export class WorldCreator {
   public static createWorld(
     scene: Phaser.Scene,
     mountains: MountainBlueprint[] = LEVEL_1_MOUNTAINS,
-    groundY: number = 1000
+    groundY: number = 1000,
+    startX: number = 0
   ): number {
-    let currentX = 0;
+    let currentX = startX;
     let totalPads = 0;
     // Loop through the data blueprints directly
     for (const blueprint of mountains) {

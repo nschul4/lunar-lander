@@ -14,7 +14,8 @@ export class GameSceneOverview extends BaseGameScene {
 
   create(): void {
     super.create();
-    drawMeasurementGrid(this, this.worldWidth, this.worldHeight);
+    const bleedRight = Math.abs(this.startX);
+    drawMeasurementGrid(this, this.worldWidth, this.worldHeight, this.startX, bleedRight);
 
     // Explicitly overrides standard tracking to give a fixed global bird's-eye layout
     this.cameras.main.centerOn(this.worldWidth / 2, this.worldHeight / 2);

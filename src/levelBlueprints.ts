@@ -7,6 +7,7 @@ import { LanderSpawnConfig } from "./lander";
 export interface LevelBlueprint {
   id: string;
   name: string;
+  startX?: number; // Added startX coordinate
   worldWidth: number;
   worldHeight: number;
   gravityY?: number;
@@ -18,6 +19,7 @@ export interface LevelBlueprint {
 export const LEVEL_0: LevelBlueprint = {
   id: "level_0",
   name: "Tranquility Basin",
+  startX: -500,
   worldWidth: 1500,
   worldHeight: 1000,
   gravityY: 0.005,
@@ -35,7 +37,8 @@ export const LEVEL_0: LevelBlueprint = {
 export const LEVEL_1: LevelBlueprint = {
   id: "level_1",
   name: "Lunar Mare",
-  worldWidth: 3000,
+  startX: -500,
+  worldWidth: 2600,
   worldHeight: 1000,
   gravityY: 0.006,
   spawnPosition: {

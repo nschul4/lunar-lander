@@ -19,7 +19,8 @@ export class GameSceneInstrumented extends GameScene {
 
   create(): void {
     super.create();
-    drawMeasurementGrid(this, this.worldWidth, this.worldHeight);
+    const bleedRight = Math.abs(this.startX);
+    drawMeasurementGrid(this, this.worldWidth, this.worldHeight, this.startX, bleedRight);
   }
 
   update(time: number, delta: number): void {

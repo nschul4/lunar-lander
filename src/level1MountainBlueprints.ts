@@ -2,6 +2,20 @@ import { MountainBlueprint } from "./mountainTypes";
 
 export const LEVEL_1_MOUNTAINS: MountainBlueprint[] = [
   {
+    name: "Null",
+    width: 400,
+    height: 700,
+    vertices: [
+      { x: 0, y: 0 },
+      { x: 75, y: 150 },
+      { x: 175, y: 550 },
+      { x: 250, y: 575 },
+      { x: 350, y: 100 },
+      { x: 500, y: 0 },
+    ],
+    landingPads: []
+  },
+  {
     name: "Alpha",
     width: 700,
     height: 500,
@@ -77,7 +91,7 @@ export const LEVEL_1_MOUNTAINS: MountainBlueprint[] = [
   },
   {
     name: "Tranquility",
-    width: 560,
+    width: 450,
     height: 500,
     vertices: [
       { x: 0, y: 0 },
@@ -97,18 +111,17 @@ export const LEVEL_1_MOUNTAINS: MountainBlueprint[] = [
   },
   {
     name: "Wallace",
-    width: 800,
+    width: 750,
     height: 500,
     vertices: [
       { x: 0, y: 0 },
       { x: 170, y: 300 },
       { x: 230, y: 250 },
       { x: 290, y: 450 },
-      { x: 340, y: 400 },
-      { x: 410, y: 610 },
-      { x: 550, y: 200 },
-      { x: 610, y: 260 },
-      { x: 800, y: 0 },
+      { x: 350, y: 400 },
+      { x: 490, y: 200 },
+      { x: 600, y: 260 },
+      { x: 750, y: 0 },
     ],
     landingPads: [ ]
   }

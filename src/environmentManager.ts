@@ -8,32 +8,37 @@ export class EnvironmentManager {
   constructor(
     scene: Phaser.Scene,
     ranges: MountainRangeBlueprint[] = BACKGROUND_RANGES_DATABASE,
+    minX: number = 0,
     worldWidth: number = 3000,
-    worldHeight: number = 1000
+    worldHeight: number = 1000,
+    bleedRight: number = 500
   ) {
     this.scene = scene;
-    this.createLayers(ranges, worldWidth, worldHeight);
+    this.createLayers(ranges, minX, worldWidth, worldHeight, bleedRight);
   }
 
   private createLayers(
     ranges: MountainRangeBlueprint[],
+    minX: number,
     worldWidth: number,
-    worldHeight: number
+    worldHeight: number,
+    bleedRight: number
   ): void {
-    // 1. Core deep space backdrop anchored to fill from (0,0)
-    this.backgroundStarfield = this.scene.add.tileSprite(0, 0, worldWidth, worldHeight, 'background')
+    const totalWidth = (worldWidth - minX) + bleedRight;
+
+    // 1. Core deep space backdrop
+    this.backgroundStarfield = this.scene.add.tileSprite(minX, 0, totalWidth, worldHeight, 'background')
       .setOrigin(0, 0)
       .setDepth(-3);
 
-    // 2. Loop through background mountain range data blueprints dynamically
+    // 2. Parallax mountain ranges
     for (const blueprint of ranges) {
       this.generateRangeTexture(blueprint);
 
-      // Anchor Y to worldHeight so placement anchors flush to ground regardless of world height
       const sprite = this.scene.add.tileSprite(
-        blueprint.tileX,
+        minX + blueprint.tileX,
         worldHeight,
-        blueprint.tileWidth,
+        totalWidth,
         blueprint.tileHeight,
         blueprint.key
       ).setOrigin(0, 1).setDepth(blueprint.depth);
