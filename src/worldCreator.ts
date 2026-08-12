@@ -26,6 +26,24 @@ export class WorldCreator {
       currentX += mountainInstance.width;
     }
 
+    const bleed = 1000;
+    const minX = startX - bleed;
+    const totalWidth = (currentX - startX) + (bleed * 2);
+
+    const solidHeight = 100;
+    const gradientHeight = 300;
+
+    const groundGraphics = scene.add.graphics();
+    groundGraphics.setDepth(-0.1);
+
+    // 1. Solid mountain gray block extending down from groundY
+    groundGraphics.fillStyle(0x555555, 1);
+    groundGraphics.fillRect(minX, groundY, totalWidth, solidHeight);
+
+    // 2. Gradient fade block starting below the solid block
+    groundGraphics.fillGradientStyle(0x555555, 0x555555, 0x000000, 0x000000, 1, 1, 1, 1);
+    groundGraphics.fillRect(minX, groundY + solidHeight, totalWidth, gradientHeight);
+
     return totalPads;
   }
 }
