@@ -1,1 +1,1 @@
-export const g_version: string = "1.1.0-lat";
+export const g_version: string = "1.1.0-trap";
