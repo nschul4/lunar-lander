@@ -1,5 +1,5 @@
-import { LEVEL_0_MOUNTAINS } from "./level0MountainBlueprints";
-import { LEVEL_1_MOUNTAINS } from "./level1MountainBlueprints";
+import { MOUNTAINS_LEVEL_0 } from "./level0MountainBlueprints";
+import { MOUNTAINS_LEVEL_1 } from "./level1MountainBlueprints";
 import { MOUNTAINS_UNUSED } from "./mountainBlueprintsUnused";
 import { MountainBlueprint } from "./mountainTypes";
 import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./mountainRangeBlueprints";
@@ -31,7 +31,7 @@ export const LEVEL_0: LevelBlueprint = {
     velocityX: 0.58,
     velocityY: -0.1
   },
-  mountains: LEVEL_0_MOUNTAINS,
+  mountains: MOUNTAINS_LEVEL_0,
   backgroundRanges: BACKGROUND_RANGES_DATABASE
 };
 
@@ -49,7 +49,7 @@ export const LEVEL_1: LevelBlueprint = {
     velocityX: 1.5,
     velocityY: 0
   },
-  mountains: LEVEL_1_MOUNTAINS,
+  mountains: MOUNTAINS_LEVEL_1,
   backgroundRanges: BACKGROUND_RANGES_DATABASE
 };
 

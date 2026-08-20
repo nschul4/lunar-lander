@@ -1,6 +1,6 @@
 import { MountainBlueprint } from "./mountainTypes";
 
-export const LEVEL_1_MOUNTAINS: MountainBlueprint[] = [
+export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
   {
     name: "Null",
     width: 400,
