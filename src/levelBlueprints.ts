@@ -8,7 +8,7 @@ import { LanderSpawnConfig } from "./lander";
 export interface LevelBlueprint {
   id: string;
   name: string;
-  startX?: number; // Added startX coordinate
+  startX?: number;
   worldWidth: number;
   worldHeight: number;
   gravityY?: number;
