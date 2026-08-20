@@ -9,9 +9,9 @@ export const MOUNTAINS_LEVEL_0: MountainBlueprint[] = [
       { x: 0, y: 0 },
       { x: 75, y: 100 },
       { x: 175, y: 475 },
-      { x: 250, y: 450 },
-      { x: 350, y: 150 },
-      { x: 500, y: 0 },
+      { x: 300, y: 450 },
+      { x: 400, y: 150 },
+      { x: 550, y: 0 },
     ],
     landingPads: []
   },
@@ -41,8 +41,24 @@ export const MOUNTAINS_LEVEL_0: MountainBlueprint[] = [
       { x: 1000, y: 0 },
     ],
     landingPads: [
-      { name: "alpha", startX: 529, endX: 597, y: 430 },
+      { name: "alpha", startX: 530, endX: 594, y: 430 },
       { name: "beta", startX: 755, endX: 860, y: 105 }
     ]
-  }
+  },
+{
+  name: "Null2",
+  width: 435,
+  height: 700,
+  vertices: [
+    { x: 0,   y: 0 },
+    { x: 75,  y: 100 },
+    { x: 175, y: 450 },
+    { x: 250, y: 500 },
+    { x: 350, y: 300 },
+    { x: 500, y: 250 },
+    { x: 600, y: 100 },
+    { x: 800, y: 0 },
+  ],
+  landingPads: []
+}
 ];
