@@ -38,7 +38,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
       this.level = LEVELS[data.levelIndex];
     } else if (data?.level) {
       this.level = data.level;
-      const foundIdx = LEVELS.findIndex(l => l.id === data.level?.id);
+      const foundIdx = LEVELS.findIndex((l) => l.id === data.level?.id);
       this.currentLevelIndex = foundIdx !== -1 ? foundIdx : 0;
     } else {
       this.currentLevelIndex = 0;
@@ -52,7 +52,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
   }
 
   protected objectToString(obj: any): string {
-    return `[${obj.type || 'Object'} @ (${obj.x?.toFixed(1) || 0}, ${obj.y?.toFixed(1) || 0})]`;
+    return `[${obj.type || "Object"} @ (${obj.x?.toFixed(1) || 0}, ${obj.y?.toFixed(1) || 0})]`;
   }
 
   protected fail(): void {
@@ -60,7 +60,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.gameOver = true;
 
     console.log("💥 CRASH DETECTED!");
-    const overlayScene = <GameSceneOverlay>this.scene.get('GameSceneOverlay');
+    const overlayScene = <GameSceneOverlay>this.scene.get("GameSceneOverlay");
     if (overlayScene) {
       overlayScene.fail();
     }
@@ -80,7 +80,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     this.gameOver = true;
 
     console.log("🎉 MISSION SUCCESS: ALL PADS CLEARED!");
-    const overlayScene = <GameSceneOverlay>this.scene.get('GameSceneOverlay');
+    const overlayScene = <GameSceneOverlay>this.scene.get("GameSceneOverlay");
     if (overlayScene) {
       overlayScene.win();
     }
@@ -105,7 +105,7 @@ export abstract class BaseGameScene extends Phaser.Scene {
     }
 
     this.scene.bringToTop("GameSceneOverlay");
-    this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
+    this.controllerScene = <GameSceneController>this.scene.get("ControllerScene");
 
     this.startX = this.level.startX ?? 0;
     this.worldWidth = this.level.worldWidth;
@@ -154,70 +154,78 @@ export abstract class BaseGameScene extends Phaser.Scene {
     }
     */
 
-    this.matter.world.on('collisionstart', (event: any) => {
-      if (this.gameOver) {
-        return;
-      }
-
-      for (const pair of event.pairs) {
+    this.matter.world.on(
+      "collisionstart",
+      (event: any) => {
         if (this.gameOver) {
-          break;
+          return;
         }
 
-        const { bodyA, bodyB } = pair;
+        for (const pair of event.pairs) {
+          if (this.gameOver) {
+            break;
+          }
 
-        // 1. Safe skip if either body is missing a Phaser Game Object mapping
-        if (!bodyA?.gameObject || !bodyB?.gameObject) {
-          continue;
-        }
+          const { bodyA, bodyB } = pair;
 
-        let lander = null;
-        let otherBody = null;
+          // 1. Safe skip if either body is missing a Phaser Game Object mapping
+          if (!bodyA?.gameObject || !bodyB?.gameObject) {
+            continue;
+          }
 
-        if (bodyA.gameObject.name === "lander") {
-          lander = bodyA;
-          otherBody = bodyB;
-        } else if (bodyB.gameObject.name === "lander") {
-          lander = bodyB;
-          otherBody = bodyA;
-        }
+          let lander = null;
+          let otherBody = null;
 
-        // 2. Safe skip if this specific collision pair does not involve the player lander
-        if (lander === null || otherBody === null) {
-          continue;
-        }
+          if (bodyA.gameObject.name === "lander") {
+            lander = bodyA;
+            otherBody = bodyB;
+          } else if (bodyB.gameObject.name === "lander") {
+            lander = bodyB;
+            otherBody = bodyA;
+          }
 
-        // 3. Process the lander collision mechanics
-        if (otherBody.gameObject.name && otherBody.gameObject.name !== "lander" && otherBody.gameObject.name !== "thrust") {
-          const landerObj = (lander.gameObject as any).lander;
-          const absAttitude = Math.abs(landerObj.angle);
-          const vx = landerObj.getVelocityX();
-          const vy = landerObj.getVelocityY();
+          // 2. Safe skip if this specific collision pair does not involve the player lander
+          if (lander === null || otherBody === null) {
+            continue;
+          }
 
-          const isAngleSafe = absAttitude <= BaseGameScene.MAX_SAFE_ANGLE;
-          const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
-          const isVerticalSafe = Math.abs(vy) <= BaseGameScene.MAX_SAFE_VERTICAL_SPEED;
+          // 3. Process the lander collision mechanics
+          if (
+            otherBody.gameObject.name &&
+            otherBody.gameObject.name !== "lander" &&
+            otherBody.gameObject.name !== "thrust"
+          ) {
+            const landerObj = (lander.gameObject as any).lander;
+            const absAttitude = Math.abs(landerObj.angle);
+            const vx = landerObj.getVelocityX();
+            const vy = landerObj.getVelocityY();
 
-          if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
-            this.fail();
-          } else {
-            landerObj.stop();
+            const isAngleSafe = absAttitude <= BaseGameScene.MAX_SAFE_ANGLE;
+            const isHorizontalSafe = Math.abs(vx) <= BaseGameScene.MAX_SAFE_HORIZONTAL_SPEED;
+            const isVerticalSafe = Math.abs(vy) <= BaseGameScene.MAX_SAFE_VERTICAL_SPEED;
 
-            if (otherBody.gameObject.landed !== true) {
-              otherBody.gameObject.landed = true;
-              otherBody.gameObject.setFillStyle(0x00aa00);
-              this.successCount += 1;
-              if (this.successCount === this.noOfSuccessesPossible) {
-                this.win();
+            if (!isAngleSafe || !isHorizontalSafe || !isVerticalSafe) {
+              this.fail();
+            } else {
+              landerObj.stop();
+
+              if (otherBody.gameObject.landed !== true) {
+                otherBody.gameObject.landed = true;
+                otherBody.gameObject.setFillStyle(0x00aa00);
+                this.successCount += 1;
+                if (this.successCount === this.noOfSuccessesPossible) {
+                  this.win();
+                }
               }
             }
+          } else {
+            console.log("💥 CRASH: Touched raw mountain terrain, not a landing pad.");
+            this.fail();
           }
-        } else {
-          console.log("💥 CRASH: Touched raw mountain terrain, not a landing pad.");
-          this.fail();
         }
-      }
-    }, this);
+      },
+      this
+    );
   }
 
   update(time: number, delta: number): void {

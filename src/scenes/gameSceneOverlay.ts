@@ -2,7 +2,6 @@ import { GameScene } from "./gameScene";
 import { GameSceneController } from "./gameSceneController";
 
 export class GameSceneOverlay extends Phaser.Scene {
-
   private gameScene: GameScene | null = null;
   private controllerScene: GameSceneController | null = null;
 
@@ -38,7 +37,7 @@ export class GameSceneOverlay extends Phaser.Scene {
   public resume(): this {
     if (this.scene.isPaused() && this.pauseStartTime > 0) {
       // Measure how much real time elapsed while paused
-      this.totalPausedTime += (performance.now() - this.pauseStartTime);
+      this.totalPausedTime += performance.now() - this.pauseStartTime;
       this.pauseStartTime = 0;
       this.hidePauseText();
       this.sys.resume();
@@ -64,7 +63,7 @@ export class GameSceneOverlay extends Phaser.Scene {
     const minutes = Math.floor((secondsNum % 3600) / 60);
     const seconds = secondsNum % 60;
 
-    const pad = (num: number): string => num.toString().padStart(2, '0');
+    const pad = (num: number): string => num.toString().padStart(2, "0");
 
     if (hours > 0) {
       return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
@@ -92,24 +91,31 @@ export class GameSceneOverlay extends Phaser.Scene {
     const verticalSpeed = Number(-(velY * 100).toFixed(0));
     const horizontalSpeed = Number((velX * 100).toFixed(0));
 
-    let report = ""
-      + "time: " + this.formatElapsedTime(time / 1000)
-      + "\n"
-      + "landings: " + (this.gameScene?.successCount ?? 0) + "/" + (this.gameScene?.noOfSuccessesPossible ?? 0)
-      + "\n"
-      + "altitude: " + Number(altitude).toFixed(0);
+    let report =
+      "" +
+      "time: " +
+      this.formatElapsedTime(time / 1000) +
+      "\n" +
+      "landings: " +
+      (this.gameScene?.successCount ?? 0) +
+      "/" +
+      (this.gameScene?.noOfSuccessesPossible ?? 0) +
+      "\n" +
+      "altitude: " +
+      Number(altitude).toFixed(0);
 
     // Only append the speed section if either vertical or horizontal speed is non-zero
     if (verticalSpeed !== 0 || horizontalSpeed !== 0) {
-      report += ""
-        + "\n"
-        + "speed:"
-        + "\n"
-        + "    vertical: "
-        + verticalSpeed
-        + "\n"
-        + "  horizontal: "
-        + horizontalSpeed;
+      report +=
+        "" +
+        "\n" +
+        "speed:" +
+        "\n" +
+        "    vertical: " +
+        verticalSpeed +
+        "\n" +
+        "  horizontal: " +
+        horizontalSpeed;
     }
 
     return report;
@@ -132,94 +138,73 @@ export class GameSceneOverlay extends Phaser.Scene {
   }
 
   create(): void {
-    this.gameScene = (<GameScene>this.scene.get('GameScene'));
-    this.controllerScene = (<GameSceneController>this.scene.get('ControllerScene'));
+    this.gameScene = <GameScene>this.scene.get("GameScene");
+    this.controllerScene = <GameSceneController>this.scene.get("ControllerScene");
 
     var width: any = this.game.config.width;
     var height: any = this.game.config.height;
 
-    this.text1 = this.add.text(
-      10, 10,
-      "",
-      {
-        fontSize: 32 + 'px',
-        color: 'gray',
-        strokeThickness: 1,
-      },
-    );
+    this.text1 = this.add.text(10, 10, "", {
+      fontSize: 32 + "px",
+      color: "gray",
+      strokeThickness: 1,
+    });
 
-    this.text2 = this.add.text(
-      width / 2, 10,
-      "",
-      {
-        fontSize: 32 + 'px',
-        color: 'gray',
-        strokeThickness: 1,
-      },
-    );
+    this.text2 = this.add.text(width / 2, 10, "", {
+      fontSize: 32 + "px",
+      color: "gray",
+      strokeThickness: 1,
+    });
     this.text2.setVisible(true);
 
-    this.failText = this.add.text(
-      width / 2, 100,
-      "FAIL!",
-      {
-        fontSize: 64 + 'px',
-        color: 'white',
-        backgroundColor: 'red',
-        strokeThickness: 1,
-        padding: {
-          left: 20,
-          right: 20,
-          top: 20,
-          bottom: 25,
-        },
-      }
-    );
+    this.failText = this.add.text(width / 2, 100, "FAIL!", {
+      fontSize: 64 + "px",
+      color: "white",
+      backgroundColor: "red",
+      strokeThickness: 1,
+      padding: {
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: 25,
+      },
+    });
     this.failText.setOrigin();
     this.failText.setVisible(false);
 
-    this.winText = this.add.text(
-      width / 2, 100,
-      "WIN!",
-      {
-        fontSize: 64 + 'px',
-        color: 'white',
-        backgroundColor: 'green',
-        strokeThickness: 1,
-        padding: {
-          left: 20,
-          right: 20,
-          top: 20,
-          bottom: 25,
-        },
-      }
-    );
+    this.winText = this.add.text(width / 2, 100, "WIN!", {
+      fontSize: 64 + "px",
+      color: "white",
+      backgroundColor: "green",
+      strokeThickness: 1,
+      padding: {
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: 25,
+      },
+    });
     this.winText.setOrigin();
     this.winText.setVisible(false);
 
-    this.pauseText = this.add.text(
-      width / 2, 100,
-      "paused",
-      {
-        fontSize: 32 + 'px',
-        color: 'white',
-        backgroundColor: 'orange',
-        strokeThickness: 1,
-        padding: {
-          left: 10,
-          right: 10,
-          top: 10,
-          bottom: 15,
-        },
-      }
-    );
+    this.pauseText = this.add.text(width / 2, 100, "paused", {
+      fontSize: 32 + "px",
+      color: "white",
+      backgroundColor: "orange",
+      strokeThickness: 1,
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 15,
+      },
+    });
     this.pauseText.setOrigin();
     this.pauseText.setVisible(false);
   }
 
   update(time: number, delta: number): void {
-
-    let elapsed = (time - this.initialTime) - this.totalPausedTime;
+    let elapsed = time - this.initialTime - this.totalPausedTime;
 
     if (this.gameScene?.gameOver) {
       // If the game just ended (win or loss), freeze time and freeze status overlay display
@@ -234,10 +219,11 @@ export class GameSceneOverlay extends Phaser.Scene {
       this.text1.setText(this.createStatusReport(elapsed));
       this.lastStatusReportTime = time;
     }
-    this.text2.setText(""
-      + (this.controllerScene?.rotatingLeft == true ? "<" : " ")
-      + (this.controllerScene?.thrusting == true ? "^" : " ")
-      + (this.controllerScene?.rotatingRight == true ? ">" : " ")
+    this.text2.setText(
+      "" +
+        (this.controllerScene?.rotatingLeft == true ? "<" : " ") +
+        (this.controllerScene?.thrusting == true ? "^" : " ") +
+        (this.controllerScene?.rotatingRight == true ? ">" : " ")
     );
   }
 }

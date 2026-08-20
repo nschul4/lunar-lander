@@ -22,16 +22,16 @@ const config = {
   type: Phaser.AUTO,
   width: width,
   height: height,
-  parent: 'phaser-app',
+  parent: "phaser-app",
   scene: [bootScene, GameSceneController, GameSceneOverlay, GameSceneLevelOverview],
 
   fps: {
     target: 30,
-    forceSetTimeOut: true
+    forceSetTimeOut: true,
   },
 
   scale: {
-    parent: 'phaser-app',
+    parent: "phaser-app",
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: width,
@@ -41,14 +41,14 @@ const config = {
   render: { pixelArt: false, antialias: true },
 
   physics: {
-    default: 'matter',
+    default: "matter",
     matter: {
       debug: true,
       autoUpdate: true,
       fixedStep: true,
       debugShowInternalEdges: true,
-      debugShowConvexHulls: true
-    }
+      debugShowConvexHulls: true,
+    },
   },
 };
 

@@ -19,7 +19,7 @@ export class WorldCreator {
       const mountainInstance = new Mountain(blueprint);
       const spawnedObjects = mountainInstance.spawn(scene, currentX, groundY);
       const padCount = spawnedObjects.filter(
-        obj => obj.name && obj.name !== "lander" && obj.name !== "thrust"
+        (obj) => obj.name && obj.name !== "lander" && obj.name !== "thrust"
       ).length;
 
       totalPads += padCount;
@@ -28,7 +28,7 @@ export class WorldCreator {
 
     const bleed = 1000;
     const minX = startX - bleed;
-    const totalWidth = (currentX - startX) + (bleed * 2);
+    const totalWidth = currentX - startX + bleed * 2;
 
     const solidHeight = 100;
     const gradientHeight = 300;

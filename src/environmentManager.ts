@@ -24,10 +24,11 @@ export class EnvironmentManager {
     worldHeight: number,
     bleedRight: number
   ): void {
-    const totalWidth = (worldWidth - minX) + bleedRight;
+    const totalWidth = worldWidth - minX + bleedRight;
 
     // 1. Core deep space backdrop
-    this.backgroundStarfield = this.scene.add.tileSprite(minX, 0, totalWidth, worldHeight, 'background')
+    this.backgroundStarfield = this.scene.add
+      .tileSprite(minX, 0, totalWidth, worldHeight, "background")
       .setOrigin(0, 0)
       .setDepth(-3);
 
@@ -35,13 +36,16 @@ export class EnvironmentManager {
     for (const blueprint of ranges) {
       this.generateRangeTexture(blueprint);
 
-      const sprite = this.scene.add.tileSprite(
-        minX + blueprint.tileX,
-        worldHeight,
-        totalWidth,
-        blueprint.tileHeight,
-        blueprint.key
-      ).setOrigin(0, 1).setDepth(blueprint.depth);
+      const sprite = this.scene.add
+        .tileSprite(
+          minX + blueprint.tileX,
+          worldHeight,
+          totalWidth,
+          blueprint.tileHeight,
+          blueprint.key
+        )
+        .setOrigin(0, 1)
+        .setDepth(blueprint.depth);
 
       this.activeRanges.push({ sprite, factor: blueprint.parallaxFactor });
     }
@@ -51,7 +55,9 @@ export class EnvironmentManager {
     if (this.scene.textures.exists(blueprint.key)) return;
 
     const g = this.scene.make.graphics({ x: 0, y: 0 });
-    const nativePoints = blueprint.vertices.map(v => new Phaser.Math.Vector2(v.x, blueprint.textureHeight - v.y));
+    const nativePoints = blueprint.vertices.map(
+      (v) => new Phaser.Math.Vector2(v.x, blueprint.textureHeight - v.y)
+    );
 
     g.fillStyle(blueprint.color, 1);
     g.beginPath();

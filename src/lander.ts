@@ -7,7 +7,7 @@ import {
   SHOW_LANDER_GRID,
   LANDER_RENDER_ORDER,
   LANDER_TEXTURE_KEY,
-  THRUST_TEXTURE_KEY
+  THRUST_TEXTURE_KEY,
 } from "./configs/landerConfig";
 
 export interface LanderSpawnConfig {
@@ -37,7 +37,7 @@ export class Lander {
     Lander.generateThrustTexture(scene);
 
     this.sprite = scene.matter.add.sprite(spawnX, spawnY, LANDER_TEXTURE_KEY, undefined, {
-      shape: { type: 'fromVerts', verts: LANDER_VERTICES.join(' '), flagInternal: true }
+      shape: { type: "fromVerts", verts: LANDER_VERTICES.join(" "), flagInternal: true },
     });
 
     (this.sprite as any).lander = this;
@@ -58,10 +58,7 @@ export class Lander {
     const dy = localPosition.y;
 
     // Shift the texture canvas origin to offset Matter's center-of-mass shift
-    this.sprite.setOrigin(
-      (30 - dx) / 60,
-      (30 - dy) / 60
-    );
+    this.sprite.setOrigin((30 - dx) / 60, (30 - dy) / 60);
 
     // 4. Instantiate the thrust effect as an Image Sprite attached to lander origin
     this.thrust = scene.add.sprite(this.x, this.y, THRUST_TEXTURE_KEY);
@@ -69,10 +66,7 @@ export class Lander {
     this.thrust.visible = false;
 
     // Shift thruster origin using the same center-of-mass offsets
-    this.thrust.setOrigin(
-      (30 - dx) / 60,
-      (30 - dy) / 60
-    );
+    this.thrust.setOrigin((30 - dx) / 60, (30 - dy) / 60);
 
     // 5. Initialize developer overlay grid
     this.devGrid = new LanderGrid(scene, dx, dy);
@@ -153,11 +147,11 @@ export class Lander {
     const baseDepth = 20;
     LANDER_RENDER_ORDER.forEach((layerType, index) => {
       const assignedDepth = baseDepth + index;
-      if (layerType === 'grid') {
+      if (layerType === "grid") {
         this.devGrid.setDepth(assignedDepth);
-      } else if (layerType === 'lander') {
+      } else if (layerType === "lander") {
         this.sprite.setDepth(assignedDepth);
-      } else if (layerType === 'thrust') {
+      } else if (layerType === "thrust") {
         this.thrust.setDepth(assignedDepth);
       }
     });
@@ -173,7 +167,10 @@ export class Lander {
 
   public stop(): void {
     if (this.sprite.body && this.sprite.scene && this.sprite.scene.matter) {
-      this.sprite.scene.matter.body.setVelocity(this.sprite.body as MatterJS.BodyType, { x: 0, y: 0 });
+      this.sprite.scene.matter.body.setVelocity(this.sprite.body as MatterJS.BodyType, {
+        x: 0,
+        y: 0,
+      });
       this.sprite.scene.matter.body.setAngularVelocity(this.sprite.body as MatterJS.BodyType, 0);
     }
     this.angle = 0;
@@ -205,7 +202,10 @@ export class Lander {
       } else if (controllerScene.rotatingRight === true) {
         angularVelocity = Lander.ROTATION_SPEED;
       }
-      this.sprite.scene.matter.body.setAngularVelocity(this.sprite.body as MatterJS.BodyType, angularVelocity);
+      this.sprite.scene.matter.body.setAngularVelocity(
+        this.sprite.body as MatterJS.BodyType,
+        angularVelocity
+      );
     }
 
     // Keep thrust sprite transform in sync with lander

@@ -2,7 +2,6 @@ import { GameScene } from "./gameScene";
 import { GameSceneOverlay } from "./gameSceneOverlay";
 
 export class GameSceneController extends Phaser.Scene {
-
   public thrusting: boolean = false;
   public rotatingLeft: boolean = false;
   public rotatingRight: boolean = false;
@@ -38,8 +37,8 @@ export class GameSceneController extends Phaser.Scene {
 
     this.input.addPointer(1);
 
-    this.gameScene = (<GameScene>this.scene.get('GameScene'));
-    this.overlayScene = (<GameSceneOverlay>this.scene.get('GameSceneOverlay'));
+    this.gameScene = <GameScene>this.scene.get("GameScene");
+    this.overlayScene = <GameSceneOverlay>this.scene.get("GameSceneOverlay");
     this.cursors = this.input.keyboard!.createCursorKeys();
     this.escKeyObj = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
   }
@@ -57,33 +56,23 @@ export class GameSceneController extends Phaser.Scene {
   }
 
   update(): void {
+    this.thrusting =
+      this.cursors.up.isDown ||
+      (this.input.mousePointer.isDown && this.isThrusting(this.input.mousePointer)) ||
+      (this.input.pointer1.isDown && this.isThrusting(this.input.pointer1)) ||
+      (this.input.pointer2.isDown && this.isThrusting(this.input.pointer2));
 
-    this.thrusting = this.cursors.up.isDown
-      ||
-      (this.input.mousePointer.isDown && this.isThrusting(this.input.mousePointer))
-      ||
-      (this.input.pointer1.isDown && this.isThrusting(this.input.pointer1))
-      ||
-      (this.input.pointer2.isDown && this.isThrusting(this.input.pointer2))
-      ;
+    this.rotatingLeft =
+      this.cursors.left.isDown ||
+      (this.input.mousePointer.isDown && this.isPointingLeft(this.input.mousePointer)) ||
+      (this.input.pointer1.isDown && this.isPointingLeft(this.input.pointer1)) ||
+      (this.input.pointer2.isDown && this.isPointingLeft(this.input.pointer2));
 
-    this.rotatingLeft = this.cursors.left.isDown
-      ||
-      (this.input.mousePointer.isDown && this.isPointingLeft(this.input.mousePointer))
-      ||
-      (this.input.pointer1.isDown && this.isPointingLeft(this.input.pointer1))
-      ||
-      (this.input.pointer2.isDown && this.isPointingLeft(this.input.pointer2))
-      ;
-
-    this.rotatingRight = this.cursors.right.isDown
-      ||
-      (this.input.mousePointer.isDown && this.isPointingRight(this.input.mousePointer))
-      ||
-      (this.input.pointer1.isDown && this.isPointingRight(this.input.pointer1))
-      ||
-      (this.input.pointer2.isDown && this.isPointingRight(this.input.pointer2))
-      ;
+    this.rotatingRight =
+      this.cursors.right.isDown ||
+      (this.input.mousePointer.isDown && this.isPointingRight(this.input.mousePointer)) ||
+      (this.input.pointer1.isDown && this.isPointingRight(this.input.pointer1)) ||
+      (this.input.pointer2.isDown && this.isPointingRight(this.input.pointer2));
 
     if (Phaser.Input.Keyboard.JustDown(this.escKeyObj)) {
       if (this.gameScene) {

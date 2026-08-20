@@ -36,7 +36,7 @@ export class LanderGrid {
       const calibratedY = localY - this.dy;
       return {
         worldX: x + (calibratedX * cos - calibratedY * sin),
-        worldY: y + (calibratedX * sin + calibratedY * cos)
+        worldY: y + (calibratedX * sin + calibratedY * cos),
       };
     };
 
@@ -70,12 +70,14 @@ export class LanderGrid {
       const vy = LANDER_VERTICES[k + 1];
       const worldPos = transform(vx, vy);
 
-      const label = this.scene.add.text(worldPos.worldX + 5, worldPos.worldY + 5, `(${vx},${vy})`, {
-        fontFamily: 'monospace',
-        fontSize: '10px',
-        color: '#ffff00',
-        backgroundColor: '#000000ba'
-      }).setDepth(this.graphics.depth + 1);
+      const label = this.scene.add
+        .text(worldPos.worldX + 5, worldPos.worldY + 5, `(${vx},${vy})`, {
+          fontFamily: "monospace",
+          fontSize: "10px",
+          color: "#ffff00",
+          backgroundColor: "#000000ba",
+        })
+        .setDepth(this.graphics.depth + 1);
 
       this.labels.push(label);
     }
@@ -104,7 +106,7 @@ export class LanderGrid {
   }
 
   private clearLabels(): void {
-    this.labels.forEach(l => l.destroy());
+    this.labels.forEach((l) => l.destroy());
     this.labels = [];
   }
 }

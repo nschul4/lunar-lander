@@ -14,7 +14,7 @@ export interface MountainRangeBlueprint {
 
 export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
   {
-    key: 'mountain_range_far',
+    key: "mountain_range_far",
     textureWidth: 1800,
     textureHeight: 1000,
     color: 0x222222,
@@ -31,11 +31,11 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
       { x: 1000, y: 800 },
       { x: 1250, y: 450 },
       { x: 1450, y: 700 },
-      { x: 1800, y: 350 }
-    ]
+      { x: 1800, y: 350 },
+    ],
   },
   {
-    key: 'mountain_range_mid',
+    key: "mountain_range_mid",
     textureWidth: 2700,
     textureHeight: 1000,
     color: 0x333333,
@@ -56,7 +56,7 @@ export const BACKGROUND_RANGES_DATABASE: MountainRangeBlueprint[] = [
       { x: 1780, y: 320 },
       { x: 2050, y: 550 },
       { x: 2230, y: 240 },
-      { x: 2700, y: 50 }
-    ]
-  }
+      { x: 2700, y: 50 },
+    ],
+  },
 ];

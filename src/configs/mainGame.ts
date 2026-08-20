@@ -11,8 +11,6 @@ import { g_version } from "../version";
 
 Logger.log("top of lander subapp/mainGame.ts");
 
-
-
 const width: number = 1440;
 const height: number = 720;
 
@@ -25,16 +23,16 @@ const config = {
   type: Phaser.AUTO,
   width: width,
   height: height,
-  parent: 'phaser-app',
+  parent: "phaser-app",
   scene: [bootScene, GameSceneControls, GameSceneController, GameSceneOverlay, GameScene],
 
   fps: {
     target: 30,
-    forceSetTimeOut: true
+    forceSetTimeOut: true,
   },
 
   scale: {
-    parent: 'phaser-app',
+    parent: "phaser-app",
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: width,
@@ -44,12 +42,12 @@ const config = {
   render: { pixelArt: false, antialias: true },
 
   physics: {
-    default: 'matter',
+    default: "matter",
     matter: {
       debug: false,
       autoUpdate: true,
-      fixedStep: true
-    }
+      fixedStep: true,
+    },
   },
 };
 

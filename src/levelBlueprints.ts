@@ -29,10 +29,10 @@ export const LEVEL_0: LevelBlueprint = {
     y: 250,
     angle: -5,
     velocityX: 0.58,
-    velocityY: -0.1
+    velocityY: -0.1,
   },
   mountains: MOUNTAINS_LEVEL_0,
-  backgroundRanges: BACKGROUND_RANGES_DATABASE
+  backgroundRanges: BACKGROUND_RANGES_DATABASE,
 };
 
 export const LEVEL_1: LevelBlueprint = {
@@ -47,10 +47,10 @@ export const LEVEL_1: LevelBlueprint = {
     y: 200,
     angle: -90,
     velocityX: 1.5,
-    velocityY: 0
+    velocityY: 0,
   },
   mountains: MOUNTAINS_LEVEL_1,
-  backgroundRanges: BACKGROUND_RANGES_DATABASE
+  backgroundRanges: BACKGROUND_RANGES_DATABASE,
 };
 
 export const LEVEL_UNUSED: LevelBlueprint = {
@@ -61,7 +61,7 @@ export const LEVEL_UNUSED: LevelBlueprint = {
   worldHeight: 1000,
   gravityY: 0.006,
   mountains: MOUNTAINS_UNUSED,
-  backgroundRanges: BACKGROUND_RANGES_DATABASE
+  backgroundRanges: BACKGROUND_RANGES_DATABASE,
 };
 
 export const LEVELS: LevelBlueprint[] = [LEVEL_0, LEVEL_1];

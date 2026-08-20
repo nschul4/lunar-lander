@@ -4,7 +4,7 @@ import { getLevelFromUrl } from "../levelUtil";
 import { LevelBlueprint } from "../levelBlueprints";
 
 export class GameSceneMountainDesign extends Phaser.Scene {
-  private static readonly STORAGE_KEY = 'selectedMountainName';
+  private static readonly STORAGE_KEY = "selectedMountainName";
   private selectedIndex: number = 0;
   private mountainDatabase: MountainBlueprint[] = [];
   private titleText!: Phaser.GameObjects.Text;
@@ -42,10 +42,7 @@ export class GameSceneMountainDesign extends Phaser.Scene {
     const viewHeight = this.scale.height;
 
     // 1. Center camera horizontally on the single mountain
-    this.cameras.main.centerOn(
-      worldWidth / 2,
-      worldHeight - (viewHeight / 2) + 100
-    );
+    this.cameras.main.centerOn(worldWidth / 2, worldHeight - viewHeight / 2 + 100);
 
     // 2. Render ONLY the single active mountain
     WorldCreator.createWorld(this, [activeBlueprint], worldHeight);
@@ -57,19 +54,23 @@ export class GameSceneMountainDesign extends Phaser.Scene {
     this.saveMountainSelection(activeBlueprint.name);
 
     // 5. HUD text pinned to viewport
-    this.titleText = this.add.text(
-      20,
-      20,
-      `${this.level.id} - Mountain ${this.selectedIndex + 1}/${this.mountainDatabase.length} - ${activeBlueprint.name}`,
-      { fontSize: '20px', color: '#00ff00', fontStyle: 'bold' }
-    ).setScrollFactor(0).setDepth(20);
+    this.titleText = this.add
+      .text(
+        20,
+        20,
+        `${this.level.id} - Mountain ${this.selectedIndex + 1}/${this.mountainDatabase.length} - ${activeBlueprint.name}`,
+        { fontSize: "20px", color: "#00ff00", fontStyle: "bold" }
+      )
+      .setScrollFactor(0)
+      .setDepth(20);
 
-    this.add.text(
-      20,
-      50,
-      "Use LEFT / RIGHT arrow keys or Click to cycle blueprints",
-      { fontSize: '14px', color: '#aaaaaa' }
-    ).setScrollFactor(0).setDepth(20);
+    this.add
+      .text(20, 50, "Use LEFT / RIGHT arrow keys or Click to cycle blueprints", {
+        fontSize: "14px",
+        color: "#aaaaaa",
+      })
+      .setScrollFactor(0)
+      .setDepth(20);
 
     // 6. Cycling Listeners
     if (this.input && this.input.keyboard) {
@@ -77,15 +78,15 @@ export class GameSceneMountainDesign extends Phaser.Scene {
       this.input.keyboard.on("keydown-RIGHT", () => this.cycleMountain(1));
     }
 
-    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+    this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
       const event = pointer.event as MouseEvent;
-      const delta = (event.ctrlKey || event.metaKey) ? -1 : 1;
+      const delta = event.ctrlKey || event.metaKey ? -1 : 1;
       this.cycleMountain(delta);
     });
   }
 
   /**
-   * Draws a measurement grid where ground level (world Y=1000) displays as Y:0 
+   * Draws a measurement grid where ground level (world Y=1000) displays as Y:0
    * and positive Y values increase upward matching MountainBlueprint coordinates.
    */
   private drawMeasurementGrid(gridWidth: number, groundY: number): void {
@@ -102,7 +103,8 @@ export class GameSceneMountainDesign extends Phaser.Scene {
       // Shift X:0 up higher (groundY - 32) so X sits above Y:0 at the baseline
       const labelYOffset = x === 0 ? 32 : 20;
 
-      this.add.text(x + 5, groundY - labelYOffset, `X:${x}`, { fontSize: '12px', color: '#00ff00' })
+      this.add
+        .text(x + 5, groundY - labelYOffset, `X:${x}`, { fontSize: "12px", color: "#00ff00" })
         .setAlpha(0.6)
         .setDepth(10);
     }
@@ -111,7 +113,8 @@ export class GameSceneMountainDesign extends Phaser.Scene {
     for (let worldY = groundY; worldY >= 0; worldY -= step) {
       gridGraphics.lineBetween(0, worldY, gridWidth, worldY);
       const blueprintY = groundY - worldY;
-      this.add.text(5, worldY - 15, `Y:${blueprintY}`, { fontSize: '12px', color: '#00ff00' })
+      this.add
+        .text(5, worldY - 15, `Y:${blueprintY}`, { fontSize: "12px", color: "#00ff00" })
         .setAlpha(0.6)
         .setDepth(10);
     }
@@ -127,7 +130,7 @@ export class GameSceneMountainDesign extends Phaser.Scene {
   private getSavedMountainIndex(): number {
     const savedName = localStorage.getItem(GameSceneMountainDesign.STORAGE_KEY);
     if (savedName) {
-      const foundIdx = this.mountainDatabase.findIndex(m => m.name === savedName);
+      const foundIdx = this.mountainDatabase.findIndex((m) => m.name === savedName);
       if (foundIdx !== -1) return foundIdx;
     }
     return 0;

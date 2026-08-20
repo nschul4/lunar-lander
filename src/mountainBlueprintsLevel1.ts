@@ -13,7 +13,7 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
       { x: 350, y: 100 },
       { x: 500, y: 0 },
     ],
-    landingPads: []
+    landingPads: [],
   },
   {
     name: "Alpha",
@@ -34,9 +34,9 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
       { x: 590, y: 150 },
       { x: 600, y: 160 },
       { x: 630, y: 100 },
-      { x: 750, y: 0 }
+      { x: 750, y: 0 },
     ],
-    landingPads: [{ name: "alpha", startX: 542, endX: 587, y: 155 }]
+    landingPads: [{ name: "alpha", startX: 542, endX: 587, y: 155 }],
   },
   {
     name: "Beta",
@@ -51,9 +51,9 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
       { x: 350, y: 100 },
       { x: 400, y: 50 },
       { x: 450, y: 50 },
-      { x: 530, y: 0 }
+      { x: 530, y: 0 },
     ],
-    landingPads: [{ name: "beta", startX: 401, endX: 447, y: 55 }]
+    landingPads: [{ name: "beta", startX: 401, endX: 447, y: 55 }],
   },
   {
     name: "Epsilon",
@@ -68,9 +68,9 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
       { x: 300, y: 250 },
       { x: 350, y: 250 },
       { x: 400, y: 100 },
-      { x: 500, y: 50 }
+      { x: 500, y: 50 },
     ],
-    landingPads: [{ name: "epsilon", startX: 300, endX: 350, y: 205 }]
+    landingPads: [{ name: "epsilon", startX: 300, endX: 350, y: 205 }],
   },
   {
     name: "Delta",
@@ -85,9 +85,9 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
       { x: 250, y: 50 },
       { x: 300, y: 50 },
       { x: 330, y: 60 },
-      { x: 410, y: 0 }
+      { x: 410, y: 0 },
     ],
-    landingPads: [{ name: "delta", startX: 250, endX: 297, y: 55 }]
+    landingPads: [{ name: "delta", startX: 250, endX: 297, y: 55 }],
   },
   {
     name: "Tranquility",
@@ -106,8 +106,8 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
     ],
     landingPads: [
       { name: "tranquility base", startX: 300, endX: 350, y: 355 },
-      { name: "gamma", startX: 400, endX: 450, y: 155 }
-    ]
+      { name: "gamma", startX: 400, endX: 450, y: 155 },
+    ],
   },
   {
     name: "Wallace",
@@ -123,6 +123,6 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
       { x: 600, y: 260 },
       { x: 750, y: 0 },
     ],
-    landingPads: [ ]
-  }
+    landingPads: [],
+  },
 ];

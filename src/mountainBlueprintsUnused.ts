@@ -19,8 +19,8 @@ export const MOUNTAINS_UNUSED: MountainBlueprint[] = [
       { x: 600, y: 100 },
       { x: 650, y: 120 },
       { x: 700, y: 50 },
-      { x: 800, y: 0 }
+      { x: 800, y: 0 },
     ],
-    landingPads: [{ name: "gemini", startX: 403, endX: 472, y: 265 }]
-  }
+    landingPads: [{ name: "gemini", startX: 403, endX: 472, y: 265 }],
+  },
 ];

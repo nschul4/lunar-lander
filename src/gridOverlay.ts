@@ -28,11 +28,14 @@ export function drawMeasurementGrid(
     gridGraphics.lineBetween(minX, y, maxX, y);
 
     if (y > worldMinY) {
-      scene.add.text(minX + 15, y - 18, `Y: ${y}`, {
-        fontFamily: 'Courier',
-        fontSize: isMajor ? '14px' : '11px',
-        color: '#00ff00'
-      }).setDepth(1).setAlpha(isMajor ? 0.6 : 0.35);
+      scene.add
+        .text(minX + 15, y - 18, `Y: ${y}`, {
+          fontFamily: "Courier",
+          fontSize: isMajor ? "14px" : "11px",
+          color: "#00ff00",
+        })
+        .setDepth(1)
+        .setAlpha(isMajor ? 0.6 : 0.35);
     }
   }
 
@@ -46,24 +49,29 @@ export function drawMeasurementGrid(
     // Playable area = Green (0x00ff00), Out-of-bounds = Red/Crimson (0xff3333)
     const lineColor = isOutOfBounds ? 0xff3333 : 0x00ff00;
     const alpha = isOutOfBounds
-      ? (isMajor ? 0.3 : 0.1) // Muted opacity for bleed zone
-      : (isMajor ? 0.4 : 0.15);
+      ? isMajor
+        ? 0.3
+        : 0.1 // Muted opacity for bleed zone
+      : isMajor
+        ? 0.4
+        : 0.15;
 
     gridGraphics.lineStyle(thickness, lineColor, alpha);
     gridGraphics.lineBetween(x, worldMinY, x, worldMaxY);
 
     if (x > minX && x < maxX) {
       const textPaddingY = isMajor ? 15 : 35;
-      const textColor = isOutOfBounds ? '#ff4444' : '#00ff00';
-      const textAlpha = isOutOfBounds
-        ? (isMajor ? 0.4 : 0.25)
-        : (isMajor ? 0.6 : 0.35);
+      const textColor = isOutOfBounds ? "#ff4444" : "#00ff00";
+      const textAlpha = isOutOfBounds ? (isMajor ? 0.4 : 0.25) : isMajor ? 0.6 : 0.35;
 
-      scene.add.text(x + 8, worldMinY + textPaddingY, `X: ${x}`, {
-        fontFamily: 'Courier',
-        fontSize: isMajor ? '14px' : '11px',
-        color: textColor
-      }).setDepth(1).setAlpha(textAlpha);
+      scene.add
+        .text(x + 8, worldMinY + textPaddingY, `X: ${x}`, {
+          fontFamily: "Courier",
+          fontSize: isMajor ? "14px" : "11px",
+          color: textColor,
+        })
+        .setDepth(1)
+        .setAlpha(textAlpha);
     }
   }
 }
