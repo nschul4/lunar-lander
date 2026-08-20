@@ -1,5 +1,6 @@
 import { LEVEL_0_MOUNTAINS } from "./level0MountainBlueprints";
 import { LEVEL_1_MOUNTAINS } from "./level1MountainBlueprints";
+import { MOUNTAINS_UNUSED } from "./mountainBlueprintsUnused";
 import { MountainBlueprint } from "./mountainTypes";
 import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./mountainRangeBlueprints";
 import { LanderSpawnConfig } from "./lander";
@@ -52,4 +53,17 @@ export const LEVEL_1: LevelBlueprint = {
   backgroundRanges: BACKGROUND_RANGES_DATABASE
 };
 
+export const LEVEL_UNUSED: LevelBlueprint = {
+  id: "level_unused",
+  name: "Unused / Scratchpad",
+  startX: -500,
+  worldWidth: 1500,
+  worldHeight: 1000,
+  gravityY: 0.006,
+  mountains: MOUNTAINS_UNUSED,
+  backgroundRanges: BACKGROUND_RANGES_DATABASE
+};
+
 export const LEVELS: LevelBlueprint[] = [LEVEL_0, LEVEL_1];
+
+export const ALL_LEVELS: LevelBlueprint[] = [...LEVELS, LEVEL_UNUSED];
