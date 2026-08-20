@@ -1,5 +1,5 @@
-import { MOUNTAINS_LEVEL_0 } from "./level0MountainBlueprints";
-import { MOUNTAINS_LEVEL_1 } from "./level1MountainBlueprints";
+import { MOUNTAINS_LEVEL_0 } from "./mountainBlueprintsLevel0";
+import { MOUNTAINS_LEVEL_1 } from "./mountainBlueprintsLevel1";
 import { MOUNTAINS_UNUSED } from "./mountainBlueprintsUnused";
 import { MountainBlueprint } from "./mountainTypes";
 import { BACKGROUND_RANGES_DATABASE, MountainRangeBlueprint } from "./mountainRangeBlueprints";

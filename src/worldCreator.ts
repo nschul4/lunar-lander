@@ -1,5 +1,5 @@
 import { Mountain } from "./mountain";
-import { MOUNTAINS_LEVEL_1 } from "./level1MountainBlueprints";
+import { MOUNTAINS_LEVEL_1 } from "./mountainBlueprintsLevel1";
 import type { MountainBlueprint } from "./mountainTypes";
 
 export class WorldCreator {
