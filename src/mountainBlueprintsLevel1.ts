@@ -17,7 +17,7 @@ export const MOUNTAINS_LEVEL_1: MountainBlueprint[] = [
   },
   {
     name: "Alpha",
-    width: 700,
+    width: 660,
     height: 500,
     vertices: [
       { x: 0, y: 0 },

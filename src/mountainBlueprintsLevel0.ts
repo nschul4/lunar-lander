@@ -22,8 +22,8 @@ export const MOUNTAINS_LEVEL_0: MountainBlueprint[] = [
     vertices: [
       { x: 0, y: 0 },
       { x: 100, y: 175 },
-      { x: 150, y: 525 },
-      { x: 200, y: 550 },
+      { x: 150, y: 475 },
+      { x: 200, y: 500 },
       { x: 290, y: 275 },
       { x: 340, y: 300 },
       { x: 390, y: 260 },
