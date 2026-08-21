@@ -2,6 +2,22 @@ import { MountainBlueprint } from "./mountainTypes";
 
 export const MOUNTAINS_UNUSED: MountainBlueprint[] = [
   {
+    name: "Null3",
+    width: 400,
+    height: 700,
+    vertices: [
+      { x: 0, y: 0 },
+      { x: 75, y: 150 },
+      { x: 125, y: 175 },
+      { x: 175, y: 275 },
+      { x: 250, y: 300 },
+      { x: 350, y: 150 },
+      { x: 450, y: 100 },
+      { x: 500, y: 0 },
+    ],
+    landingPads: [],
+  },
+  {
     name: "Gemini",
     width: 800,
     height: 450,
@@ -22,5 +38,22 @@ export const MOUNTAINS_UNUSED: MountainBlueprint[] = [
       { x: 800, y: 0 },
     ],
     landingPads: [{ name: "gemini", startX: 403, endX: 472, y: 265 }],
+  },
+  {
+    name: "Null4",
+    width: 435,
+    height: 700,
+    vertices: [
+      { x: 0, y: 0 },
+      { x: 100, y: 100 },
+      { x: 225, y: 300 },
+      { x: 275, y: 500 },
+      { x: 325, y: 525 },
+      { x: 400, y: 350 },
+      { x: 510, y: 225 },
+      { x: 560, y: 100 },
+      { x: 650, y: 0 },
+    ],
+    landingPads: [],
   },
 ];
