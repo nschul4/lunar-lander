@@ -1,6 +1,6 @@
 # 🚀 Lunar Lander
 
-A retro 2D Lunar Lander game built with **Phaser 3**, **TypeScript**, and **Vite**.
+Retro 2D Lunar Lander game built with Phaser 3, TypeScript, and Vite.
 
 ## 🎮 Play Live
 
